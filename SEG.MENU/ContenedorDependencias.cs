@@ -14,7 +14,7 @@ public static class ContenedorDependencias
         services.AddDbContext<SeguridadQueryDBContext>(options => options.UseSqlServer(configuration.GetConnectionString("Lectura")));
 
         services.AddScoped<ISeguridadCommandDBContext>(sp => sp.GetRequiredService<SeguridadCommandDBContext>());
-        services.AddScoped<ISeguridadQueryDBContext>(sp => sp.GetRequiredService<ISeguridadQueryDBContext>());
+        services.AddScoped<ISeguridadQueryDBContext>(sp => sp.GetRequiredService<SeguridadQueryDBContext>());
 
         return services;
     }
