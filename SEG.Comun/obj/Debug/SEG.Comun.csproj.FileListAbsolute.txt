@@ -1,0 +1,6 @@
+H:\9.Agora\SGDP\SGDP.PLUS\SEG\SEG.BACK\SEG.BACK\SEG.Comun\bin\Debug\SEG.Comun.dll
+H:\9.Agora\SGDP\SGDP.PLUS\SEG\SEG.BACK\SEG.BACK\SEG.Comun\bin\Debug\SEG.Comun.pdb
+H:\9.Agora\SGDP\SGDP.PLUS\SEG\SEG.BACK\SEG.BACK\SEG.Comun\obj\Debug\SEG.Comun.csproj.AssemblyReference.cache
+H:\9.Agora\SGDP\SGDP.PLUS\SEG\SEG.BACK\SEG.BACK\SEG.Comun\obj\Debug\SEG.Comun.csproj.CoreCompileInputs.cache
+H:\9.Agora\SGDP\SGDP.PLUS\SEG\SEG.BACK\SEG.BACK\SEG.Comun\obj\Debug\SEG.Comun.dll
+H:\9.Agora\SGDP\SGDP.PLUS\SEG\SEG.BACK\SEG.BACK\SEG.Comun\obj\Debug\SEG.Comun.pdb
