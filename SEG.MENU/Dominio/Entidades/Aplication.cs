@@ -6,7 +6,7 @@ namespace SEG.MENU.Dominio.Entidades;
 public class Aplication : CamposLog
 {
     public Guid AplicacionId { get; set; } = Guid.NewGuid();
-    public string NombreAplicacion { get; set; } = string.Empty;
+    public string NombreAplicacion { get; set; } 
     public string DescAplicacion { get; set; } = string.Empty;
     public string RutaUrl { get; set; } = string.Empty;
     public bool Activo { get; set; } = true;
@@ -23,5 +23,19 @@ public class Aplication : CamposLog
     public static Aplication CrearRegistro(string nombreAplicacion, string descAplicacion, string rutaUrl)
     {
         return new Aplication(nombreAplicacion, descAplicacion, rutaUrl);
+    }
+
+    public void ActualizarRegistro(string nombreAplicacion, string descAplicacion, string rutaUrl)
+    {
+        NombreAplicacion = nombreAplicacion;
+        DescAplicacion = descAplicacion;
+        RutaUrl = rutaUrl;
+        ModificaFecha = DateTime.Now;
+    }
+
+    public void CambiarEstado(bool estado)
+    {
+        Activo = estado;
+        ModificaFecha = DateTime.Now;
     }
 }
