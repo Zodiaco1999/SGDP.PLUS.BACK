@@ -4,20 +4,17 @@ using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Crear;
 using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Editar;
 using SEG.MENU.Dominio.Entidades;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.LogicaNegocio
+namespace SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.LogicaNegocio;
+
+public interface IGestionAplicaciones
 {
-    public interface IGestionAplicaciones
-    {
-        Task<ConsultaViewModel<ConsultarAplicacionesResponse>> ConsultarAplicaciones(string filtro, int pagina, int registrosPorPagina, string? ordenarPor=null, bool? direccionOrdenamientoAsc=null);
+    Task<ConsultaViewModel<ConsultarAplicacionesResponse>> ConsultarAplicaciones(string filtro, int pagina, int registrosPorPagina, string? ordenarPor=null, bool? direccionOrdenamientoAsc=null);
 
-        Task<IEnumerable<ConsultarAplicacionesResponse>> ConsultarAplicacionesTodas();
+    Task<ConsultarAplicacionesResponse> ConsultarAplicacion(Guid aplicacionId);
 
-        Task<ConsultarAplicacionesResponse> ConsultarAplicacion(Guid aplicacionId);
+    Task<CrearAplicacionesResponse> CreaAplicacion(Aplication registro);
 
-        Task<CrearAplicacionesResponse> CreaAplicacion(Aplication registro);
+    Task ActualizaAplicacion(EditarAplicacionesResponse registroDTO);
 
-        Task ActualizaAplicacion(EditarAplicacionesResponse registroDTO);
-
-        Task EliminaAplicacion(Guid aplicacionId);
-    }
+    Task ActivarInactivar(Guid aplicacionId);
 }

@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.LogicaNegocio;
 using SEG.MENU.Aplicacion.Interfaces;
-using System.Collections.Generic;
 
 namespace SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Consultar;
 
