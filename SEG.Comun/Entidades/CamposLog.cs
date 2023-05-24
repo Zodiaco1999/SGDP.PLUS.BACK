@@ -1,8 +1,9 @@
-﻿using System;
+﻿using SEG.Comun.General;
+using System;
 
 namespace SEG.Comun.Entidades
 {
-    public class CamposLog
+    public class CamposLog : Entity
     {
         public string CreaUsuario { get; set; } = string.Empty;
         public DateTime CreaFecha { get; set; } = DateTime.Now;

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.ActivarInactivar;
 
 namespace SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Consultar;
 
@@ -18,4 +19,17 @@ public class ConsultarAplicacionesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ConsultarAplicaciones() =>
         Ok(await _mediator.Send(new ConsultarAplicacionesQuery()));
+
+
+
+    [HttpGet("{texto}/{pagina}/{regXpagina}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+    public async Task<IActionResult> ConsultarAplicaciones(string texto, int pagina, int regXpagina)
+    {
+        var response = await _mediator.Send(new ConsultarAplicacionesQuery(texto, pagina, regXpagina));
+
+        return Ok(response);
+    }
 }

@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.LogicaNegocio;
+using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Repositorio;
 using SEG.MENU.Aplicacion.Interfaces;
 using SEG.MENU.Infraestructura.Context;
 
@@ -15,6 +17,11 @@ public static class ContenedorDependencias
 
         services.AddScoped<ISeguridadCommandDBContext>(sp => sp.GetRequiredService<SeguridadCommandDBContext>());
         services.AddScoped<ISeguridadQueryDBContext>(sp => sp.GetRequiredService<SeguridadQueryDBContext>());
+
+
+        services.AddScoped<IGestionAplicaciones, GestionAplicaciones>();
+        services.AddScoped<IAplicationRepositorioLectura, AplicationRepositorioLectura>();
+        services.AddScoped<IAplicationRepositorioEscritura, AplicationRepositorioEscritura>();
 
         return services;
     }

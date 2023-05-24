@@ -1,38 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "H:\\9.Agora\\SGDP\\SGDP.PLUS\\SEG\\SEG.BACK\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj": {}
+    "D:\\SGDP\\SEG.API\\SEG.MENU\\SEG.MENU.csproj": {}
   },
   "projects": {
-    "H:\\9.Agora\\SGDP\\SGDP.PLUS\\SEG\\SEG.BACK\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj": {
-      "restore": {
-        "projectUniqueName": "H:\\9.Agora\\SGDP\\SGDP.PLUS\\SEG\\SEG.BACK\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj",
-        "projectName": "SEG.Comun",
-        "projectPath": "H:\\9.Agora\\SGDP\\SGDP.PLUS\\SEG\\SEG.BACK\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj",
-        "frameworks": {
-          "net472": {
-            "projectReferences": {}
-          }
-        }
-      },
-      "frameworks": {
-        "net472": {}
-      }
-    },
-    "H:\\9.Agora\\SGDP\\SGDP.PLUS\\SEG\\SEG.BACK\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj": {
+    "D:\\SGDP\\SEG.API\\SEG.Comun\\SEG.Comun.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "H:\\9.Agora\\SGDP\\SGDP.PLUS\\SEG\\SEG.BACK\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj",
-        "projectName": "SEG.MENU",
-        "projectPath": "H:\\9.Agora\\SGDP\\SGDP.PLUS\\SEG\\SEG.BACK\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj",
-        "packagesPath": "C:\\Users\\eucli\\.nuget\\packages\\",
-        "outputPath": "H:\\9.Agora\\SGDP\\SGDP.PLUS\\SEG\\SEG.BACK\\SEG.BACK\\SEG.MENU\\obj\\",
+        "projectUniqueName": "D:\\SGDP\\SEG.API\\SEG.Comun\\SEG.Comun.csproj",
+        "projectName": "SEG.Comun",
+        "projectPath": "D:\\SGDP\\SEG.API\\SEG.Comun\\SEG.Comun.csproj",
+        "packagesPath": "C:\\Users\\eeslava\\.nuget\\packages\\",
+        "outputPath": "D:\\SGDP\\SEG.API\\SEG.Comun\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\eucli\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\eeslava\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -45,9 +27,75 @@
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "LinqKit": {
+              "target": "Package",
+              "version": "[1.2.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[7.0.5, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\SGDP\\SEG.API\\SEG.MENU\\SEG.MENU.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\SGDP\\SEG.API\\SEG.MENU\\SEG.MENU.csproj",
+        "projectName": "SEG.MENU",
+        "projectPath": "D:\\SGDP\\SEG.API\\SEG.MENU\\SEG.MENU.csproj",
+        "packagesPath": "C:\\Users\\eeslava\\.nuget\\packages\\",
+        "outputPath": "D:\\SGDP\\SEG.API\\SEG.MENU\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\eeslava\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\sdk\\7.0.302\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
             "projectReferences": {
-              "H:\\9.Agora\\SGDP\\SGDP.PLUS\\SEG\\SEG.BACK\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj": {
-                "projectPath": "H:\\9.Agora\\SGDP\\SGDP.PLUS\\SEG\\SEG.BACK\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj"
+              "D:\\SGDP\\SEG.API\\SEG.Comun\\SEG.Comun.csproj": {
+                "projectPath": "D:\\SGDP\\SEG.API\\SEG.Comun\\SEG.Comun.csproj"
               }
             }
           }
@@ -108,7 +156,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.302\\RuntimeIdentifierGraph.json"
         }
       }
     }
