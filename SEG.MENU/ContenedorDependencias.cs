@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SEG.Comun.ContextAccesor;
 using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.LogicaNegocio;
 using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Repositorio;
 using SEG.MENU.Aplicacion.Interfaces;
@@ -9,7 +10,8 @@ namespace SEG.MENU;
 public static class ContenedorDependencias
 {
     public static IServiceCollection AddAplicacionesServices(this IServiceCollection services, IConfiguration configuration)
-    {
+    {        
+
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
         services.AddDbContext<SeguridadCommandDBContext>(options => options.UseSqlServer(configuration.GetConnectionString("Escritura")));
@@ -21,7 +23,7 @@ public static class ContenedorDependencias
 
         services.AddScoped<IGestionAplicaciones, GestionAplicaciones>();
         services.AddScoped<IAplicationRepositorioLectura, AplicationRepositorioLectura>();
-        services.AddScoped<IAplicationRepositorioEscritura, AplicationRepositorioEscritura>();
+        services.AddScoped<IAplicationRepositorioEscritura, AplicationRepositorioEscritura>();        
 
         return services;
     }

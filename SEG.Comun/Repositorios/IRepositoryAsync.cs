@@ -15,6 +15,8 @@ namespace SEG.Comun.Repositorios
 
         Task<bool> InsertAsync(TEntity builder);
 
+        Task<bool> UpdateAsync(TEntity builder);
+
         Task<bool> DeleteAsync(CancellationToken cancellationToken, params object[] keyValues);
 
         Task<IEnumerable<TEntity>> SelectQueryAsync(string query, params object[] parameters);

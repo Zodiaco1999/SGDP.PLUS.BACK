@@ -53,6 +53,20 @@ namespace SEG.Comun.Repositorios
             }
         }
 
+        public virtual async Task<bool> UpdateAsync(TEntity builder)
+        {
+            Set.Update(builder);
+            try
+            {
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
         public virtual void InsertRange(IEnumerable<TEntity> entities)
         {
             Set.AddRange(entities);

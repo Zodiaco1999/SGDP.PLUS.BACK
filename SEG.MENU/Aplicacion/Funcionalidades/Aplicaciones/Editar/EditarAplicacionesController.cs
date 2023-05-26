@@ -14,7 +14,7 @@ public class EditarAplicacionesController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpPost]
+    [HttpPut]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
 

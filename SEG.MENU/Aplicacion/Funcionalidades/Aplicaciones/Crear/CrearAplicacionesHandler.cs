@@ -8,10 +8,7 @@ public class CrearAplicacionesHandler : IRequestHandler<CrearAplicacionesCommand
 {
     private readonly IGestionAplicaciones _gestionAplicaciones;
 
-    public CrearAplicacionesHandler(IGestionAplicaciones gestionAplicaciones)
-    {
-        _gestionAplicaciones = gestionAplicaciones;
-    }
+    public CrearAplicacionesHandler(IGestionAplicaciones gestionAplicaciones) => _gestionAplicaciones = gestionAplicaciones;
 
     public async Task<CrearAplicacionesResponse> Handle(CrearAplicacionesCommand request, CancellationToken cancellationToken)
     {

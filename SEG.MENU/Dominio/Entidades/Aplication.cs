@@ -25,14 +25,6 @@ public class Aplication : CamposLog
         return new Aplication(nombreAplicacion, descAplicacion, rutaUrl);
     }
 
-    public void ActualizarRegistro(string nombreAplicacion, string descAplicacion, string rutaUrl)
-    {
-        NombreAplicacion = nombreAplicacion;
-        DescAplicacion = descAplicacion;
-        RutaUrl = rutaUrl;
-        ModificaFecha = DateTime.Now;
-    }
-
     public void CambiarEstado(bool estado)
     {
         Activo = estado;
