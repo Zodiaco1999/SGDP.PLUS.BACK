@@ -26,4 +26,9 @@
     <ProjectReference Include="..\SEG.Comun\SEG.Comun.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Aplicacion\Funcionalidades\Usuario\" />
+    <Folder Include="Aplicacion\Funcionalidades\Perfiles\" />
+  </ItemGroup>
+
 </Project>

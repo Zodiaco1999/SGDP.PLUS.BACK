@@ -2,6 +2,7 @@
 using SEG.Comun.General;
 using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.ActivarInactivar;
 using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Consultar;
+using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.ConsultarPorId;
 using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Crear;
 using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Editar;
 using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Especificacion;
@@ -85,7 +86,7 @@ public class GestionAplicaciones : IGestionAplicaciones
 
         await _aplicacionRepositorioEscritura.UpdateAsync(regActualizar);
 
-        var regActualizado = await _aplicacionRepositorioEscritura.Query(x => x.AplicacionId == registro.AplicacionId).FirstOrDefaultAsync(); ;
+        var regActualizado = await _aplicacionRepositorioEscritura.Query(x => x.AplicacionId == registro.AplicacionId).FirstOrDefaultAsync();
         if (regActualizado is null)
         {
             throw new NotFoundException(nameof(Aplication), "No se encontró el registro a actualziado");
@@ -103,9 +104,33 @@ public class GestionAplicaciones : IGestionAplicaciones
             regActualizado.ModificaFecha);
     }
 
-    public Task<ConsultarAplicacionesResponse> ConsultarAplicacion(Guid aplicacionId)
+    public async Task<ConsultarAplicacionPorIdResponse> ConsultarAplicacion(Guid aplicacionId)
     {
-        throw new NotImplementedException();
+        var result = await _aplicacionRepositorioLectura
+                .Query(t => t.AplicacionId == aplicacionId)
+                .Include(t => t.Modulos)
+                .FirstOrDefaultAsync();
+        List<Modulo> mods = new();
+        foreach (var item in result.Modulos)
+        {
+            item.Apliation = null!;
+            mods.Add(item);
+        }
+
+        var resp = new ConsultarAplicacionPorIdResponse(
+            result.AplicacionId,
+            result.NombreAplicacion,
+            result.DescAplicacion,
+            result.RutaUrl,
+            result.Activo,
+            result.CreaUsuario,
+            result.CreaFecha,
+            result.ModificaUsuario,
+            result.ModificaFecha,
+            mods
+            );
+        
+        return resp;
     }        
 
     public async Task<ActivarInactivarAplicacionesResponse> ActivarInactivar(Guid aplicacionId)

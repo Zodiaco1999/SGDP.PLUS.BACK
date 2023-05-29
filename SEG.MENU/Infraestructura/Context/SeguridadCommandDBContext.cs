@@ -12,6 +12,7 @@ public class SeguridadCommandDBContext : DbContext, ISeguridadCommandDBContext
     }
 
     public DbSet<Aplication> Aplicaciones { get; set; }
+    public DbSet<Modulo> Modulos { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

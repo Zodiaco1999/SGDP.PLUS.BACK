@@ -10,6 +10,7 @@ public class Aplication : CamposLog
     public string DescAplicacion { get; set; } = string.Empty;
     public string RutaUrl { get; set; } = string.Empty;
     public bool Activo { get; set; } = true;
+    public List<Modulo> Modulos { get; set; } = new();
 
     private Aplication(string nombreAplicacion, string descAplicacion, string rutaUrl)
     {
