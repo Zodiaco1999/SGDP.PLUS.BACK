@@ -1,6 +1,5 @@
 ﻿using SEG.Comun.Especificacionbase;
 using SEG.MENU.Dominio.Entidades;
-using System.Linq.Expressions;
 
 namespace SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Especificacion;
 
@@ -11,7 +10,7 @@ public class AplicacionEspecificacion : SpecificationBase<Aplication>
         Criteria = BusquedaTextoCompleto(textoBusqueda).SatisfiedBy();
     }
 
-    private ISpecificationCriteria<Aplication> BusquedaTextoCompleto(string texto)
+    private static ISpecificationCriteria<Aplication> BusquedaTextoCompleto(string texto)
     {
         SpecificationCriteria<Aplication> especificacion = new SpecificationCriteriaTrue<Aplication>();
 
