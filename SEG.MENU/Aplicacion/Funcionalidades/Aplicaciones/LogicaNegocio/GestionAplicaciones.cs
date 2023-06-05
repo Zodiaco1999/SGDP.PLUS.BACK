@@ -89,7 +89,7 @@ public class GestionAplicaciones : IGestionAplicaciones
         var regActualizado = await _aplicacionRepositorioEscritura.Query(x => x.AplicacionId == registro.AplicacionId).FirstOrDefaultAsync();
         if (regActualizado is null)
         {
-            throw new NotFoundException(nameof(Aplication), "No se encontró el registro a actualziado");
+            throw new NotFoundException(nameof(Aplication), "No se encontró el registro a actualizado");
         }
 
         return new EditarAplicacionesResponse(
@@ -111,6 +111,7 @@ public class GestionAplicaciones : IGestionAplicaciones
                 .Include(t => t.Modulos)
                 .FirstOrDefaultAsync();
         List<Modulo> mods = new();
+
         foreach (var item in result.Modulos)
         {
             item.Apliation = null!;
@@ -145,7 +146,7 @@ public class GestionAplicaciones : IGestionAplicaciones
 
         await _aplicacionRepositorioEscritura.UpdateAsync(regActualizar);
 
-        var regActualizado = await _aplicacionRepositorioEscritura.Query(x => x.AplicacionId == aplicacionId).FirstOrDefaultAsync(); ;
+        var regActualizado = await _aplicacionRepositorioEscritura.Query(x => x.AplicacionId == aplicacionId).FirstOrDefaultAsync(); 
         if (regActualizado is null)
         {
             throw new NotFoundException(nameof(Aplication), "No se encontró el registro actualizado");

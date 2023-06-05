@@ -2,4 +2,4 @@
 
 namespace SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Crear;
 
-public record struct CrearAplicacionesCommand(string nombreAplicacion, string descAplicacion, string rutaUrl) : IRequest<CrearAplicacionesResponse>;
+public record struct CrearAplicacionesCommand(string NombreAplicacion, string DescAplicacion, string RutaUrl) : IRequest<CrearAplicacionesResponse>;

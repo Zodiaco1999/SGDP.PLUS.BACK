@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "D:\\SGDP\\SEG.API\\SEG.MENU\\SEG.MENU.csproj": {}
+    "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj": {}
   },
   "projects": {
-    "D:\\SGDP\\SEG.API\\SEG.Comun\\SEG.Comun.csproj": {
+    "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\SGDP\\SEG.API\\SEG.Comun\\SEG.Comun.csproj",
+        "projectUniqueName": "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj",
         "projectName": "SEG.Comun",
-        "projectPath": "D:\\SGDP\\SEG.API\\SEG.Comun\\SEG.Comun.csproj",
-        "packagesPath": "C:\\Users\\eeslava\\.nuget\\packages\\",
-        "outputPath": "D:\\SGDP\\SEG.API\\SEG.Comun\\obj\\",
+        "projectPath": "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj",
+        "packagesPath": "C:\\Users\\bsbaez\\.nuget\\packages\\",
+        "outputPath": "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.Comun\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\eeslava\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\bsbaez\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,7 +26,9 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.telerik.com/nuget": {}
         },
         "frameworks": {
           "net7.0": {
@@ -81,17 +87,21 @@
         }
       }
     },
-    "D:\\SGDP\\SEG.API\\SEG.MENU\\SEG.MENU.csproj": {
+    "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\SGDP\\SEG.API\\SEG.MENU\\SEG.MENU.csproj",
+        "projectUniqueName": "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj",
         "projectName": "SEG.MENU",
-        "projectPath": "D:\\SGDP\\SEG.API\\SEG.MENU\\SEG.MENU.csproj",
-        "packagesPath": "C:\\Users\\eeslava\\.nuget\\packages\\",
-        "outputPath": "D:\\SGDP\\SEG.API\\SEG.MENU\\obj\\",
+        "projectPath": "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj",
+        "packagesPath": "C:\\Users\\bsbaez\\.nuget\\packages\\",
+        "outputPath": "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.MENU\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\eeslava\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\bsbaez\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -99,15 +109,17 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "C:\\Program Files\\dotnet\\sdk\\7.0.302\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.telerik.com/nuget": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "D:\\SGDP\\SEG.API\\SEG.Comun\\SEG.Comun.csproj": {
-                "projectPath": "D:\\SGDP\\SEG.API\\SEG.Comun\\SEG.Comun.csproj"
+              "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj": {
+                "projectPath": "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj"
               }
             }
           }

@@ -21,8 +21,6 @@ public class AplicacionEspecificacion : SpecificationBase<Aplication>
         {
             if (!string.IsNullOrWhiteSpace(s))
             {
-
-
                 SpecificationCriteria<Aplication> especificacionSpl = new SpecificationCriteriaTrue<Aplication>();
                 var eEspecificacion1 = new SpecificationCriteriaDirect<Aplication>(c => c.NombreAplicacion.Contains(s));
                 var eEspecificacion2 = new SpecificationCriteriaDirect<Aplication>(c => c.DescAplicacion.Contains(s));

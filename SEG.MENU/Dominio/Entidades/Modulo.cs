@@ -13,4 +13,5 @@ public class Modulo : CamposLog
     public int Orden { get; set; }
     public bool Activo { get; set; } = true;
     public virtual Aplication Apliation { get; set; } = null!;
+    public virtual ICollection<Menu> Menus { get; set; } = new List<Menu>();
 }

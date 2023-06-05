@@ -4670,19 +4670,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\eeslava\\.nuget\\packages\\": {}
+    "C:\\Users\\bsbaez\\.nuget\\packages\\": {},
+    "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\SGDP\\SEG.API\\SEG.MENU\\SEG.MENU.csproj",
+      "projectUniqueName": "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj",
       "projectName": "SEG.MENU",
-      "projectPath": "D:\\SGDP\\SEG.API\\SEG.MENU\\SEG.MENU.csproj",
-      "packagesPath": "C:\\Users\\eeslava\\.nuget\\packages\\",
-      "outputPath": "D:\\SGDP\\SEG.API\\SEG.MENU\\obj\\",
+      "projectPath": "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj",
+      "packagesPath": "C:\\Users\\bsbaez\\.nuget\\packages\\",
+      "outputPath": "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.MENU\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\eeslava\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\bsbaez\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -4690,15 +4695,17 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "C:\\Program Files\\dotnet\\sdk\\7.0.302\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://nuget.telerik.com/nuget": {}
       },
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "D:\\SGDP\\SEG.API\\SEG.Comun\\SEG.Comun.csproj": {
-              "projectPath": "D:\\SGDP\\SEG.API\\SEG.Comun\\SEG.Comun.csproj"
+            "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj": {
+              "projectPath": "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj"
             }
           }
         }
@@ -4768,7 +4775,7 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'AWSSDK 2.3.55.2' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1' instead of the project target framework 'net7.0'. This package may not be fully compatible with your project.",
+      "message": "El paquete \"AWSSDK 2.3.55.2\" se restauró con \".NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8, .NETFramework,Version=v4.8.1\" en lugar de la plataforma de destino del proyecto \"net7.0\". Puede que el paquete no sea totalmente compatible con el proyecto.",
       "libraryId": "AWSSDK",
       "targetGraphs": [
         "net7.0"
