@@ -1,7 +1,4 @@
 ﻿using SEG.Comun.General;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace SEG.Comun.Repositorios
 {
@@ -13,9 +10,9 @@ namespace SEG.Comun.Repositorios
 
         Task<bool> DeleteAsync(params object[] keyValues);
 
-        Task<bool> InsertAsync(TEntity builder);
+        //Task<bool> InsertAsync(TEntity builder);
 
-        Task<bool> UpdateAsync(TEntity builder);
+        //Task<bool> UpdateAsync(TEntity builder);
 
         Task<bool> DeleteAsync(CancellationToken cancellationToken, params object[] keyValues);
 

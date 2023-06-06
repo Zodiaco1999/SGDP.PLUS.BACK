@@ -1,6 +1,7 @@
 ﻿using Ardalis.GuardClauses;
 using Azure.Core;
 using Microsoft.Win32;
+using SEG.Comun.ContextAccesor;
 using SEG.Comun.General;
 using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.ActivarInactivar;
 using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Editar;
@@ -12,18 +13,29 @@ using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.Editar;
 using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.Especificacion;
 using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.Repositorio;
 using SEG.MENU.Dominio.Entidades;
+using SEG.MENU.Infraestructura.UnidadTrabajo;
 
 namespace SEG.MENU.Aplicacion.Funcionalidades.Perfiles.LogicaNegocio;
 
-public class GestionPerfiles : IGestionPerfiles
+public class GestionPerfiles : BaseAppService, IGestionPerfiles
 {
     private readonly IPerfilRepositorioLectura _perfilRepositorioLectura;
     private readonly IPerfilRepositorioEscritura _perfilRepositorioEscritura;
+    private readonly IUnitOfWorkSegEscritura _unitOfWork;
+    private readonly IContextAccessor _contextAccessor;
 
-    public GestionPerfiles(IPerfilRepositorioLectura perfilRepositorioLectura, IPerfilRepositorioEscritura perfilRepositorioEscritura)
+    public GestionPerfiles(
+        IPerfilRepositorioLectura perfilRepositorioLectura, 
+        IPerfilRepositorioEscritura perfilRepositorioEscritura,
+        IUnitOfWorkSegEscritura unitOfWork,
+        IContextAccessor contextAccessor,
+        ILoggerFactory loggerFactory
+        ) : base(contextAccessor, loggerFactory)
     {
         _perfilRepositorioLectura = perfilRepositorioLectura;
         _perfilRepositorioEscritura = perfilRepositorioEscritura;
+        _unitOfWork = unitOfWork;
+        _contextAccessor = contextAccessor;
     }
 
     public async Task<DataViewModel<ConsultarPerfilesResponse>> ConsultarPerfiles(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
@@ -68,7 +80,8 @@ public class GestionPerfiles : IGestionPerfiles
     {
         var registro = new Perfil() { NombrePerfil = registroDto.NombrePerfil, DescPerfil = registroDto.DescPerfil };
 
-        await _perfilRepositorioEscritura.InsertAsync(registro);
+        _perfilRepositorioEscritura.Insert(registro);
+        await _unitOfWork.SaveChangesAsync();
 
         return new CrearPerfilesResponse(registro.PerfilId, registro.NombrePerfil, registro.DescPerfil, registro.Activo);
     }
@@ -83,7 +96,8 @@ public class GestionPerfiles : IGestionPerfiles
         }
         regActualizar.Activo = !regActualizar.Activo;
 
-        await _perfilRepositorioEscritura.UpdateAsync(regActualizar);
+        _perfilRepositorioEscritura.Update(regActualizar);
+        await _unitOfWork.SaveChangesAsync();
 
         var regActualizado = await _perfilRepositorioEscritura.Query(x => x.PerfilId == perfilId).FirstOrDefaultAsync(); 
         if (regActualizado is null)
@@ -136,7 +150,8 @@ public class GestionPerfiles : IGestionPerfiles
         regActualizar.NombrePerfil = registroDto.NombrePerfil;
         regActualizar.DescPerfil = registroDto.DescPerfil;
 
-        await _perfilRepositorioEscritura.UpdateAsync(regActualizar);
+        _perfilRepositorioEscritura.Update(regActualizar);
+        await _unitOfWork.SaveChangesAsync();
 
         var regActualizado = await _perfilRepositorioEscritura.Query(x => x.PerfilId == registroDto.PerfilId).FirstOrDefaultAsync();
         if (regActualizado is null)

@@ -1,12 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using SEG.Comun.ContextAccesor;
 using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.LogicaNegocio;
 using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Repositorio;
 using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.LogicaNegocio;
 using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.Repositorio;
 using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
 using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.Repositorio;
-using SEG.MENU.Aplicacion.Interfaces;
-using SEG.MENU.Infraestructura.Context;
+using SEG.MENU.Infraestructura.UnidadTrabajo;
 
 namespace SEG.MENU;
 
@@ -17,11 +19,21 @@ public static class ContenedorDependencias
 
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
-        services.AddDbContext<SeguridadCommandDBContext>(options => options.UseSqlServer(configuration.GetConnectionString("Escritura")));
-        services.AddDbContext<SeguridadQueryDBContext>(options => options.UseSqlServer(configuration.GetConnectionString("Lectura")));
+        #region Configuración unidades de trabajo
 
-        services.AddScoped<ISeguridadCommandDBContext>(sp => sp.GetRequiredService<SeguridadCommandDBContext>());
-        services.AddScoped<ISeguridadQueryDBContext>(sp => sp.GetRequiredService<SeguridadQueryDBContext>());
+        services.AddDbContext<UnitOfWorkSegEscritura>(options => options.UseSqlServer(configuration.GetConnectionString("Escritura")));
+        services.AddScoped<IUnitOfWorkSegEscritura>(provider => provider.GetRequiredService<UnitOfWorkSegEscritura>());
+
+        services.AddDbContext<UnitOfWorkSegLectura>(options => options.UseSqlServer(configuration.GetConnectionString("Lectura")));
+        services.AddScoped<IUnitOfWorkSegLectura>(provider => provider.GetRequiredService<UnitOfWorkSegLectura>());
+
+        #endregion
+
+        services.AddHttpContextAccessor();
+        services.AddControllers();
+        services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
+
+        services.AddSingleton<IContextAccessor, ContextAccessor>();
 
         // Aplicacion
         services.AddScoped<IGestionAplicaciones, GestionAplicaciones>();

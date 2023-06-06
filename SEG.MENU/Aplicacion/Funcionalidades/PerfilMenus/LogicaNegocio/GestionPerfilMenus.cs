@@ -1,4 +1,5 @@
 ﻿using Ardalis.GuardClauses;
+using SEG.Comun.ContextAccesor;
 using SEG.Comun.General;
 using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.Consultar;
 using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.ConsultarPorId;
@@ -7,18 +8,29 @@ using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.Editar;
 using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.Especificacion;
 using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.Repositorio;
 using SEG.MENU.Dominio.Entidades;
+using SEG.MENU.Infraestructura.UnidadTrabajo;
 
 namespace SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
 
-public class GestionPerfilMenus : IGestionPerfilMenus
+public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
 {
     private readonly IPerfilMenuRepositorioLectura _perfilMenuRepositorioLectura;
     private readonly IPerfilMenuRepositorioEscritura _perfilMenuRepositorioEscritura;
+    private readonly IUnitOfWorkSegEscritura _unitOfWork;
+    private readonly IContextAccessor _contextAccessor;
 
-    public GestionPerfilMenus(IPerfilMenuRepositorioLectura perfilMenuRepositorioLectura, IPerfilMenuRepositorioEscritura perfilMenuRepositorioEscritura)
+    public GestionPerfilMenus(
+        IPerfilMenuRepositorioLectura perfilMenuRepositorioLectura, 
+        IPerfilMenuRepositorioEscritura perfilMenuRepositorioEscritura,
+        IUnitOfWorkSegEscritura unitOfWork,
+        IContextAccessor contextAccessor,
+        ILoggerFactory loggerFactory
+        ) : base(contextAccessor, loggerFactory)
     {
         _perfilMenuRepositorioLectura = perfilMenuRepositorioLectura;
         _perfilMenuRepositorioEscritura = perfilMenuRepositorioEscritura;
+        _unitOfWork = unitOfWork;
+        _contextAccessor = contextAccessor;
     }
 
     public async Task<DataViewModel<ConsultarPerfilMenusResponse>> ConsultarPerfilMenus(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
@@ -82,7 +94,8 @@ public class GestionPerfilMenus : IGestionPerfilMenus
             Ejecuta = registroDto.Ejecuta
         };
 
-        await _perfilMenuRepositorioEscritura.InsertAsync(registro);
+        _perfilMenuRepositorioEscritura.Insert(registro);
+        await _unitOfWork.SaveChangesAsync();
 
         return new CrearPerfilMenusResponse(
             registro.PerfilId,
@@ -140,7 +153,8 @@ public class GestionPerfilMenus : IGestionPerfilMenus
         regActualizar.Activa = registroDto.Activa;
         regActualizar.Ejecuta = registroDto.Ejecuta;
 
-        await _perfilMenuRepositorioEscritura.UpdateAsync(regActualizar);
+        _perfilMenuRepositorioEscritura.Update(regActualizar);
+        await _unitOfWork.SaveChangesAsync();
 
         var regActualizado = await _perfilMenuRepositorioEscritura.Query(x => x.PerfilId == registroDto.PerfilId).FirstOrDefaultAsync();
         if (regActualizado is null)

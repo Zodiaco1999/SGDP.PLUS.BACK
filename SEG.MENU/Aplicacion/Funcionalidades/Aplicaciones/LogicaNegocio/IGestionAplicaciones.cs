@@ -14,9 +14,9 @@ public interface IGestionAplicaciones
 
     Task<ConsultarAplicacionPorIdResponse> ConsultarAplicacion(Guid aplicacionId);
 
-    Task<CrearAplicacionesResponse> CreaAplicacion(Aplication registro);
+    Task<CrearAplicacionesResponse> CreaAplicacion(CrearAplicacionesCommand registroDto);
 
-    Task<EditarAplicacionesResponse> ActualizaAplicacion(EditarAplicacionesCommand registroDTO);
+    Task<EditarAplicacionesResponse> ActualizaAplicacion(EditarAplicacionesCommand registroDto);
 
     Task<ActivarInactivarAplicacionesResponse> ActivarInactivar(Guid aplicacionId);
 }

@@ -23,7 +23,6 @@
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <PkgMicrosoft_Extensions_ApiDescription_Server Condition=" '$(PkgMicrosoft_Extensions_ApiDescription_Server)' == '' ">C:\Users\bsbaez\.nuget\packages\microsoft.extensions.apidescription.server\6.0.5</PkgMicrosoft_Extensions_ApiDescription_Server>
     <PkgEntityFramework Condition=" '$(PkgEntityFramework)' == '' ">C:\Users\bsbaez\.nuget\packages\entityframework\6.3.0</PkgEntityFramework>
-    <PkgAWSSDK Condition=" '$(PkgAWSSDK)' == '' ">C:\Users\bsbaez\.nuget\packages\awssdk\2.3.55.2</PkgAWSSDK>
     <PkgMicrosoft_EntityFrameworkCore_Tools Condition=" '$(PkgMicrosoft_EntityFrameworkCore_Tools)' == '' ">C:\Users\bsbaez\.nuget\packages\microsoft.entityframeworkcore.tools\7.0.5</PkgMicrosoft_EntityFrameworkCore_Tools>
   </PropertyGroup>
 </Project>

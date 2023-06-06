@@ -12,8 +12,7 @@ public class CrearAplicacionesCommandHandler : IRequestHandler<CrearAplicaciones
 
     public async Task<CrearAplicacionesResponse> Handle(CrearAplicacionesCommand request, CancellationToken cancellationToken)
     {
-        var registroAplicacion = Aplication.CrearRegistro(request.NombreAplicacion, request.DescAplicacion, request.RutaUrl);
-        var result = await _gestionAplicaciones.CreaAplicacion(registroAplicacion);
+        var result = await _gestionAplicaciones.CreaAplicacion(request);
 
         return result;
     }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj": {}
+    "D:\\Developing\\Agora\\SGDP.PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj": {}
   },
   "projects": {
-    "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj": {
+    "D:\\Developing\\Agora\\SGDP.PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj",
+        "projectUniqueName": "D:\\Developing\\Agora\\SGDP.PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj",
         "projectName": "SEG.Comun",
-        "projectPath": "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj",
+        "projectPath": "D:\\Developing\\Agora\\SGDP.PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj",
         "packagesPath": "C:\\Users\\bsbaez\\.nuget\\packages\\",
-        "outputPath": "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.Comun\\obj\\",
+        "outputPath": "D:\\Developing\\Agora\\SGDP.PLUS\\SEG.BACK\\SEG.Comun\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -46,9 +46,9 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
-            "AWSSDK": {
+            "EFCore.BulkExtensions": {
               "target": "Package",
-              "version": "[2.3.55.2, )"
+              "version": "[7.1.2, )"
             },
             "LinqKit": {
               "target": "Package",
@@ -87,14 +87,14 @@
         }
       }
     },
-    "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj": {
+    "D:\\Developing\\Agora\\SGDP.PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj",
+        "projectUniqueName": "D:\\Developing\\Agora\\SGDP.PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj",
         "projectName": "SEG.MENU",
-        "projectPath": "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj",
+        "projectPath": "D:\\Developing\\Agora\\SGDP.PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj",
         "packagesPath": "C:\\Users\\bsbaez\\.nuget\\packages\\",
-        "outputPath": "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.MENU\\obj\\",
+        "outputPath": "D:\\Developing\\Agora\\SGDP.PLUS\\SEG.BACK\\SEG.MENU\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "D:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -118,8 +118,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj": {
-                "projectPath": "D:\\Developing\\Agora\\SGDP_PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj"
+              "D:\\Developing\\Agora\\SGDP.PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj": {
+                "projectPath": "D:\\Developing\\Agora\\SGDP.PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj"
               }
             }
           }

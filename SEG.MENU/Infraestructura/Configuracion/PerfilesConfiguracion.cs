@@ -1,8 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SEG.MENU.Dominio.Entidades;
-using SEG.Comun.General;
-using static Amazon.S3.Util.S3EventNotification;
 
 namespace SEG.MENU.Infraestructura.Configuracion;
 
