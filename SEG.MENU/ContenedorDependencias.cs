@@ -8,6 +8,8 @@ using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.LogicaNegocio;
 using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.Repositorio;
 using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
 using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.Repositorio;
+using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.LogicaNegocio;
+using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.Repositorio;
 using SEG.MENU.Infraestructura.UnidadTrabajo;
 
 namespace SEG.MENU;
@@ -47,6 +49,10 @@ public static class ContenedorDependencias
         services.AddScoped<IGestionPerfilMenus, GestionPerfilMenus>();
         services.AddScoped<IPerfilMenuRepositorioLectura, PerfilMenuRepositorioLectura>();
         services.AddScoped<IPerfilMenuRepositorioEscritura, PerfilMenuRepositorioEscritura>();
+        //UsuarioPerfil
+         services.AddScoped<IGestionUsuarioPerfil, GestionUsuarioPerfil>();
+         services.AddScoped<IUsuarioPerfilRepositorioLectura, UsuarioPerfilRepositorioLectura>();
+         services.AddScoped<IUsuarioPerfilRepositorioEscritura, UsuarioPerfilRepositorioEscritura>();
 
         return services;
     }
