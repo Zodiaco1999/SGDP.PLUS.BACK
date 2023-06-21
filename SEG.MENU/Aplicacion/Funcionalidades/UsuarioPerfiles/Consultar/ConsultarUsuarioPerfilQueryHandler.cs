@@ -6,12 +6,9 @@ namespace SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.Consultar;
 
     public class ConsultarUsuarioPerfilQueryHandler : IRequestHandler<ConsultarUsuarioPerfilQuery, DataViewModel<ConsultarUsuarioPerfilResponse>>
     {
-    private readonly IGestionUsuarioPerfil _gestionUsuarioPerfil;
-
-        public ConsultarUsuarioPerfilQueryHandler(IGestionUsuarioPerfil gestionUsuarioPerfil)
-        {
-             _gestionUsuarioPerfil = gestionUsuarioPerfil;
-        }
+        private readonly IGestionUsuarioPerfil _gestionUsuarioPerfil;   
+        public ConsultarUsuarioPerfilQueryHandler(IGestionUsuarioPerfil gestionUsuarioPerfil) => _gestionUsuarioPerfil = gestionUsuarioPerfil;
+        
 
         public async Task<DataViewModel<ConsultarUsuarioPerfilResponse>> Handle(ConsultarUsuarioPerfilQuery request, CancellationToken cancellationToken)
         {

@@ -14,30 +14,11 @@ namespace SEG.MENU.Infraestructura.Configuracion
 
             builder.Property(e => e.UsuarioId).HasMaxLength(50);
             builder.Property(e => e.SesionId).HasMaxLength(50);
-            builder.Property(e => e.CreaFecha)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-            builder.Property(e => e.CreaMaquina)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasDefaultValueSql("(host_name())");
-            builder.Property(e => e.CreaUsuario)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasDefaultValueSql("(suser_name())");
             builder.Property(e => e.InicioSesion).HasColumnType("datetime");
             builder.Property(e => e.IpCliente).HasMaxLength(50);
             builder.Property(e => e.ModificaFecha)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
-            builder.Property(e => e.ModificaMaquina)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasDefaultValueSql("(host_name())");
-            builder.Property(e => e.ModificaUsuario)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasDefaultValueSql("(suser_name())");
             builder.Property(e => e.TokenActualizacion).HasMaxLength(50);
 
             builder.HasOne(d => d.Usuario).WithMany(p => p.UsuarioSesions)
