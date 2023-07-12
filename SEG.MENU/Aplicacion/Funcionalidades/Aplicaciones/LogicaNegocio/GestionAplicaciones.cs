@@ -36,24 +36,22 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
 
     public async Task<DataViewModel<ConsultarAplicacionesResponse>> ConsultarAplicaciones(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = false)
     {
-        
         try
         {
             var filtroEspecificacion = new AplicacionEspecificacion(filtro);
-
-            DataViewModel<ConsultarAplicacionesResponse> consulta = new DataViewModel<ConsultarAplicacionesResponse>();
 
             var result = await _aplicacionRepositorioLectura
                 .Query(filtroEspecificacion.Criteria)
                 .OrderBy(ordenarPor!, direccionOrdenamientoAsc.GetValueOrDefault())
                 .SelectPageAsync(pagina, registrosPorPagina);
 
-            consulta.TotalRecords = result.TotalItems;
+            DataViewModel<ConsultarAplicacionesResponse> consulta = new DataViewModel<ConsultarAplicacionesResponse>(pagina, registrosPorPagina, result.TotalItems);
+
             consulta.Data = new List<ConsultarAplicacionesResponse>();
 
             foreach (var item in result.Items!)
             {
-                var det = new ConsultarAplicacionesResponse(
+                consulta.Data.Add(new ConsultarAplicacionesResponse(
                                 item.AplicacionId,
                                 item.NombreAplicacion,
                                 item.DescAplicacion,
@@ -62,9 +60,7 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
                                 item.CreaUsuario,
                                 item.CreaFecha,
                                 item.ModificaUsuario,
-                                item.ModificaFecha
-                                );
-                consulta.Data.Add(det);
+                                item.ModificaFecha));
             }
 
             return consulta;
@@ -75,7 +71,7 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
         }
     }
 
-    public async  Task<CrearAplicacionesResponse> CreaAplicacion(CrearAplicacionesCommand registroDto)
+    public async  Task<CrearAplicacionResponse> CrearAplicacion(CrearAplicacionCommand registroDto)
     {
         var registro = new Aplication()
         {
@@ -87,10 +83,10 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
         _aplicacionRepositorioEscritura.Insert(registro);
         await _unitOfWork.SaveChangesAsync();
 
-        return new CrearAplicacionesResponse(registro.AplicacionId, registro.NombreAplicacion, registro.DescAplicacion, registro.RutaUrl, registro.Activo);
+        return new CrearAplicacionResponse(registro.AplicacionId, registro.NombreAplicacion, registro.DescAplicacion, registro.RutaUrl, registro.Activo);
     }
 
-    public async Task<EditarAplicacionesResponse> ActualizaAplicacion(EditarAplicacionesCommand registro)
+    public async Task<EditarAplicacionResponse> EditarAplicacion(EditarAplicacionCommand registro)
     {
         var regActualizar = await _aplicacionRepositorioEscritura.Query(x => x.AplicacionId == registro.AplicacionId).FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), "No se encontró el registro a actualizar");
         regActualizar.NombreAplicacion = registro.NombreAplicacion;
@@ -106,7 +102,7 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
             throw new NotFoundException(nameof(Aplication), "No se encontró el registro a actualziado");
         }
 
-        return new EditarAplicacionesResponse(
+        return new EditarAplicacionResponse(
             regActualizado.AplicacionId,
             regActualizado.NombreAplicacion,
             regActualizado.DescAplicacion,
@@ -118,7 +114,7 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
             regActualizado.ModificaFecha);
     }
 
-    public async Task<ConsultarAplicacionPorIdResponse> ConsultarAplicacion(Guid aplicacionId)
+    public async Task<ConsultarAplicacionPorIdResponse> ConsultarAplicacionPorId(Guid aplicacionId)
     {
         var result = await _aplicacionRepositorioLectura
                 .Query(t => t.AplicacionId == aplicacionId)
@@ -143,7 +139,7 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
         return resp;
     }        
 
-    public async Task<ActivarInactivarAplicacionesResponse> ActivarInactivar(Guid aplicacionId)
+    public async Task<ActivarInactivarAplicacionResponse> ActivarInactivarAplicacion(Guid aplicacionId)
     {
         var regActualizar = await _aplicacionRepositorioEscritura.Query(x => x.AplicacionId == aplicacionId).FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), "No se encontró el registro a actualizar");
         regActualizar.Activo = !regActualizar.Activo;
@@ -157,7 +153,7 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
             throw new NotFoundException(nameof(Aplication), "No se encontró el registro actualizado");
         }
 
-        return new ActivarInactivarAplicacionesResponse(
+        return new ActivarInactivarAplicacionResponse(
             regActualizado.AplicacionId,
             regActualizado.NombreAplicacion,
             regActualizado.DescAplicacion,

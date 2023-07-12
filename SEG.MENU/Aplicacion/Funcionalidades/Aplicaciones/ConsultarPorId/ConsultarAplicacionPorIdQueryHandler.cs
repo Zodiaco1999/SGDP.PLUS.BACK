@@ -14,7 +14,7 @@ public class ConsultarAplicacionPorIdQueryHandler : IRequestHandler<ConsultarApl
 
     public async Task<ConsultarAplicacionPorIdResponse> Handle(ConsultarAplicacionPorIdQuery request, CancellationToken cancellationToken)
     {
-        ConsultarAplicacionPorIdResponse res = await _gestionAplicaciones.ConsultarAplicacion(request.AplicacionId);
+        ConsultarAplicacionPorIdResponse res = await _gestionAplicaciones.ConsultarAplicacionPorId(request.AplicacionId);
 
         return res;
     }

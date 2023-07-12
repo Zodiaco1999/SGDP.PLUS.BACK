@@ -4,16 +4,14 @@ using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.Consultar;
 using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.ConsultarPorId;
 using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.Crear;
 using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.Editar;
-using SEG.MENU.Dominio.Entidades;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Perfiles.LogicaNegocio
+namespace SEG.MENU.Aplicacion.Funcionalidades.Perfiles.LogicaNegocio;
+
+public interface IGestionPerfiles
 {
-    public interface IGestionPerfiles
-    {
-        Task<DataViewModel<ConsultarPerfilesResponse>> ConsultarPerfiles(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null);
-        Task<ConsultarPerfilPorIdResponse> ConsultarPerfil(Guid perfilId);
-        Task<CrearPerfilesResponse> CrearPerfil(CrearPerfilesCommand registroDto);
-        Task<EditarPerfilesResponse> ActualizarPerfil(EditarPerfilesCommand registroDto);
-        Task<ActivarInactivarPerfilesResponse> ActivarInactivar(Guid perfilId);
-    }
+    Task<DataViewModel<ConsultarPerfilesResponse>> ConsultarPerfiles(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null);
+    Task<ConsultarPerfilPorIdResponse> ConsultarPerfilPorId(Guid perfilId);
+    Task<CrearPerfilResponse> CrearPerfil(CrearPerfilCommand registroDto);
+    Task<EditarPerfilResponse> EditarPerfil(EditarPerfilCommand registroDto);
+    Task<ActivarInactivarPerfilResponse> ActivarInactivarPerfil(Guid perfilId);
 }

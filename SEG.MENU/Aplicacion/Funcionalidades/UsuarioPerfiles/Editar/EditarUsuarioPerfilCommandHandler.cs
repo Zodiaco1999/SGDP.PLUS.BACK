@@ -7,14 +7,12 @@ public class EditarUsuarioPerfilCommandHandler : IRequestHandler<EditarUsuarioPe
 {
     private readonly IGestionUsuarioPerfil _gestionUsuarioPerfil;
 
-    public EditarUsuarioPerfilCommandHandler(IGestionUsuarioPerfil gestionUsuarioPerfil)
-    {
-        _gestionUsuarioPerfil = gestionUsuarioPerfil;
-    }
+    public EditarUsuarioPerfilCommandHandler(IGestionUsuarioPerfil gestionUsuarioPerfil) => _gestionUsuarioPerfil = gestionUsuarioPerfil;
+    
 
     public async Task<EditarUsuarioPerfilResponse> Handle(EditarUsuarioPerfilCommand request, CancellationToken cancellationToken)
     {
-        EditarUsuarioPerfilResponse result = await _gestionUsuarioPerfil.ActualizarUsuarioPerfil(request!);
+        EditarUsuarioPerfilResponse result = await _gestionUsuarioPerfil.EditarUsuarioPerfil(request!);
 
         return result;
     }

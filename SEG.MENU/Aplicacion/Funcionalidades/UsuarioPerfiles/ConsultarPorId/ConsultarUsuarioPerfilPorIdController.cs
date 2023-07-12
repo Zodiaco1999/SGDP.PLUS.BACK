@@ -13,13 +13,13 @@ public class ConsultarUsuarioPerfilPorIdController : ControllerBase
 
     public ConsultarUsuarioPerfilPorIdController(IMediator mediator) => _mediator = mediator;
 
-    [HttpGet("{perfilId}")]
+    [HttpGet("{usuarioId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
-    public async Task<IActionResult> ConsultarUsuarioPerfilPorId(Guid perfilId, string usuarioId)
+    public async Task<IActionResult> ConsultarUsuarioPerfilPorId(string usuarioId)
     {
-        var response = await _mediator.Send(new ConsultarUsuarioPerfilPorIdQuery(perfilId, usuarioId));
+        var response = await _mediator.Send(new ConsultarUsuarioPerfilPorIdQuery(usuarioId));
 
         return Ok(response);
     }

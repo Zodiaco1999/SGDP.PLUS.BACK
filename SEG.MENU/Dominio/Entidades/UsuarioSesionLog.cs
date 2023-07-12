@@ -1,8 +1,9 @@
 ﻿using SEG.Comun.Entidades;
+using SEG.Comun.General;
 
 namespace SEG.MENU.Dominio.Entidades
 {
-    public class UsuarioSesionLog : CamposLog
+    public class UsuarioSesionLog : Entity
     {
         public Guid LogId { get; set; }
         public string UsuarioId { get; set; } = null!;

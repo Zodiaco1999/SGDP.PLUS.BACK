@@ -12,17 +12,6 @@ public class ConsultarAplicacionesController : ControllerBase
     private readonly IMediator _mediator;
     public ConsultarAplicacionesController(IMediator mediator) => _mediator = mediator;
 
-
-    //[HttpGet("{texto}/{pagina}/{regXpagina}")]
-    //[ProducesResponseType(StatusCodes.Status200OK)]
-    //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-    //public async Task<IActionResult> ConsultarAplicaciones(string texto, int pagina, int regXpagina)
-    //{
-    //    var response = await _mediator.Send(new ConsultarAplicacionesQuery(texto, pagina, regXpagina));
-
-    //    return Ok(response);
-    //}
-
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -30,11 +19,6 @@ public class ConsultarAplicacionesController : ControllerBase
     {
         DataViewModel<ConsultarAplicacionesResponse> resultado = await _mediator.Send(new ConsultarAplicacionesQuery(textoBusqueda, pagina, registrosPorPagina));
 
-        DataViewModel<ConsultarAplicacionesResponse> data = new DataViewModel<ConsultarAplicacionesResponse>(pagina, registrosPorPagina, resultado.TotalRecords)
-        {
-            Data = resultado.Data
-        };
-
-        return Ok(data);
+        return Ok(resultado);
     }
 }

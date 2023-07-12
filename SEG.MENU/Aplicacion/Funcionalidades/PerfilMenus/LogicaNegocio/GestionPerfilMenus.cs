@@ -39,19 +39,18 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
         {
             var filtroEspecificacion = new PerfilMenuEspecificacion(filtro);
 
-            DataViewModel<ConsultarPerfilMenusResponse> consulta = new DataViewModel<ConsultarPerfilMenusResponse>();
-
             var result = await _perfilMenuRepositorioLectura
                 .Query(filtroEspecificacion.Criteria)
                 .OrderBy(ordenarPor!, direccionOrdenamientoAsc.GetValueOrDefault())
                 .SelectPageAsync(pagina, registrosPorPagina);
 
-            consulta.TotalRecords = result.TotalItems;
+            DataViewModel<ConsultarPerfilMenusResponse> consulta = new DataViewModel<ConsultarPerfilMenusResponse>(pagina, registrosPorPagina, result.TotalItems);
+
             consulta.Data = new List<ConsultarPerfilMenusResponse>();
 
             foreach (var item in result.Items!)
             {
-                var det = new ConsultarPerfilMenusResponse(
+                consulta.Data.Add(new ConsultarPerfilMenusResponse(
                                 item.PerfilId,
                                 item.AplicacionId,
                                 item.ModuloId,
@@ -65,9 +64,7 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
                                 item.CreaUsuario,
                                 item.CreaFecha,
                                 item.ModificaUsuario,
-                                item.ModificaFecha
-                                );
-                consulta.Data.Add(det);
+                                item.ModificaFecha));
             }
 
             return consulta;
@@ -78,7 +75,7 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
         }
     }
 
-    public async Task<CrearPerfilMenusResponse> CrearPerfilMenu(CrearPerfilMenusCommand registroDto)
+    public async Task<CrearPerfilMenuResponse> CrearPerfilMenu(CrearPerfilMenuCommand registroDto)
     {
         var registro = new PerfilMenu()
         {
@@ -97,7 +94,7 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
         _perfilMenuRepositorioEscritura.Insert(registro);
         await _unitOfWork.SaveChangesAsync();
 
-        return new CrearPerfilMenusResponse(
+        return new CrearPerfilMenuResponse(
             registro.PerfilId,
             registro.AplicacionId,
             registro.ModuloId,
@@ -110,7 +107,7 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
             registro.Ejecuta);
     }
 
-    public async Task<ConsultarPerfilMenuPorIdResponse> ConsultarPerfilMenu(Guid perfilId)
+    public async Task<ConsultarPerfilMenuPorIdResponse> ConsultarPerfilMenuPorId(Guid perfilId)
     {
         var result = await _perfilMenuRepositorioLectura
             .Query(p => p.PerfilId == perfilId)
@@ -133,7 +130,7 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
             result.ModificaFecha);
     }
 
-    public async Task<EditarPerfilMenusResponse> ActualizarPerfilMenu(EditarPerfilMenusCommand registroDto)
+    public async Task<EditarPerfilMenuResponse> EditarPerfilMenu(EditarPerfilMenuCommand registroDto)
     {
         var regActualizar = await _perfilMenuRepositorioEscritura.Query(x => x.PerfilId == registroDto.PerfilId).FirstOrDefaultAsync();
 
@@ -162,7 +159,7 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
             throw new NotFoundException(nameof(PerfilMenu), "No se encontró el registro a actualizado");
         }
 
-        return new EditarPerfilMenusResponse(
+        return new EditarPerfilMenuResponse(
             regActualizado.PerfilId,
             regActualizado.AplicacionId,
             regActualizado.ModuloId,

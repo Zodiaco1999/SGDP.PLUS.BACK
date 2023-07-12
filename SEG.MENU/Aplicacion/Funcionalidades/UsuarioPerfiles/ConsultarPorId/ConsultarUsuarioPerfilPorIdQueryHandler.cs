@@ -3,7 +3,7 @@ using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.LogicaNegocio;
 
 namespace SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.ConsultarPorId;
 
-public class ConsultarUsuarioPerfilPorIdQueryHandler : IRequestHandler<ConsultarUsuarioPerfilPorIdQuery, ConsultarUsuarioPerfilPorIdResponse>
+public class ConsultarUsuarioPerfilPorIdQueryHandler : IRequestHandler<ConsultarUsuarioPerfilPorIdQuery, IEnumerable<ConsultarUsuarioPerfilPorIdResponse>>
 {
     private readonly IGestionUsuarioPerfil _gestionUsuarioPerfil;
 
@@ -12,10 +12,10 @@ public class ConsultarUsuarioPerfilPorIdQueryHandler : IRequestHandler<Consultar
         _gestionUsuarioPerfil = gestionUsuarioPerfil;
     }
 
-    public async Task<ConsultarUsuarioPerfilPorIdResponse> Handle(ConsultarUsuarioPerfilPorIdQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<ConsultarUsuarioPerfilPorIdResponse>> Handle(ConsultarUsuarioPerfilPorIdQuery request, CancellationToken cancellationToken)
     {
-        ConsultarUsuarioPerfilPorIdResponse res = await _gestionUsuarioPerfil.ConsultarUsuarioPerfil(request.perfilId, request.usuarioId);
+        var result = await _gestionUsuarioPerfil.ConsultarUsuarioPerfilPorId(request.usuarioId);
 
-        return res;
+        return result;
     }
 }

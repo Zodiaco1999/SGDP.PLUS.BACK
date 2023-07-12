@@ -14,7 +14,7 @@ public class ConsultarPerfilMenuPorIdQueryHandler : IRequestHandler<ConsultarPer
 
     public async Task<ConsultarPerfilMenuPorIdResponse> Handle(ConsultarPerfilMenuPorIdQuery request, CancellationToken cancellationToken)
     {
-        ConsultarPerfilMenuPorIdResponse res = await _gestionPerfilMenus.ConsultarPerfilMenu(request.PerfilId);
+        ConsultarPerfilMenuPorIdResponse res = await _gestionPerfilMenus.ConsultarPerfilMenuPorId(request.PerfilId);
 
         return res;
     }

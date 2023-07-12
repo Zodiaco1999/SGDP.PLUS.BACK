@@ -1,6 +1,7 @@
 ﻿using Ardalis.GuardClauses;
 using SEG.Comun.ContextAccesor;
 using SEG.Comun.General;
+using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.Consultar;
 using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.Consultar;
 using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.ConsultarPorId;
 using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.Crear;
@@ -35,25 +36,24 @@ public class GestionUsuarioPerfil : BaseAppService, IGestionUsuarioPerfil
 
 
 
-    public async Task<DataViewModel<ConsultarUsuarioPerfilResponse>> ConsultarUsuariosPerfil(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
+    public async Task<DataViewModel<ConsultarUsuariosPerfilResponse>> ConsultarUsuariosPerfil(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
     {
         try
         {
             var filtroEspecificacion = new UsuarioPerfilEspecificacion(filtro);
-
-            DataViewModel<ConsultarUsuarioPerfilResponse> consulta = new DataViewModel<ConsultarUsuarioPerfilResponse>();
 
             var result = await _usuarioPerfilRepositorioLectura
                 .Query(filtroEspecificacion.Criteria)
                 .OrderBy(ordenarPor!, direccionOrdenamientoAsc.GetValueOrDefault())
                 .SelectPageAsync(pagina, registrosPorPagina);
 
-            consulta.TotalRecords = result.TotalItems;
-            consulta.Data = new List<ConsultarUsuarioPerfilResponse>();
+            DataViewModel<ConsultarUsuariosPerfilResponse> consulta = new(pagina, registrosPorPagina, result.TotalItems);
+
+            consulta.Data = new List<ConsultarUsuariosPerfilResponse>();
 
             foreach (var item in result.Items!)
             {
-                var det = new ConsultarUsuarioPerfilResponse(
+                var det = new ConsultarUsuariosPerfilResponse(
                                 item.UsuarioId,
                                 item.PerfilId,
                                 item.FechaInicia,
@@ -93,26 +93,30 @@ public class GestionUsuarioPerfil : BaseAppService, IGestionUsuarioPerfil
             registro.FechaTermina);
     }
 
-    public async Task<ConsultarUsuarioPerfilPorIdResponse> ConsultarUsuarioPerfil(Guid perfilId, string usuarioId)
+    public async Task<IEnumerable<ConsultarUsuarioPerfilPorIdResponse>> ConsultarUsuarioPerfilPorId(string usuarioId)
     {
-        var result = await _usuarioPerfilRepositorioLectura
-             .Query(p => p.PerfilId == perfilId && p.UsuarioId == usuarioId)
-             .FirstOrDefaultAsync();
+        var perfiles = _usuarioPerfilRepositorioLectura
+            .Query(u => u.UsuarioId == usuarioId)
+            .Include(p => p.Perfil)
+            .Select(p => p.Perfil);
 
-        return new ConsultarUsuarioPerfilPorIdResponse(
-            result.UsuarioId,
-            result.PerfilId,
-            result.FechaInicia,
-            result.FechaTermina,
-            result.CreaUsuario,
-            result.CreaFecha,
-            result.ModificaUsuario,
-            result.ModificaFecha);
+        var perfilesResponse = new List<ConsultarUsuarioPerfilPorIdResponse>();
+
+        foreach(var perfil in perfiles)
+        {
+            perfilesResponse.Add(new ConsultarUsuarioPerfilPorIdResponse(
+                perfil.PerfilId, 
+                perfil.NombrePerfil, 
+                perfil.DescPerfil, 
+                perfil.Activo));
+        }
+
+        return perfilesResponse;
     }
 
-    public async Task<EditarUsuarioPerfilResponse> ActualizarUsuarioPerfil(EditarUsuarioPerfilCommand registroDto)
+    public async Task<EditarUsuarioPerfilResponse> EditarUsuarioPerfil(EditarUsuarioPerfilCommand registroDto)
     {
-        var regActualizar = await _usuarioPerfilRepositorioEscritura.Query(x => x.PerfilId == registroDto.PerfilId).FirstOrDefaultAsync();
+        var regActualizar = await _usuarioPerfilRepositorioEscritura.Query(x => x.UsuarioId == registroDto.UsuarioId && x.PerfilId == registroDto.PerfilId).FirstOrDefaultAsync();
 
         if (regActualizar is null)
         {
@@ -127,7 +131,7 @@ public class GestionUsuarioPerfil : BaseAppService, IGestionUsuarioPerfil
         _usuarioPerfilRepositorioEscritura.Update(regActualizar);
         await _unitOfWork.SaveChangesAsync();
 
-        var regActualizado = await _usuarioPerfilRepositorioEscritura.Query(x => x.PerfilId == registroDto.PerfilId).FirstOrDefaultAsync();
+        var regActualizado = await _usuarioPerfilRepositorioEscritura.Query(x => x.UsuarioId == registroDto.UsuarioId && x.PerfilId == registroDto.PerfilId).FirstOrDefaultAsync();
         if (regActualizado is null)
         {
             throw new NotFoundException(nameof(UsuarioPerfil), "No se encontró el registro a actualizado");

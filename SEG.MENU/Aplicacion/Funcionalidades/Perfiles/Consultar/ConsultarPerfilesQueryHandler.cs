@@ -8,10 +8,7 @@ public class ConsultarPerfilesQueryHandler : IRequestHandler<ConsultarPerfilesQu
 {
     private readonly IGestionPerfiles _gestionPerfiles;
 
-    public ConsultarPerfilesQueryHandler(IGestionPerfiles gestionPerfiles)
-    {
-        _gestionPerfiles = gestionPerfiles;
-    }
+    public ConsultarPerfilesQueryHandler(IGestionPerfiles gestionPerfiles) => _gestionPerfiles = gestionPerfiles;
     
     public async Task<DataViewModel<ConsultarPerfilesResponse>> Handle(ConsultarPerfilesQuery request, CancellationToken cancellationToken)
     {

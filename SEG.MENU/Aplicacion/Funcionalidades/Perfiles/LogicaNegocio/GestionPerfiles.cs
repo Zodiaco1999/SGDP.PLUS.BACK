@@ -1,10 +1,7 @@
 ﻿using Ardalis.GuardClauses;
-using Azure.Core;
-using Microsoft.Win32;
+using LinqKit;
 using SEG.Comun.ContextAccesor;
 using SEG.Comun.General;
-using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.ActivarInactivar;
-using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Editar;
 using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.ActivarInactivar;
 using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.Consultar;
 using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.ConsultarPorId;
@@ -25,7 +22,7 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
     private readonly IContextAccessor _contextAccessor;
 
     public GestionPerfiles(
-        IPerfilRepositorioLectura perfilRepositorioLectura, 
+        IPerfilRepositorioLectura perfilRepositorioLectura,
         IPerfilRepositorioEscritura perfilRepositorioEscritura,
         IUnitOfWorkSegEscritura unitOfWork,
         IContextAccessor contextAccessor,
@@ -44,14 +41,13 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
         {
             var filtroEspecificacion = new PerfilEspecificacion(filtro);
 
-            DataViewModel<ConsultarPerfilesResponse> consulta = new DataViewModel<ConsultarPerfilesResponse>();
-
             var result = await _perfilRepositorioLectura
                 .Query(filtroEspecificacion.Criteria)
                 .OrderBy(ordenarPor!, direccionOrdenamientoAsc.GetValueOrDefault())
                 .SelectPageAsync(pagina, registrosPorPagina);
 
-            consulta.TotalRecords = result.TotalItems;
+            DataViewModel<ConsultarPerfilesResponse> consulta = new(pagina, registrosPorPagina, result.TotalItems);
+
             consulta.Data = new List<ConsultarPerfilesResponse>();
 
             foreach (var item in result.Items!)
@@ -66,7 +62,7 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
                                 item.ModificaUsuario,
                                 item.ModificaFecha);
                 consulta.Data.Add(det);
-            }
+            };
 
             return consulta;
         }
@@ -76,17 +72,17 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
         }
     }
 
-    public async Task<CrearPerfilesResponse> CrearPerfil(CrearPerfilesCommand registroDto)
+    public async Task<CrearPerfilResponse> CrearPerfil(CrearPerfilCommand registroDto)
     {
-        var registro = new Perfil() { NombrePerfil = registroDto.NombrePerfil, DescPerfil = registroDto.DescPerfil };
+        var registro = new Perfil { NombrePerfil = registroDto.NombrePerfil, DescPerfil = registroDto.DescPerfil };
 
         _perfilRepositorioEscritura.Insert(registro);
         await _unitOfWork.SaveChangesAsync();
 
-        return new CrearPerfilesResponse(registro.PerfilId, registro.NombrePerfil, registro.DescPerfil, registro.Activo);
+        return new CrearPerfilResponse(registro.PerfilId, registro.NombrePerfil, registro.DescPerfil, registro.Activo);
     }
 
-    public async Task<ActivarInactivarPerfilesResponse> ActivarInactivar(Guid perfilId)
+    public async Task<ActivarInactivarPerfilResponse> ActivarInactivarPerfil(Guid perfilId)
     {
         var regActualizar = await _perfilRepositorioEscritura.Query(x => x.PerfilId == perfilId).FirstOrDefaultAsync();
 
@@ -99,13 +95,13 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
         _perfilRepositorioEscritura.Update(regActualizar);
         await _unitOfWork.SaveChangesAsync();
 
-        var regActualizado = await _perfilRepositorioEscritura.Query(x => x.PerfilId == perfilId).FirstOrDefaultAsync(); 
+        var regActualizado = await _perfilRepositorioEscritura.Query(x => x.PerfilId == perfilId).FirstOrDefaultAsync();
         if (regActualizado is null)
         {
             throw new NotFoundException(nameof(Perfil), "No se encontró el registro actualizado");
         }
 
-        return new ActivarInactivarPerfilesResponse(
+        return new ActivarInactivarPerfilResponse(
             regActualizado.PerfilId,
             regActualizado.NombrePerfil,
             regActualizado.DescPerfil,
@@ -116,7 +112,7 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
             regActualizado.ModificaFecha);
     }
 
-    public async Task<ConsultarPerfilPorIdResponse> ConsultarPerfil(Guid perfilId)
+    public async Task<ConsultarPerfilPorIdResponse> ConsultarPerfilPorId(Guid perfilId)
     {
         var result = await _perfilRepositorioLectura
             .Query(p => p.PerfilId == perfilId)
@@ -124,7 +120,7 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
             //.Include(p => p.UsuarioPerfiles)
             .FirstOrDefaultAsync();
 
-        if (result.PerfilMenu is not null) result.PerfilMenu.Perfil = null!; 
+        if (result.PerfilMenu is not null) result.PerfilMenu.Perfil = null!;
 
         return new ConsultarPerfilPorIdResponse(
             result.PerfilId,
@@ -138,7 +134,7 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
             result.PerfilMenu);
     }
 
-    public async Task<EditarPerfilesResponse> ActualizarPerfil(EditarPerfilesCommand registroDto)
+    public async Task<EditarPerfilResponse> EditarPerfil(EditarPerfilCommand registroDto)
     {
         var regActualizar = await _perfilRepositorioEscritura.Query(x => x.PerfilId == registroDto.PerfilId).FirstOrDefaultAsync();
 
@@ -159,7 +155,7 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
             throw new NotFoundException(nameof(Perfil), "No se encontró el registro a actualizado");
         }
 
-        return new EditarPerfilesResponse(
+        return new EditarPerfilResponse(
             regActualizado.PerfilId,
             regActualizado.NombrePerfil,
             regActualizado.DescPerfil,

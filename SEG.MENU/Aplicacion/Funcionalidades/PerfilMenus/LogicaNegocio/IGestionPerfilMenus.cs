@@ -9,8 +9,8 @@ namespace SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio
     public interface IGestionPerfilMenus
     {
         Task<DataViewModel<ConsultarPerfilMenusResponse>> ConsultarPerfilMenus(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null);
-        Task<ConsultarPerfilMenuPorIdResponse> ConsultarPerfilMenu(Guid perfilId);
-        Task<CrearPerfilMenusResponse> CrearPerfilMenu(CrearPerfilMenusCommand registroDto);
-        Task<EditarPerfilMenusResponse> ActualizarPerfilMenu(EditarPerfilMenusCommand registroDto);
+        Task<ConsultarPerfilMenuPorIdResponse> ConsultarPerfilMenuPorId(Guid perfilId);
+        Task<CrearPerfilMenuResponse> CrearPerfilMenu(CrearPerfilMenuCommand registroDto);
+        Task<EditarPerfilMenuResponse> EditarPerfilMenu(EditarPerfilMenuCommand registroDto);
     }
 }

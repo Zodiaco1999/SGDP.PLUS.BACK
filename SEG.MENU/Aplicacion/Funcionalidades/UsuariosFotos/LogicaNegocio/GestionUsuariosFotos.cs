@@ -41,14 +41,13 @@ public class GestionUsuariosFotos : BaseAppService, IGestionUsuariosFotos
         {
             var filtroEspecificacion = new UsuarioFotoEspecificacion(filtro);
 
-            DataViewModel<ConsultarUsuariosFotosResponse> consulta = new DataViewModel<ConsultarUsuariosFotosResponse>();
-
             var result = await _usuarioFotoRepositorioLectura
                 .Query(filtroEspecificacion.Criteria)
                 .OrderBy(ordenarPor!, direccionOrdenamientoAsc.GetValueOrDefault())
                 .SelectPageAsync(pagina, registrosPorPagina);
 
-            consulta.TotalRecords = result.TotalItems;
+            DataViewModel<ConsultarUsuariosFotosResponse> consulta = new(pagina, registrosPorPagina, result.TotalItems);
+
             consulta.Data = new List<ConsultarUsuariosFotosResponse>();
 
             foreach (var item in result.Items!)
@@ -72,7 +71,7 @@ public class GestionUsuariosFotos : BaseAppService, IGestionUsuariosFotos
         }
     }
 
-    public async Task<CrearUsuariosFotosResponse> CrearUsuariosFotos(CrearUsuariosFotosCommand registroDto)
+    public async Task<CrearUsuarioFotoResponse> CrearUsuarioFoto(CrearUsuarioFotoCommand registroDto)
     {
         var registro = new UsuarioFoto()
         {
@@ -84,19 +83,19 @@ public class GestionUsuariosFotos : BaseAppService, IGestionUsuariosFotos
         _usuarioFotoRepositorioEscritura.Insert(registro);
         await _unitOfWork.SaveChangesAsync();
 
-        return new CrearUsuariosFotosResponse(
+        return new CrearUsuarioFotoResponse(
             registro.UsuarioId,
             registro.Foto,
             registro.Formato);
     }
 
-    public async Task<ConsultarUsuariosFotoPorIdResponse> ConsultarUsuariosFotosPorId(string usuarioId)
+    public async Task<ConsultarUsuarioFotoPorIdResponse> ConsultarUsuarioFotoPorId(string usuarioId)
     {
         var result = await _usuarioFotoRepositorioLectura
               .Query(p => p.UsuarioId == usuarioId)
               .FirstOrDefaultAsync();
 
-        return new ConsultarUsuariosFotoPorIdResponse(
+        return new ConsultarUsuarioFotoPorIdResponse(
             result.UsuarioId,
             result.Foto,
             result.Formato,
@@ -107,7 +106,7 @@ public class GestionUsuariosFotos : BaseAppService, IGestionUsuariosFotos
     }
 
 
-    public async Task<EditarUsuariosFotosResponse> ActualizarUsuariosFotos(EditarUsuariosFotosCommand registroDto)
+    public async Task<EditarUsuarioFotoResponse> EditarUsuarioFoto(EditarUsuarioFotoCommand registroDto)
     {
         var regActualizar = await _usuarioFotoRepositorioEscritura.Query(x => x.UsuarioId == registroDto.UsuarioId).FirstOrDefaultAsync();
 
@@ -129,7 +128,7 @@ public class GestionUsuariosFotos : BaseAppService, IGestionUsuariosFotos
             throw new NotFoundException(nameof(UsuarioFoto), "No se encontró el registro a actualizado");
         }
 
-        return new EditarUsuariosFotosResponse(
+        return new EditarUsuarioFotoResponse(
             regActualizado.UsuarioId,
             regActualizado.Foto,
             regActualizado.Formato,

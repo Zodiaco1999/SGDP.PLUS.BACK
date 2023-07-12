@@ -10,6 +10,8 @@ using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
 using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.Repositorio;
 using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.LogicaNegocio;
 using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.Repositorio;
+using SEG.MENU.Aplicacion.Funcionalidades.Usuarios.LogicaNegocio;
+using SEG.MENU.Aplicacion.Funcionalidades.Usuarios.Repositorio;
 using SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.LogicaNegocio;
 using SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.Repositorio;
 using SEG.MENU.Infraestructura.UnidadTrabajo;
@@ -52,14 +54,18 @@ public static class ContenedorDependencias
         services.AddScoped<IPerfilMenuRepositorioLectura, PerfilMenuRepositorioLectura>();
         services.AddScoped<IPerfilMenuRepositorioEscritura, PerfilMenuRepositorioEscritura>();
         //UsuarioPerfil
-         services.AddScoped<IGestionUsuarioPerfil, GestionUsuarioPerfil>();
-         services.AddScoped<IUsuarioPerfilRepositorioLectura, UsuarioPerfilRepositorioLectura>();
-         services.AddScoped<IUsuarioPerfilRepositorioEscritura, UsuarioPerfilRepositorioEscritura>();
+        services.AddScoped<IGestionUsuarioPerfil, GestionUsuarioPerfil>();
+        services.AddScoped<IUsuarioPerfilRepositorioLectura, UsuarioPerfilRepositorioLectura>();
+        services.AddScoped<IUsuarioPerfilRepositorioEscritura, UsuarioPerfilRepositorioEscritura>();
         //UsuarioFoto
         services.AddScoped<IGestionUsuariosFotos, GestionUsuariosFotos>();
         services.AddScoped<IUsuarioFotoRepositorioLectura, UsuarioFotoRepositorioLectura>();
         services.AddScoped<IUsuarioFotoRepositorioEscritura, UsuarioFotoRepositorioEscritura>();
-
+        //Usuario
+        services.AddScoped<IGestionUsuarios, GestionUsuarios>();
+        services.AddScoped<IUsuarioRepositorioLectura, UsuarioRepositorioLectura>();
+        services.AddScoped<IUsuarioRepositorioEscritura, UsuarioRepositorioEscritura>();
+       
         return services;
     }
 }

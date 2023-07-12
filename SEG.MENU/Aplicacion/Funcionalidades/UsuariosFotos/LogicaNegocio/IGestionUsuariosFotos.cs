@@ -9,8 +9,8 @@ namespace SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.LogicaNegocio;
 public interface IGestionUsuariosFotos
 {
     Task<DataViewModel<ConsultarUsuariosFotosResponse>> ConsultarUsuariosFotos(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null);
-    Task<ConsultarUsuariosFotoPorIdResponse> ConsultarUsuariosFotosPorId(string usuarioId);
-    Task<CrearUsuariosFotosResponse> CrearUsuariosFotos(CrearUsuariosFotosCommand registroDto);
-    Task<EditarUsuariosFotosResponse> ActualizarUsuariosFotos(EditarUsuariosFotosCommand registroDto);
+    Task<ConsultarUsuarioFotoPorIdResponse> ConsultarUsuarioFotoPorId(string usuarioId);
+    Task<CrearUsuarioFotoResponse> CrearUsuarioFoto(CrearUsuarioFotoCommand registroDto);
+    Task<EditarUsuarioFotoResponse> EditarUsuarioFoto(EditarUsuarioFotoCommand registroDto);
 }
 
