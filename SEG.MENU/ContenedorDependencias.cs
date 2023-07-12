@@ -16,6 +16,8 @@ using SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.LogicaNegocio;
 using SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.Repositorio;
 using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesion.LogicaNegocio;
 using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesion.Repositorio;
+using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesionLog.LogicaNegocio;
+using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesionLog.Repositorio;
 using SEG.MENU.Infraestructura.UnidadTrabajo;
 
 namespace SEG.MENU;
@@ -71,6 +73,10 @@ public static class ContenedorDependencias
         services.AddScoped<IGestionUsuariosSesion, GestionUsuariosSesion>();
         services.AddScoped<IUsuarioSesionRepositorioLectura, UsuarioSesionRepositorioLectura>();
         services.AddScoped<IUsuarioSesionRepositorioEscritura, UsuarioSesionRepositorioEscritura>();
+        //UsuarioSesionLog
+        services.AddScoped<IGestionUsuariosSesionLog, GestionUsuariosSesionLog>();
+        services.AddScoped<IUsuarioSesionLogRepositorioLectura, UsuarioSesionLogRepositorioLectura>();
+        services.AddScoped<IUsuarioSesionLogRepositorioEscritura, UsuarioSesionLogRepositorioEscritura>();
 
         return services;
     }

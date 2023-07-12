@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\gzuluaga\\OneDrive - Detergentes Ltda\\Documentos\\SGDP.PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj": {}
+    "C:\\Desarrollo\\SGDP.PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj": {}
   },
   "projects": {
-    "C:\\Users\\gzuluaga\\OneDrive - Detergentes Ltda\\Documentos\\SGDP.PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj": {
+    "C:\\Desarrollo\\SGDP.PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\gzuluaga\\OneDrive - Detergentes Ltda\\Documentos\\SGDP.PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj",
+        "projectUniqueName": "C:\\Desarrollo\\SGDP.PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj",
         "projectName": "SEG.Comun",
-        "projectPath": "C:\\Users\\gzuluaga\\OneDrive - Detergentes Ltda\\Documentos\\SGDP.PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj",
+        "projectPath": "C:\\Desarrollo\\SGDP.PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj",
         "packagesPath": "C:\\Users\\gzuluaga\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\gzuluaga\\OneDrive - Detergentes Ltda\\Documentos\\SGDP.PLUS\\SEG.BACK\\SEG.Comun\\obj\\",
+        "outputPath": "C:\\Desarrollo\\SGDP.PLUS\\SEG.BACK\\SEG.Comun\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\gzuluaga\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -82,14 +82,14 @@
         }
       }
     },
-    "C:\\Users\\gzuluaga\\OneDrive - Detergentes Ltda\\Documentos\\SGDP.PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj": {
+    "C:\\Desarrollo\\SGDP.PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\gzuluaga\\OneDrive - Detergentes Ltda\\Documentos\\SGDP.PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj",
+        "projectUniqueName": "C:\\Desarrollo\\SGDP.PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj",
         "projectName": "SEG.MENU",
-        "projectPath": "C:\\Users\\gzuluaga\\OneDrive - Detergentes Ltda\\Documentos\\SGDP.PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj",
+        "projectPath": "C:\\Desarrollo\\SGDP.PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj",
         "packagesPath": "C:\\Users\\gzuluaga\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\gzuluaga\\OneDrive - Detergentes Ltda\\Documentos\\SGDP.PLUS\\SEG.BACK\\SEG.MENU\\obj\\",
+        "outputPath": "C:\\Desarrollo\\SGDP.PLUS\\SEG.BACK\\SEG.MENU\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\gzuluaga\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -107,8 +107,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\gzuluaga\\OneDrive - Detergentes Ltda\\Documentos\\SGDP.PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj": {
-                "projectPath": "C:\\Users\\gzuluaga\\OneDrive - Detergentes Ltda\\Documentos\\SGDP.PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj"
+              "C:\\Desarrollo\\SGDP.PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj": {
+                "projectPath": "C:\\Desarrollo\\SGDP.PLUS\\SEG.BACK\\SEG.Comun\\SEG.Comun.csproj"
               }
             }
           }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qpjJu2scFfOUYXAihLHdeOFziAmqZAxjYvoFpWoQWV8gCHIwB1kWO+dpGPx1wSbXf+PUobFhvbHooGB4rpg8HQ==",
+  "dgSpecHash": "E/ycx+3r2zknn7ywIxbi32tORpsA/gevL9cWCe4uO+m/panpioEQZaL5FEevGxxDQKo3vHV8aAMXHK9P9WhKCQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\gzuluaga\\OneDrive - Detergentes Ltda\\Documentos\\SGDP.PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj",
+  "projectFilePath": "C:\\Desarrollo\\SGDP.PLUS\\SEG.BACK\\SEG.MENU\\SEG.MENU.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\gzuluaga\\.nuget\\packages\\ardalis.guardclauses\\4.0.1\\ardalis.guardclauses.4.0.1.nupkg.sha512",
     "C:\\Users\\gzuluaga\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
