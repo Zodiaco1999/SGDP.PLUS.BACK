@@ -1,4 +1,5 @@
-﻿using SEG.MENU.Dominio.Entidades;
+﻿using SEG.MENU.Aplicacion.Funcionalidades.Apis.Crear;
+using SEG.MENU.Aplicacion.Funcionalidades.Modulos.Crear;
 
 namespace SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.ConsultarPorId;
 
@@ -12,4 +13,5 @@ public record struct ConsultarAplicacionPorIdResponse(
     DateTime CreaFecha,
     string ModificaUsuario,
     DateTime ModificaFecha,
-    List<Modulo> ListaModulos);
+    IEnumerable<CrearModuloResponse> ListaModulos,
+    IEnumerable<CrearApiResponse> ListaApis);

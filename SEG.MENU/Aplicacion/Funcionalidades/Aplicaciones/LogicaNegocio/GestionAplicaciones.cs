@@ -1,6 +1,7 @@
 ﻿using Ardalis.GuardClauses;
 using SEG.Comun.ContextAccesor;
 using SEG.Comun.General;
+using SEG.MENU.Aplicacion.Funcionalidades.Apis.Crear;
 using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.ActivarInactivar;
 using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Consultar;
 using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.ConsultarPorId;
@@ -8,6 +9,7 @@ using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Crear;
 using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Editar;
 using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Especificacion;
 using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Repositorio;
+using SEG.MENU.Aplicacion.Funcionalidades.Modulos.Crear;
 using SEG.MENU.Dominio.Entidades;
 using SEG.MENU.Infraestructura.UnidadTrabajo;
 
@@ -71,7 +73,7 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
         }
     }
 
-    public async  Task<CrearAplicacionResponse> CrearAplicacion(CrearAplicacionCommand registroDto)
+    public async Task<CrearAplicacionResponse> CrearAplicacion(CrearAplicacionCommand registroDto)
     {
         var registro = new Aplication()
         {
@@ -88,19 +90,20 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
 
     public async Task<EditarAplicacionResponse> EditarAplicacion(EditarAplicacionCommand registro)
     {
-        var regActualizar = await _aplicacionRepositorioEscritura.Query(x => x.AplicacionId == registro.AplicacionId).FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), "No se encontró el registro a actualizar");
+        var regActualizar = await _aplicacionRepositorioEscritura
+            .Query(x => x.AplicacionId == registro.AplicacionId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), "No se encontró el registro a actualizar");
+
         regActualizar.NombreAplicacion = registro.NombreAplicacion;
         regActualizar.DescAplicacion = registro.DescAplicacion;
-        regActualizar.RutaUrl = registro.RutaUrl;   
+        regActualizar.RutaUrl = registro.RutaUrl;
 
         _aplicacionRepositorioEscritura.Update(regActualizar);
         await _unitOfWork.SaveChangesAsync();
 
-        var regActualizado = await _aplicacionRepositorioEscritura.Query(x => x.AplicacionId == registro.AplicacionId).FirstOrDefaultAsync();
-        if (regActualizado is null)
-        {
-            throw new NotFoundException(nameof(Aplication), "No se encontró el registro a actualziado");
-        }
+        var regActualizado = await _aplicacionRepositorioEscritura
+            .Query(x => x.AplicacionId == registro.AplicacionId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), "No se encontró el registro a actualziado");
 
         return new EditarAplicacionResponse(
             regActualizado.AplicacionId,
@@ -119,11 +122,31 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
         var result = await _aplicacionRepositorioLectura
                 .Query(t => t.AplicacionId == aplicacionId)
                 .Include(t => t.Modulos)
+                .Include(t => t.Apis)
                 .FirstOrDefaultAsync();
 
-        result.Modulos.ForEach(m => m.Apliation = null!);
+        IEnumerable<CrearModuloResponse> listaModulos = result.Modulos.Select(mod =>
+        new CrearModuloResponse(
+            mod.AplicacionId,
+            mod.ModuloId,
+            mod.NombreModulo,
+            mod.DescModulo,
+            mod.IconoPrefijo,
+            mod.IconoNombre,
+            mod.Orden,
+            mod.Activo));
 
-        var resp = new ConsultarAplicacionPorIdResponse(
+        IEnumerable<CrearApiResponse> listaApis = result.Apis.Select(api =>
+        new CrearApiResponse(
+           api.AplicacionId,
+           api.ApiId,
+           api.NombreApi,
+           api.DescripcionApi,
+           api.UrlPrueba,
+           api.UrlProduccion,
+           api.Activo));
+
+        return new ConsultarAplicacionPorIdResponse(
             result.AplicacionId,
             result.NombreAplicacion,
             result.DescAplicacion,
@@ -133,25 +156,24 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
             result.CreaFecha,
             result.ModificaUsuario,
             result.ModificaFecha,
-            result.Modulos
-            );
-        
-        return resp;
-    }        
+            listaModulos,
+            listaApis);
+    }
 
     public async Task<ActivarInactivarAplicacionResponse> ActivarInactivarAplicacion(Guid aplicacionId)
     {
-        var regActualizar = await _aplicacionRepositorioEscritura.Query(x => x.AplicacionId == aplicacionId).FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), "No se encontró el registro a actualizar");
+        var regActualizar = await _aplicacionRepositorioEscritura
+            .Query(x => x.AplicacionId == aplicacionId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), "No se encontró el registro a actualizar");
+
         regActualizar.Activo = !regActualizar.Activo;
 
         _aplicacionRepositorioEscritura.Update(regActualizar);
         await _unitOfWork.SaveChangesAsync();
 
-        var regActualizado = await _aplicacionRepositorioEscritura.Query(x => x.AplicacionId == aplicacionId).FirstOrDefaultAsync(); ;
-        if (regActualizado is null)
-        {
-            throw new NotFoundException(nameof(Aplication), "No se encontró el registro actualizado");
-        }
+        var regActualizado = await _aplicacionRepositorioEscritura
+            .Query(x => x.AplicacionId == aplicacionId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), "No se encontró el registro actualizado");
 
         return new ActivarInactivarAplicacionResponse(
             regActualizado.AplicacionId,

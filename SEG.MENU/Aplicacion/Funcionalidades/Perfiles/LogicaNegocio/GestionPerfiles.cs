@@ -1,5 +1,4 @@
 ﻿using Ardalis.GuardClauses;
-using LinqKit;
 using SEG.Comun.ContextAccesor;
 using SEG.Comun.General;
 using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.ActivarInactivar;
@@ -52,7 +51,7 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
 
             foreach (var item in result.Items!)
             {
-                var det = new ConsultarPerfilesResponse(
+                consulta.Data.Add(new ConsultarPerfilesResponse(
                                 item.PerfilId,
                                 item.NombrePerfil,
                                 item.DescPerfil,
@@ -60,9 +59,8 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
                                 item.CreaUsuario,
                                 item.CreaFecha,
                                 item.ModificaUsuario,
-                                item.ModificaFecha);
-                consulta.Data.Add(det);
-            };
+                                item.ModificaFecha));
+            }
 
             return consulta;
         }
@@ -152,7 +150,7 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
         var regActualizado = await _perfilRepositorioEscritura.Query(x => x.PerfilId == registroDto.PerfilId).FirstOrDefaultAsync();
         if (regActualizado is null)
         {
-            throw new NotFoundException(nameof(Perfil), "No se encontró el registro a actualizado");
+            throw new NotFoundException(nameof(Perfil), "No se encontró el registro actualizado");
         }
 
         return new EditarPerfilResponse(
