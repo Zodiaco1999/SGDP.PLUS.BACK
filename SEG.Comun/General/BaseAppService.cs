@@ -8,7 +8,6 @@ public class BaseAppService
     protected readonly ILogger<BaseAppService> Logger;
     protected readonly IContextAccessor ContextAccessor;
 
-
     public BaseAppService(IContextAccessor contextAccessor, ILoggerFactory loggerFactory)
     {
         ContextAccessor = contextAccessor;

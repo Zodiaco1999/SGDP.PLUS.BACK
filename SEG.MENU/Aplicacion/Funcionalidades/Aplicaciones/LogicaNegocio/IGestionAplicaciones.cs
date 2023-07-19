@@ -12,11 +12,11 @@ public interface IGestionAplicaciones
 {
     Task<DataViewModel<ConsultarAplicacionesResponse>> ConsultarAplicaciones(string filtro, int pagina, int registrosPorPagina, string? ordenarPor=null, bool? direccionOrdenamientoAsc=null);
 
-    Task<ConsultarAplicacionPorIdResponse> ConsultarAplicacion(Guid aplicacionId);
+    Task<ConsultarAplicacionPorIdResponse> ConsultarAplicacionPorId(Guid aplicacionId);
 
-    Task<CrearAplicacionesResponse> CreaAplicacion(Aplication registro);
+    Task<CrearAplicacionResponse> CrearAplicacion(CrearAplicacionCommand registroDto);
 
-    Task<EditarAplicacionesResponse> ActualizaAplicacion(EditarAplicacionesCommand registroDTO);
+    Task<EditarAplicacionResponse> EditarAplicacion(EditarAplicacionCommand registroDto);
 
-    Task<ActivarInactivarAplicacionesResponse> ActivarInactivar(Guid aplicacionId);
+    Task<ActivarInactivarAplicacionResponse> ActivarInactivarAplicacion(Guid aplicacionId);
 }

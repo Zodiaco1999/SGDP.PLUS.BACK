@@ -13,9 +13,9 @@ public class ConsultarAplicacionPorIdController : ControllerBase
     [HttpGet("{aplicacionId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ConsultarAplicacionPorId(Guid AplicacionId)
+    public async Task<IActionResult> ConsultarAplicacionPorId(Guid aplicacionId)
     {
-        var response = await _mediator.Send(new ConsultarAplicacionPorIdQuery(AplicacionId));
+        var response = await _mediator.Send(new ConsultarAplicacionPorIdQuery(aplicacionId));
 
         return Ok(response);
     }
