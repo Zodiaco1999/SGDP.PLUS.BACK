@@ -5,8 +5,13 @@ namespace SEG.MENU.Aplicacion.Funcionalidades.Menus.Especificacion;
 
 public class MenuEspecificacion : SpecificationBase<Menu>
 {
-    public MenuEspecificacion(string textoBusqueda, int? pagina = null, int? registrosPorPagina = null, string ordenarPor = null, string direccionOrdenamiento = "asc")
+    public Guid AplicacionId { get; set; }
+    public Guid ModuloId { get; set; }
+    public MenuEspecificacion(Guid aplicacionId, Guid moduloId, string textoBusqueda, int? pagina = null,
+        int? registrosPorPagina = null, string ordenarPor = null, string direccionOrdenamiento = "asc")
     {
+        AplicacionId = aplicacionId;
+        ModuloId = moduloId;
         Criteria = BusquedaTextoCompleto(textoBusqueda).SatisfiedBy();
     }
 
@@ -29,6 +34,9 @@ public class MenuEspecificacion : SpecificationBase<Menu>
                 especificacion &= eEspecificacion1 || eEspecificacion2 || eEspecificacion3 || eEspecificacion4;
             }
         }
+
+        var eEspecificacionId = new SpecificationCriteriaDirect<Menu>(c => c.AplicacionId == AplicacionId && c.ModuloId == ModuloId);
+        especificacion &= eEspecificacionId; 
 
         return especificacion;
     }

@@ -1,12 +1,12 @@
 using Ardalis.GuardClauses;
 using SEG.Comun.ContextAccesor;
 using SEG.Comun.General;
+using SEG.MENU.Aplicacion.Funcionalidades.Modulos.ConsultarPorId;
 using SEG.MENU.Aplicacion.Funcionalidades.Modulos.Crear;
 using SEG.MENU.Aplicacion.Funcionalidades.Modulos.Editar;
 using SEG.MENU.Aplicacion.Funcionalidades.Modulos.Repositorio;
 using SEG.MENU.Dominio.Entidades;
 using SEG.MENU.Infraestructura.UnidadTrabajo;
-using System;
 
 namespace SEG.MENU.Aplicacion.Funcionalidades.Modulos.LogicaNegocio;
 
@@ -41,6 +41,23 @@ public class GestionModulos : BaseAppService, IGestionModulos
 
         _moduloRepositorioEscritura.Update(regActualizar);
         await _unitOfWork.SaveChangesAsync();
+    }
+
+    public async Task<ConsultarModuloPorIdResponse> ConsultarModuloPorId(Guid moduloId)
+    {
+        var result = await _moduloRepositorioLectura
+            .Query(m => m.ModuloId == moduloId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Modulo), "No se encontró el registro");
+
+        return new ConsultarModuloPorIdResponse(
+            result.AplicacionId,
+            result.ModuloId,
+            result.NombreModulo,
+            result.DescModulo,
+            result.IconoPrefijo,
+            result.IconoNombre,
+            result.Orden,
+            result.Activo);
     }
 
     public async Task<CrearModuloResponse> CrearModulo(CrearModuloCommand registroDto)
