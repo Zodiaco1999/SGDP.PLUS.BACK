@@ -9,5 +9,5 @@ public class Perfil : CamposLog
     public string DescPerfil { get; set; } = string.Empty;
     public bool Activo { get; set; } = true;
     public virtual PerfilMenu? PerfilMenu { get; set; }
-    //public virtual ICollection<UsuarioPerfil> UsuarioPerfiles { get; set; } = new List<UsuarioPerfil>();
+    public virtual ICollection<UsuarioPerfil> UsuarioPerfiles { get; set; } = new List<UsuarioPerfil>();
 }

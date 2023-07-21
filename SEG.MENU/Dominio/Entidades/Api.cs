@@ -12,5 +12,5 @@ public class Api : CamposLog
     public string UrlProduccion { get; set; } = string.Empty;
     public bool Activo { get; set; } = true;
 
-    public virtual Aplication Aplication{ get; set; } = null!;
+    public virtual Aplication Aplication { get; set; } = null!;
 }

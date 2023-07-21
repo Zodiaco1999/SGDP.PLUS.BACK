@@ -9,10 +9,7 @@ public class ConsultarMenusQueryHandler : IRequestHandler<ConsultarMenusQuery, D
     private readonly IGestionMenus _gestionMenus;
     public ConsultarMenusQueryHandler(IGestionMenus gestionMenus) => _gestionMenus = gestionMenus;
 
-    public async Task<DataViewModel<ConsultarMenusResponse>> Handle(ConsultarMenusQuery request, CancellationToken cancellationToken)
-    {
-        DataViewModel<ConsultarMenusResponse> result = await _gestionMenus.ConsultarMenus(request.textoBusqueda, request.pagina, request.registrosPorPagina);
+    public async Task<DataViewModel<ConsultarMenusResponse>> Handle(ConsultarMenusQuery request, CancellationToken cancellationToken) 
+        => await _gestionMenus.ConsultarMenus(request.AplicacionId, request.ModuloId, request.TextoBusqueda, request.Pagina, request.RegistrosPorPagina);
 
-        return result;
-    }
 }

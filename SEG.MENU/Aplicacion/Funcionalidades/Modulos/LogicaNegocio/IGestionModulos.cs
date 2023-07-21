@@ -8,4 +8,5 @@ public interface IGestionModulos
     Task<CrearModuloResponse> CrearModulo(CrearModuloCommand registroDto);
     Task EditarModulo(EditarModuloCommand registroDto);
     Task ActivarInactivarModulo(Guid moduloId);
+    Task<ConsultarModuloPorIdResponse> ConsultarModuloPorId(Guid moduloId);
 }

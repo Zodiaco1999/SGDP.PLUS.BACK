@@ -43,6 +43,23 @@ public class GestionModulos : BaseAppService, IGestionModulos
         await _unitOfWork.SaveChangesAsync();
     }
 
+    public async Task<ConsultarModuloPorIdResponse> ConsultarModuloPorId(Guid moduloId)
+    {
+        var result = await _moduloRepositorioLectura
+            .Query(m => m.ModuloId == moduloId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Modulo), "No se encontró el registro");
+
+        return new ConsultarModuloPorIdResponse(
+            result.AplicacionId,
+            result.ModuloId,
+            result.NombreModulo,
+            result.DescModulo,
+            result.IconoPrefijo,
+            result.IconoNombre,
+            result.Orden,
+            result.Activo);
+    }
+
     public async Task<CrearModuloResponse> CrearModulo(CrearModuloCommand registroDto)
     {
         var registro = new Modulo

@@ -100,11 +100,11 @@ public class GestionMenus : BaseAppService, IGestionMenus
             result.ModificaFecha);
     }
 
-    public async Task<DataViewModel<ConsultarMenusResponse>> ConsultarMenus(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
+    public async Task<DataViewModel<ConsultarMenusResponse>> ConsultarMenus(Guid aplicacionId, Guid moduloId, string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
     {
         try
         {
-            var filtroEspecificacion = new MenuEspecificacion(filtro);
+            var filtroEspecificacion = new MenuEspecificacion(aplicacionId, moduloId, filtro);
 
             var result = await _menuRepositorioLectura
                 .Query(filtroEspecificacion.Criteria)

@@ -12,6 +12,7 @@ public class MenusConfiguracion : IEntityTypeConfiguration<Menu>
         builder.ToTable("Menu", "menu");
 
         builder.HasKey(e => new { e.AplicacionId, e.ModuloId, e.MenuId });
+
         builder.Property(e => e.DescMenu).HasMaxLength(250);
         builder.Property(e => e.EtiquetaMenu).HasMaxLength(50);
         builder.Property(e => e.NombreMenu).HasMaxLength(50);

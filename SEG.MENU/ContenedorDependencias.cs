@@ -22,6 +22,7 @@ public static class ContenedorDependencias
 {
     public static IServiceCollection AddAplicacionesServices(this IServiceCollection services, IConfiguration configuration)
     {
+
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
         #region Configuración unidades de trabajo
@@ -43,6 +44,35 @@ public static class ContenedorDependencias
         // Aplicacion
         services.AddScoped<IGestionAplicaciones, GestionAplicaciones>();
         services.AddScoped<IAplicationRepositorioLectura, AplicationRepositorioLectura>();
+        services.AddScoped<IAplicationRepositorioEscritura, AplicationRepositorioEscritura>();
+        // Perfil
+        services.AddScoped<IGestionPerfiles, GestionPerfiles>();
+        services.AddScoped<IPerfilRepositorioLectura, PerfilRepositorioLectura>();
+        services.AddScoped<IPerfilRepositorioEscritura, PerfilRepositorioEscritura>();
+        // PerfilMenu
+        services.AddScoped<IGestionPerfilMenus, GestionPerfilMenus>();
+        services.AddScoped<IPerfilMenuRepositorioLectura, PerfilMenuRepositorioLectura>();
+        services.AddScoped<IPerfilMenuRepositorioEscritura, PerfilMenuRepositorioEscritura>();
+        //UsuarioPerfil
+        services.AddScoped<IGestionUsuarioPerfil, GestionUsuarioPerfil>();
+        services.AddScoped<IUsuarioPerfilRepositorioLectura, UsuarioPerfilRepositorioLectura>();
+        services.AddScoped<IUsuarioPerfilRepositorioEscritura, UsuarioPerfilRepositorioEscritura>();
+        //UsuarioFoto
+        services.AddScoped<IGestionUsuariosFotos, GestionUsuariosFotos>();
+        services.AddScoped<IUsuarioFotoRepositorioLectura, UsuarioFotoRepositorioLectura>();
+        services.AddScoped<IUsuarioFotoRepositorioEscritura, UsuarioFotoRepositorioEscritura>();
+        //Usuario
+        services.AddScoped<IGestionUsuarios, GestionUsuarios>();
+        services.AddScoped<IUsuarioRepositorioLectura, UsuarioRepositorioLectura>();
+        services.AddScoped<IUsuarioRepositorioEscritura, UsuarioRepositorioEscritura>();
+        //UsuarioSesion
+        services.AddScoped<IGestionUsuariosSesion, GestionUsuariosSesion>();
+        services.AddScoped<IUsuarioSesionRepositorioLectura, UsuarioSesionRepositorioLectura>();
+        services.AddScoped<IUsuarioSesionRepositorioEscritura, UsuarioSesionRepositorioEscritura>();
+        //UsuarioSesionLog
+        services.AddScoped<IGestionUsuariosSesionLog, GestionUsuariosSesionLog>();
+        services.AddScoped<IUsuarioSesionLogRepositorioLectura, UsuarioSesionLogRepositorioLectura>();
+        services.AddScoped<IUsuarioSesionLogRepositorioEscritura, UsuarioSesionLogRepositorioEscritura>();
         services.AddScoped<IAplicationRepositorioEscritura, AplicationRepositorioEscritura>();
         // Perfil
         services.AddScoped<IGestionPerfiles, GestionPerfiles>();

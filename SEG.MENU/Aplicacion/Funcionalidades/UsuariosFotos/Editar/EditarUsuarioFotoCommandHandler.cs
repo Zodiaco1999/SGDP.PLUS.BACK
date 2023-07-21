@@ -1,0 +1,17 @@
+using MediatR;
+using SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.LogicaNegocio;
+
+namespace SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.Editar;
+
+public class EditarUsuarioFotoCommandHandler : IRequestHandler<EditarUsuarioFotoCommand, EditarUsuarioFotoResponse>
+{
+    private readonly IGestionUsuariosFotos _gestionUsuariosFotos;
+    public EditarUsuarioFotoCommandHandler(IGestionUsuariosFotos gestionUsuariosFotos) => _gestionUsuariosFotos = gestionUsuariosFotos;
+
+    public async Task<EditarUsuarioFotoResponse> Handle(EditarUsuarioFotoCommand request, CancellationToken cancellationToken)
+    {
+        EditarUsuarioFotoResponse result = await _gestionUsuariosFotos.EditarUsuarioFoto(request);
+
+        return result;
+    }
+}

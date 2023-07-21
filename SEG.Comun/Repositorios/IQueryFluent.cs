@@ -32,5 +32,6 @@ namespace SGDP.PLUS.Comun.Repositorios
         TEntity FirstOrDefault();
 
         IQueryable<TEntity> SqlQuery(string query, params object[] parameters);
+
     }
 }

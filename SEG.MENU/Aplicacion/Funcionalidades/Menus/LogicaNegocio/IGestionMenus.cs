@@ -10,7 +10,8 @@ namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.LogicaNegocio;
 
 public interface IGestionMenus
 {
-    Task<DataViewModel<ConsultarMenusResponse>> ConsultarMenus(string filtro, int pagina, int registrosPorPagina,string? ordenarPor = null, bool? direccionOrdenamientoAsc = null);
+    Task<DataViewModel<ConsultarMenusResponse>> ConsultarMenus(Guid aplicacionId, Guid moduloId, string filtro, int pagina, 
+        int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null);
     Task<ConsultarMenuPorIdResponse> ConsultarMenuPorId(Guid menuId);
     Task<CrearMenuResponse> CrearMenu(CrearMenuCommand registroDto);
     Task<EditarMenuResponse> EditarMenu(EditarMenuCommand registroDto);
