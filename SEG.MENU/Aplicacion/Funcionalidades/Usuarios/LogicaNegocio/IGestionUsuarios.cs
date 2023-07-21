@@ -1,4 +1,4 @@
-using SEG.Comun.General;
+using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.ActivarInactivar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Consultar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.ConsultarPorId;

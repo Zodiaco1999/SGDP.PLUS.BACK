@@ -1,4 +1,4 @@
-using SEG.Comun.General;
+using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.Consultar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.ConsultarPorId;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.Crear;

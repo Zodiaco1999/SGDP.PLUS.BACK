@@ -1,4 +1,4 @@
-﻿using SEG.Comun.General;
+﻿using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.Consultar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.ConsultarPorId;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.Crear;

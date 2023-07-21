@@ -1,5 +1,5 @@
 using MediatR;
-using SEG.Comun.General;
+using SGDP.PLUS.Comun.General;
 
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.Consultar;
 

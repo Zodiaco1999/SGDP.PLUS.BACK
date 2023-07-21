@@ -1,4 +1,4 @@
-﻿using SEG.Comun.Entidades;
+﻿using SGDP.PLUS.Comun.Entidades;
 
 namespace SGDP.PLUS.SEG.Dominio.Entidades
 {

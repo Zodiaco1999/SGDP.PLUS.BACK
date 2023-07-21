@@ -1,4 +1,4 @@
-﻿using SEG.Comun.Especificacionbase;
+﻿using SGDP.PLUS.Comun.Especificacionbase;
 using SGDP.PLUS.SEG.Dominio.Entidades;
 
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Especificacion;

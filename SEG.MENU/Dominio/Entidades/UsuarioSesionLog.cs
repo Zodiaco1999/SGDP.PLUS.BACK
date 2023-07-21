@@ -1,5 +1,5 @@
-﻿using SEG.Comun.Entidades;
-using SEG.Comun.General;
+﻿using SGDP.PLUS.Comun.Entidades;
+using SGDP.PLUS.Comun.General;
 
 namespace SGDP.PLUS.SEG.Dominio.Entidades
 {

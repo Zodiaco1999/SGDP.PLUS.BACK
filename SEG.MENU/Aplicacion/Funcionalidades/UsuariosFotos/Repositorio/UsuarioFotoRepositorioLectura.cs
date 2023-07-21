@@ -1,4 +1,4 @@
-﻿using SEG.Comun.Repositorios;
+﻿using SGDP.PLUS.Comun.Repositorios;
 using SGDP.PLUS.SEG.Dominio.Entidades;
 using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
 

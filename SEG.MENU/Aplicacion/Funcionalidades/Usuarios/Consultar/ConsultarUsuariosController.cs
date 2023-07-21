@@ -1,6 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SEG.Comun.General;
+using SGDP.PLUS.Comun.General;
 
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Consultar;
 

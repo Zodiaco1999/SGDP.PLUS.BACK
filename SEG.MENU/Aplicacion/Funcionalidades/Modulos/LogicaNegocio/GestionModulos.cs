@@ -1,6 +1,7 @@
 using Ardalis.GuardClauses;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.General;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.ConsultarPorId;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Crear;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Editar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Repositorio;
