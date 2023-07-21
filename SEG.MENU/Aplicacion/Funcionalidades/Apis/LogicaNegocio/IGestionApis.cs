@@ -1,7 +1,7 @@
-using SEG.MENU.Aplicacion.Funcionalidades.Apis.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.Apis.Editar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Editar;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Apis.LogicaNegocio;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.LogicaNegocio;
 
 public interface IGestionApis
 {

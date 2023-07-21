@@ -1,8 +1,8 @@
-﻿using SEG.Comun.Repositorios;
-using SEG.MENU.Dominio.Entidades;
-using SEG.MENU.Infraestructura.UnidadTrabajo;
+﻿using SGDP.PLUS.Comun.Repositorios;
+using SGDP.PLUS.SEG.Dominio.Entidades;
+using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Repositorio;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Repositorio;
 
 
 public class AplicationRepositorioEscritura : Repository<Aplication>, IAplicationRepositorioEscritura

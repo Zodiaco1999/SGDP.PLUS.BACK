@@ -1,17 +1,17 @@
 using Ardalis.GuardClauses;
-using SEG.Comun.ContextAccesor;
-using SEG.Comun.General;
-using SEG.MENU.Aplicacion.Funcionalidades.Menus.ActivarInactivar;
-using SEG.MENU.Aplicacion.Funcionalidades.Menus.Consultar;
-using SEG.MENU.Aplicacion.Funcionalidades.Menus.ConsultarPorId;
-using SEG.MENU.Aplicacion.Funcionalidades.Menus.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.Menus.Editar;
-using SEG.MENU.Aplicacion.Funcionalidades.Menus.Especificacion;
-using SEG.MENU.Aplicacion.Funcionalidades.Menus.Repositorio;
-using SEG.MENU.Dominio.Entidades;
-using SEG.MENU.Infraestructura.UnidadTrabajo;
+using SGDP.PLUS.Comun.ContextAccesor;
+using SGDP.PLUS.Comun.General;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.ActivarInactivar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Consultar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.ConsultarPorId;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Editar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Especificacion;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Repositorio;
+using SGDP.PLUS.SEG.Dominio.Entidades;
+using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Menus.LogicaNegocio;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.LogicaNegocio;
 
 public class GestionMenus : BaseAppService, IGestionMenus
 {

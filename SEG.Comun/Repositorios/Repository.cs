@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SEG.Comun.General;
-using SEG.Comun.UnidadTrabajo;
+using SGDP.PLUS.Comun.General;
+using SGDP.PLUS.Comun.UnidadTrabajo;
 using System.Linq.Expressions;
 
 
-namespace SEG.Comun.Repositorios;
+namespace SGDP.PLUS.Comun.Repositorios;
 
 public class Repository<TEntity> : IRepositoryAsync<TEntity> where TEntity : Entity
 {

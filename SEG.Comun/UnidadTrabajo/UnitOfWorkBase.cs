@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using SEG.Comun.ContextAccesor;
-using SEG.Comun.Entidades;
+using SGDP.PLUS.Comun.ContextAccesor;
+using SGDP.PLUS.Comun.Entidades;
 using System.Data;
 using EFCore.BulkExtensions;
 
-namespace SEG.Comun.UnidadTrabajo;
+namespace SGDP.PLUS.Comun.UnidadTrabajo;
 
 public class UnitOfWorkBase : DbContext, IUnitOfWorkAsync
 {

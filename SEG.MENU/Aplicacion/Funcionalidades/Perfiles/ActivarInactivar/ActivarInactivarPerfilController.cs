@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Perfiles.ActivarInactivar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.ActivarInactivar;
 
 [Route("api/[controller]")]
 [ApiController]

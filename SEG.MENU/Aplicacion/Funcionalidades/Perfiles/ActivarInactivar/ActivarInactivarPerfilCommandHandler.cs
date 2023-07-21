@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.LogicaNegocio;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Perfiles.ActivarInactivar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.ActivarInactivar;
 
 public class ActivarInactivarPerfilCommandHandler : IRequestHandler<ActivarInactivarPerfilCommand, ActivarInactivarPerfilResponse>
 {

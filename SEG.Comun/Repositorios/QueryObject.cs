@@ -1,7 +1,7 @@
 ﻿using LinqKit;
 using System.Linq.Expressions;
 
-namespace SEG.Comun.Repositorios
+namespace SGDP.PLUS.Comun.Repositorios
 {
     public abstract class QueryObject<TEntity> : IQueryObject<TEntity>
     {

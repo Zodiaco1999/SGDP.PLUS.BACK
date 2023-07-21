@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.Editar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Editar;
 
 public class EditarPerfilMenuCommandHandler : IRequestHandler<EditarPerfilMenuCommand, EditarPerfilMenuResponse>
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
-namespace SEG.Comun.ContextAccesor;
+namespace SGDP.PLUS.Comun.ContextAccesor;
 
 public class ContextAccessor : IContextAccessor
 {

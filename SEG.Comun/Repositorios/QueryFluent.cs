@@ -1,7 +1,7 @@
-﻿using SEG.Comun.General;
+﻿using SGDP.PLUS.Comun.General;
 using System.Linq.Expressions;
 
-namespace SEG.Comun.Repositorios
+namespace SGDP.PLUS.Comun.Repositorios
 {
     public sealed class QueryFluent<TEntity> : IQueryFluent<TEntity> where TEntity : Entity
     {

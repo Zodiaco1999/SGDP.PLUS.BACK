@@ -1,16 +1,16 @@
 ﻿using Ardalis.GuardClauses;
-using SEG.Comun.ContextAccesor;
-using SEG.Comun.General;
-using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.Consultar;
-using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.ConsultarPorId;
-using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.Editar;
-using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.Especificacion;
-using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.Repositorio;
-using SEG.MENU.Dominio.Entidades;
-using SEG.MENU.Infraestructura.UnidadTrabajo;
+using SGDP.PLUS.Comun.ContextAccesor;
+using SGDP.PLUS.Comun.General;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Consultar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.ConsultarPorId;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Editar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Especificacion;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Repositorio;
+using SGDP.PLUS.SEG.Dominio.Entidades;
+using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
 
 public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
 {

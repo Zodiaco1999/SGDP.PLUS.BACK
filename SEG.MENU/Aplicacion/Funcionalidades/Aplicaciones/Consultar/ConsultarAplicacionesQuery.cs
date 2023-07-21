@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using SEG.Comun.General;
+using SGDP.PLUS.Comun.General;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Consultar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Consultar;
 
 public record struct ConsultarAplicacionesQuery(string textoBusqueda, int pagina, int registrosPorPagina) : IRequest<DataViewModel<ConsultarAplicacionesResponse>>;

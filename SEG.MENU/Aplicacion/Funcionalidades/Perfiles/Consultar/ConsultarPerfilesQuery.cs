@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using SEG.Comun.General;
+using SGDP.PLUS.Comun.General;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Perfiles.Consultar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.Consultar;
 
 public record struct ConsultarPerfilesQuery(string textoBusqueda, int pagina, int registrosPorPagina) : IRequest<DataViewModel<ConsultarPerfilesResponse>>;

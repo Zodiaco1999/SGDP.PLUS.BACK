@@ -1,12 +1,12 @@
-﻿using SEG.Comun.General;
-using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.ActivarInactivar;
-using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Consultar;
-using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.ConsultarPorId;
-using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Editar;
-using SEG.MENU.Dominio.Entidades;
+﻿using SGDP.PLUS.Comun.General;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.ActivarInactivar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Consultar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.ConsultarPorId;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Editar;
+using SGDP.PLUS.SEG.Dominio.Entidades;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.LogicaNegocio;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.LogicaNegocio;
 
 public interface IGestionAplicaciones
 {

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "wZZ+QHV+i4N+6jh/o2dayra4qB75ZUG7JeTlwD7GmypfGhXqnkL7a28T8x6n1tBSVI1PvCVUilWZmSUNMn5nOA==",
+  "dgSpecHash": "NZSutECn5h2w74jMCb34hJhg1mBRuzu7lzXdCIuTpP0uoS8tSkjVBnIx5v88YHlus4okA1pfeMPGld1zdDsWJw==",
   "success": true,
-  "projectFilePath": "D:\\SGDP\\SEG.API\\SEG.MENU\\SEG.MENU.csproj",
+  "projectFilePath": "D:\\SGDP\\SEG.API\\SEG.MENU\\SGDP.PLUS.SEG.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\eeslava\\.nuget\\packages\\ardalis.guardclauses\\4.0.1\\ardalis.guardclauses.4.0.1.nupkg.sha512",
     "C:\\Users\\eeslava\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",

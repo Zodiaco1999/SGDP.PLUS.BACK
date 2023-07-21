@@ -1,7 +1,7 @@
 using MediatR;
-using SEG.MENU.Aplicacion.Funcionalidades.Modulos.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.LogicaNegocio;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Modulos.Crear;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Crear;
 
 public class CrearModuloCommandHandler : IRequestHandler<CrearModuloCommand, CrearModuloResponse>
 {

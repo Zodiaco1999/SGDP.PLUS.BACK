@@ -1,8 +1,8 @@
-﻿using SEG.Comun.Especificacionbase;
-using SEG.MENU.Dominio.Entidades;
+﻿using SGDP.PLUS.Comun.Especificacionbase;
+using SGDP.PLUS.SEG.Dominio.Entidades;
 using System.Linq.Expressions;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Especificacion;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Especificacion;
 
 public class AplicacionEspecificacion : SpecificationBase<Aplication>
 {

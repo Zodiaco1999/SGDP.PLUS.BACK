@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using SEG.Comun.ContextAccesor;
+using SGDP.PLUS.Comun.ContextAccesor;
 
-namespace SEG.Comun.General;
+namespace SGDP.PLUS.Comun.General;
 
 public class BaseAppService
 {

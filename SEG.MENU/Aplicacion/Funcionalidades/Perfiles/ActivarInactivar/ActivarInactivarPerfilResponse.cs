@@ -1,4 +1,4 @@
-﻿namespace SEG.MENU.Aplicacion.Funcionalidades.Perfiles.ActivarInactivar;
+﻿namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.ActivarInactivar;
 
 public record struct ActivarInactivarPerfilResponse(
     Guid PerfilId,

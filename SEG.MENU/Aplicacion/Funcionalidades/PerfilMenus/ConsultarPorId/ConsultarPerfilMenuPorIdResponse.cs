@@ -1,4 +1,4 @@
-﻿namespace SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.ConsultarPorId;
+﻿namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.ConsultarPorId;
 
 public record struct ConsultarPerfilMenuPorIdResponse(
     Guid PerfilId,

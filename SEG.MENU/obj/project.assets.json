@@ -1685,7 +1685,7 @@
           }
         }
       },
-      "SEG.Comun/1.0.0": {
+      "SGDP.PLUS.Comun/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v7.0",
         "dependencies": {
@@ -1696,10 +1696,10 @@
           "Newtonsoft.Json": "13.0.3"
         },
         "compile": {
-          "bin/placeholder/SEG.Comun.dll": {}
+          "bin/placeholder/SGDP.PLUS.Comun.dll": {}
         },
         "runtime": {
-          "bin/placeholder/SEG.Comun.dll": {}
+          "bin/placeholder/SGDP.PLUS.Comun.dll": {}
         }
       }
     }
@@ -4621,10 +4621,10 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "SEG.Comun/1.0.0": {
+    "SGDP.PLUS.Comun/1.0.0": {
       "type": "project",
-      "path": "../SEG.Comun/SEG.Comun.csproj",
-      "msbuildProject": "../SEG.Comun/SEG.Comun.csproj"
+      "path": "../SEG.Comun/SGDP.PLUS.Comun.csproj",
+      "msbuildProject": "../SEG.Comun/SGDP.PLUS.Comun.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -4634,7 +4634,7 @@
       "Microsoft.AspNetCore.OpenApi >= 7.0.3",
       "Microsoft.EntityFrameworkCore.SqlServer >= 7.0.5",
       "Microsoft.EntityFrameworkCore.Tools >= 7.0.5",
-      "SEG.Comun >= 1.0.0",
+      "SGDP.PLUS.Comun >= 1.0.0",
       "Swashbuckle.AspNetCore >= 6.4.0"
     ]
   },
@@ -4646,9 +4646,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\SGDP\\SEG.API\\SEG.MENU\\SEG.MENU.csproj",
-      "projectName": "SEG.MENU",
-      "projectPath": "D:\\SGDP\\SEG.API\\SEG.MENU\\SEG.MENU.csproj",
+      "projectUniqueName": "D:\\SGDP\\SEG.API\\SEG.MENU\\SGDP.PLUS.SEG.csproj",
+      "projectName": "SGDP.PLUS.SEG",
+      "projectPath": "D:\\SGDP\\SEG.API\\SEG.MENU\\SGDP.PLUS.SEG.csproj",
       "packagesPath": "C:\\Users\\eeslava\\.nuget\\packages\\",
       "outputPath": "D:\\SGDP\\SEG.API\\SEG.MENU\\obj\\",
       "projectStyle": "PackageReference",
@@ -4673,8 +4673,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "D:\\SGDP\\SEG.API\\SEG.Comun\\SEG.Comun.csproj": {
-              "projectPath": "D:\\SGDP\\SEG.API\\SEG.Comun\\SEG.Comun.csproj"
+            "D:\\SGDP\\SEG.API\\SEG.Comun\\SGDP.PLUS.Comun.csproj": {
+              "projectPath": "D:\\SGDP\\SEG.API\\SEG.Comun\\SGDP.PLUS.Comun.csproj"
             }
           }
         }

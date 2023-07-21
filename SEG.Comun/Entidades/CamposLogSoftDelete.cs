@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel;
 
-namespace SEG.Comun.Entidades;
+namespace SGDP.PLUS.Comun.Entidades;
 
 public class CamposLogSoftDelete : CamposLog
 {

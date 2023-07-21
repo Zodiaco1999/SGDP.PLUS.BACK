@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Modulos.Editar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Editar;
 
 public record struct EditarModuloCommand(
     Guid ModuloId,

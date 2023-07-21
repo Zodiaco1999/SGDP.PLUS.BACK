@@ -1,4 +1,4 @@
-﻿namespace SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.Crear;
+﻿namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Crear;
 
 public record struct CrearPerfilMenuResponse( 
     Guid PerfilId,

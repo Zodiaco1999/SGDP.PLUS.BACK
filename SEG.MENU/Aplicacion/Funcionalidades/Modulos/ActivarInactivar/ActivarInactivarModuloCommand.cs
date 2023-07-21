@@ -1,5 +1,5 @@
 using MediatR;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Modulos.ActivarInactivar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.ActivarInactivar;
 
 public record struct ActivarInactivarModuloCommand(Guid ModuloId) : IRequest;

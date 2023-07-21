@@ -1,8 +1,8 @@
 ﻿using MediatR;
-using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
-using SEG.MENU.Dominio.Entidades;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
+using SGDP.PLUS.SEG.Dominio.Entidades;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.Crear;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Crear;
 
 public class CrearPerfilMenuCommandHandler : IRequestHandler<CrearPerfilMenuCommand, CrearPerfilMenuResponse>
 {

@@ -4,12 +4,12 @@
     "D:\\SGDP\\SEG.API\\SEG.MENU\\SEG.MENU.csproj": {}
   },
   "projects": {
-    "D:\\SGDP\\SEG.API\\SEG.Comun\\SEG.Comun.csproj": {
+    "D:\\SGDP\\SEG.API\\SEG.Comun\\SGDP.PLUS.Comun.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\SGDP\\SEG.API\\SEG.Comun\\SEG.Comun.csproj",
-        "projectName": "SEG.Comun",
-        "projectPath": "D:\\SGDP\\SEG.API\\SEG.Comun\\SEG.Comun.csproj",
+        "projectUniqueName": "D:\\SGDP\\SEG.API\\SEG.Comun\\SGDP.PLUS.Comun.csproj",
+        "projectName": "SGDP.PLUS.Comun",
+        "projectPath": "D:\\SGDP\\SEG.API\\SEG.Comun\\SGDP.PLUS.Comun.csproj",
         "packagesPath": "C:\\Users\\eeslava\\.nuget\\packages\\",
         "outputPath": "D:\\SGDP\\SEG.API\\SEG.Comun\\obj\\",
         "projectStyle": "PackageReference",
@@ -116,8 +116,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "D:\\SGDP\\SEG.API\\SEG.Comun\\SEG.Comun.csproj": {
-                "projectPath": "D:\\SGDP\\SEG.API\\SEG.Comun\\SEG.Comun.csproj"
+              "D:\\SGDP\\SEG.API\\SEG.Comun\\SGDP.PLUS.Comun.csproj": {
+                "projectPath": "D:\\SGDP\\SEG.API\\SEG.Comun\\SGDP.PLUS.Comun.csproj"
               }
             }
           }

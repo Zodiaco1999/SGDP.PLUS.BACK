@@ -1,4 +1,4 @@
-namespace SEG.MENU.Aplicacion.Funcionalidades.Menus.Crear;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Crear;
 
 public record struct CrearMenuResponse(
     Guid AplicacionId,

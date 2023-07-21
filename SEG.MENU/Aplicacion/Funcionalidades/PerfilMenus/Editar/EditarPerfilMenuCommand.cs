@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.Editar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Editar;
 
 public record struct EditarPerfilMenuCommand(
     Guid PerfilId,

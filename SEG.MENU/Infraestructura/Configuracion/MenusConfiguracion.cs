@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SEG.Comun.General;
-using SEG.MENU.Dominio.Entidades;
+using SGDP.PLUS.Comun.General;
+using SGDP.PLUS.SEG.Dominio.Entidades;
 
-namespace SEG.MENU.Infraestructura.Configuracion;
+namespace SGDP.PLUS.SEG.Infraestructura.Configuracion;
 
 public class MenusConfiguracion : IEntityTypeConfiguration<Menu>
 {

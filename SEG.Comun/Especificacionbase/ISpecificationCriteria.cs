@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace SEG.Comun.Especificacionbase
+namespace SGDP.PLUS.Comun.Especificacionbase
 {
     public interface ISpecificationCriteria<TEntity>
           where TEntity : class

@@ -1,19 +1,19 @@
 ﻿using Ardalis.GuardClauses;
-using SEG.Comun.ContextAccesor;
-using SEG.Comun.General;
-using SEG.MENU.Aplicacion.Funcionalidades.Apis.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.ActivarInactivar;
-using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Consultar;
-using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.ConsultarPorId;
-using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Editar;
-using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Especificacion;
-using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Repositorio;
-using SEG.MENU.Aplicacion.Funcionalidades.Modulos.Crear;
-using SEG.MENU.Dominio.Entidades;
-using SEG.MENU.Infraestructura.UnidadTrabajo;
+using SGDP.PLUS.Comun.ContextAccesor;
+using SGDP.PLUS.Comun.General;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.ActivarInactivar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Consultar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.ConsultarPorId;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Editar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Especificacion;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Repositorio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Crear;
+using SGDP.PLUS.SEG.Dominio.Entidades;
+using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.LogicaNegocio;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.LogicaNegocio;
 
 public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
 {

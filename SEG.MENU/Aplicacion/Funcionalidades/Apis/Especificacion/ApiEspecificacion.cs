@@ -1,7 +1,7 @@
-using SEG.Comun.Especificacionbase;
-using SEG.MENU.Dominio.Entidades;
+using SGDP.PLUS.Comun.Especificacionbase;
+using SGDP.PLUS.SEG.Dominio.Entidades;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Apis.Especificacion;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Especificacion;
 
 public class ApiEspecificacion : SpecificationBase<Api>
 {

@@ -1,10 +1,10 @@
-﻿using SEG.Comun.General;
+﻿using SGDP.PLUS.Comun.General;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace SEG.Comun.Repositorios
+namespace SGDP.PLUS.Comun.Repositorios
 {
     public interface IRepository<TEntity> where TEntity : Entity
     {

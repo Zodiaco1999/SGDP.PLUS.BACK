@@ -1,7 +1,7 @@
 ﻿using Ardalis.GuardClauses;
-using SEG.Comun.Entidades;
+using SGDP.PLUS.Comun.Entidades;
 
-namespace SEG.MENU.Dominio.Entidades;
+namespace SGDP.PLUS.SEG.Dominio.Entidades;
 
 public class Aplication : CamposLog
 {

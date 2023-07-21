@@ -1,7 +1,7 @@
 using MediatR;
-using SEG.MENU.Aplicacion.Funcionalidades.Modulos.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.LogicaNegocio;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Modulos.ActivarInactivar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.ActivarInactivar;
 
 public class ActivarInactivarModuloCommandHandler : IRequestHandler<ActivarInactivarModuloCommand>
 {

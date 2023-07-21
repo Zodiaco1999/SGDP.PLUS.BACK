@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SEG.Comun.ContextAccesor;
-using SEG.Comun.UnidadTrabajo;
-using SEG.MENU.Dominio.Entidades;
-using SEG.MENU.Infraestructura.Configuracion;
+using SGDP.PLUS.Comun.ContextAccesor;
+using SGDP.PLUS.Comun.UnidadTrabajo;
+using SGDP.PLUS.SEG.Dominio.Entidades;
+using SGDP.PLUS.SEG.Infraestructura.Configuracion;
 
-namespace SEG.MENU.Infraestructura.UnidadTrabajo;
+namespace SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
 
 public class UnitOfWorkSegLectura : UnitOfWorkBase, IUnitOfWorkSegLectura
 {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using SEG.MENU.Dominio.Entidades;
-using SEG.Comun.General;
+using SGDP.PLUS.SEG.Dominio.Entidades;
+using SGDP.PLUS.Comun.General;
 
-namespace SEG.MENU.Infraestructura.Configuracion;
+namespace SGDP.PLUS.SEG.Infraestructura.Configuracion;
 
 public class ApiConfiguracion : IEntityTypeConfiguration<Api>
 {

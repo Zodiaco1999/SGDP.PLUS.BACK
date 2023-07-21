@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SEG.Comun.General;
-using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.ActivarInactivar;
+using SGDP.PLUS.Comun.General;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.ActivarInactivar;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Consultar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Consultar;
 
 [Route("api/[controller]")]
 [ApiController]

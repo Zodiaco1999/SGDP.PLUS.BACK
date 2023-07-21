@@ -1,8 +1,8 @@
-﻿using SEG.Comun.Repositorios;
-using SEG.MENU.Dominio.Entidades;
-using SEG.MENU.Infraestructura.UnidadTrabajo;
+﻿using SGDP.PLUS.Comun.Repositorios;
+using SGDP.PLUS.SEG.Dominio.Entidades;
+using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Perfiles.Repositorio;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.Repositorio;
 
 public class PerfilRepositorioLectura : Repository<Perfil>, IPerfilRepositorioLectura
 {

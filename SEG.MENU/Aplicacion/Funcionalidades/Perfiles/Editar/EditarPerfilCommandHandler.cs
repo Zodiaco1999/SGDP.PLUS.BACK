@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.LogicaNegocio;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Perfiles.Editar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.Editar;
 
 public class EditarPerfilCommandHandler : IRequestHandler<EditarPerfilCommand, EditarPerfilResponse>
 {

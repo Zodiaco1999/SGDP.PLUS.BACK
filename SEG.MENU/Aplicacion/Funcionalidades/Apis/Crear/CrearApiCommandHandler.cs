@@ -1,7 +1,7 @@
 using MediatR;
-using SEG.MENU.Aplicacion.Funcionalidades.Apis.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.LogicaNegocio;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Apis.Crear;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Crear;
 
 public class CrearApiCommandHandler : IRequestHandler<CrearApiCommand, CrearApiResponse>
 {

@@ -1,4 +1,4 @@
-﻿namespace SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Consultar;
+﻿namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Consultar;
 
 public record struct ConsultarAplicacionesResponse(
     Guid AplicacionId,

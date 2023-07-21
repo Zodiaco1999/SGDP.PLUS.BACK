@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Crear;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Perfiles.Crear;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.Crear;
 
 [ApiController]
 [Route("api/[controller]")]

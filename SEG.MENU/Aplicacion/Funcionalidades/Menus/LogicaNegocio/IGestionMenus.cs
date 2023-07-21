@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
-using SEG.Comun.General;
-using SEG.MENU.Aplicacion.Funcionalidades.Menus.ActivarInactivar;
-using SEG.MENU.Aplicacion.Funcionalidades.Menus.Consultar;
-using SEG.MENU.Aplicacion.Funcionalidades.Menus.ConsultarPorId;
-using SEG.MENU.Aplicacion.Funcionalidades.Menus.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.Menus.Editar;
+using SGDP.PLUS.Comun.General;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.ActivarInactivar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Consultar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.ConsultarPorId;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Editar;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Menus.LogicaNegocio;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.LogicaNegocio;
 
 public interface IGestionMenus
 {

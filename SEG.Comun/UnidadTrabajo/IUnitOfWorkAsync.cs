@@ -1,4 +1,4 @@
-﻿namespace SEG.Comun.UnidadTrabajo;
+﻿namespace SGDP.PLUS.Comun.UnidadTrabajo;
 
 public interface IUnitOfWorkAsync : IUnitOfWork
 {

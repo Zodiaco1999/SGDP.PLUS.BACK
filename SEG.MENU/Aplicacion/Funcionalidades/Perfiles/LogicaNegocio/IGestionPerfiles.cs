@@ -1,11 +1,11 @@
-﻿using SEG.Comun.General;
-using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.ActivarInactivar;
-using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.Consultar;
-using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.ConsultarPorId;
-using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.Editar;
+﻿using SGDP.PLUS.Comun.General;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.ActivarInactivar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.Consultar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.ConsultarPorId;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.Editar;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Perfiles.LogicaNegocio;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.LogicaNegocio;
 
 public interface IGestionPerfiles
 {

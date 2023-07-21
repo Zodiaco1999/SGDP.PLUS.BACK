@@ -1,4 +1,4 @@
-﻿namespace SEG.MENU.Aplicacion.Funcionalidades.Perfiles.Editar;
+﻿namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.Editar;
 
 public record struct EditarPerfilResponse(
     Guid PerfilId,

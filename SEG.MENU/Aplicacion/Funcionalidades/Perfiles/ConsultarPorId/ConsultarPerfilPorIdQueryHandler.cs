@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.LogicaNegocio;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Perfiles.ConsultarPorId;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.ConsultarPorId;
 
 public class ConsultarPerfilPorIdQueryHandler : IRequestHandler<ConsultarPerfilPorIdQuery, ConsultarPerfilPorIdResponse>
 {

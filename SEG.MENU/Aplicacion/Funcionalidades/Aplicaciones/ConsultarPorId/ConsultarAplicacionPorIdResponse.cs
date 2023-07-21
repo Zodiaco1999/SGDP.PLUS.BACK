@@ -1,7 +1,7 @@
-﻿using SEG.MENU.Aplicacion.Funcionalidades.Apis.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.Modulos.Crear;
+﻿using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Crear;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.ConsultarPorId;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.ConsultarPorId;
 
 public record struct ConsultarAplicacionPorIdResponse(
     Guid AplicacionId,

@@ -1,7 +1,7 @@
-using SEG.Comun.Especificacionbase;
-using SEG.MENU.Dominio.Entidades;
+using SGDP.PLUS.Comun.Especificacionbase;
+using SGDP.PLUS.SEG.Dominio.Entidades;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Modulos.Especificacion;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Especificacion;
 
 public class ModuloEspecificacion : SpecificationBase<Modulo>
 {

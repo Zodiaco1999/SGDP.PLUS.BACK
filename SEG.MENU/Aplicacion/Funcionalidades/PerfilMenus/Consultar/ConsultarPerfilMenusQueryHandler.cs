@@ -1,8 +1,8 @@
 ﻿using MediatR;
-using SEG.Comun.General;
-using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
+using SGDP.PLUS.Comun.General;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.Consultar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Consultar;
 
 public class ConsultarPerfilMenusQueryHandler : IRequestHandler<ConsultarPerfilMenusQuery, DataViewModel<ConsultarPerfilMenusResponse>>
 {

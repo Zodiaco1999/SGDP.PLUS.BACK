@@ -1,8 +1,8 @@
 ﻿using MediatR;
-using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.LogicaNegocio;
-using SEG.MENU.Dominio.Entidades;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.LogicaNegocio;
+using SGDP.PLUS.SEG.Dominio.Entidades;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Crear;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Crear;
 
 public class CrearAplicacionCommandHandler : IRequestHandler<CrearAplicacionCommand, CrearAplicacionResponse>
 {

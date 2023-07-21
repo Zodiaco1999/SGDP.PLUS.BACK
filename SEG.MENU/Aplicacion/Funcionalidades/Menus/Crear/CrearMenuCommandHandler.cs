@@ -1,7 +1,7 @@
 using MediatR;
-using SEG.MENU.Aplicacion.Funcionalidades.Menus.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.LogicaNegocio;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Menus.Crear;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Crear;
 
 public class CrearMenuCommandHandler : IRequestHandler<CrearMenuCommand, CrearMenuResponse>
 {

@@ -1,14 +1,14 @@
 using Ardalis.GuardClauses;
-using SEG.Comun.ContextAccesor;
-using SEG.Comun.General;
-using SEG.MENU.Aplicacion.Funcionalidades.Apis.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.Apis.Editar;
-using SEG.MENU.Aplicacion.Funcionalidades.Apis.Repositorio;
-using SEG.MENU.Dominio.Entidades;
-using SEG.MENU.Infraestructura.UnidadTrabajo;
+using SGDP.PLUS.Comun.ContextAccesor;
+using SGDP.PLUS.Comun.General;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Editar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Repositorio;
+using SGDP.PLUS.SEG.Dominio.Entidades;
+using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
 using System;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Apis.LogicaNegocio;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.LogicaNegocio;
 
 public class GestionApis : BaseAppService, IGestionApis
 {

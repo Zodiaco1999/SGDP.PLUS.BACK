@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Menus.Editar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Editar;
 
 public record struct EditarMenuCommand(
     Guid MenuId,

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SEG.Comun.General;
+namespace SGDP.PLUS.Comun.General;
 
 public class ConsultaViewModel<T>
 {

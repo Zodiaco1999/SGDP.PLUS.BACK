@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using SEG.Comun.ContextAccesor;
-using SEG.Comun.Middleware;
+using SGDP.PLUS.Comun.ContextAccesor;
+using SGDP.PLUS.Comun.Middleware;
 using SEG.MENU;
 
 var builder = WebApplication.CreateBuilder(args);

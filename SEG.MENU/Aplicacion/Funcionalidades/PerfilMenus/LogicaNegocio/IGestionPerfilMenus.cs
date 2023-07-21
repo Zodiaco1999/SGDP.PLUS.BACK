@@ -1,10 +1,10 @@
-﻿using SEG.Comun.General;
-using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.Consultar;
-using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.ConsultarPorId;
-using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.Editar;
+﻿using SGDP.PLUS.Comun.General;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Consultar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.ConsultarPorId;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Editar;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio
 {
     public interface IGestionPerfilMenus
     {

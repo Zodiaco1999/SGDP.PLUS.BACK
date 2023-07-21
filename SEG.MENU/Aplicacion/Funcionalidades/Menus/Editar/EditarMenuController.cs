@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Menus.Editar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Editar;
 
 [Route("api/[controller]")]
 [ApiController]

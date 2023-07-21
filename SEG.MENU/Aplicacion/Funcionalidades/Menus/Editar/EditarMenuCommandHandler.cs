@@ -1,7 +1,7 @@
 using MediatR;
-using SEG.MENU.Aplicacion.Funcionalidades.Menus.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.LogicaNegocio;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Menus.Editar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Editar;
 
 public class EditarMenuCommandHandler : IRequestHandler<EditarMenuCommand, EditarMenuResponse>
 {

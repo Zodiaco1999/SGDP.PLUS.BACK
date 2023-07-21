@@ -1,4 +1,4 @@
-namespace SEG.MENU.Aplicacion.Funcionalidades.Menus.ActivarInactivar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.ActivarInactivar;
 
 public record struct ActivarInactivarMenuResponse(
     Guid AplicacionId,

@@ -1,11 +1,11 @@
-﻿using SEG.Comun.General;
+﻿using SGDP.PLUS.Comun.General;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace SEG.Comun.Repositorios
+namespace SGDP.PLUS.Comun.Repositorios
 {
     public interface IQueryFluent<TEntity> where TEntity : Entity
     {

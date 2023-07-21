@@ -1,6 +1,6 @@
-﻿using SEG.Comun.UnidadTrabajo;
+﻿using SGDP.PLUS.Comun.UnidadTrabajo;
 
-namespace SEG.MENU.Infraestructura.UnidadTrabajo;
+namespace SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
 
 public interface IUnitOfWorkSegEscritura : IUnitOfWorkAsync
 {

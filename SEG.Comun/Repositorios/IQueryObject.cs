@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace SEG.Comun.Repositorios
+namespace SGDP.PLUS.Comun.Repositorios
 {
     public interface IQueryObject<TEntity>
     {

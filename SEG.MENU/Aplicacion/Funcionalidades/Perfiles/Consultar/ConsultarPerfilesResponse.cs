@@ -1,4 +1,4 @@
-﻿namespace SEG.MENU.Aplicacion.Funcionalidades.Perfiles.Consultar;
+﻿namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.Consultar;
 
 public record struct ConsultarPerfilesResponse(
     Guid PerfilId,

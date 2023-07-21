@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Apis.Editar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Editar;
 
 public record struct EditarApiCommand(
     Guid ApiId,

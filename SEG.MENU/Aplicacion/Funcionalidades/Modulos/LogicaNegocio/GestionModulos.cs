@@ -1,14 +1,14 @@
 using Ardalis.GuardClauses;
-using SEG.Comun.ContextAccesor;
-using SEG.Comun.General;
-using SEG.MENU.Aplicacion.Funcionalidades.Modulos.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.Modulos.Editar;
-using SEG.MENU.Aplicacion.Funcionalidades.Modulos.Repositorio;
-using SEG.MENU.Dominio.Entidades;
-using SEG.MENU.Infraestructura.UnidadTrabajo;
+using SGDP.PLUS.Comun.ContextAccesor;
+using SGDP.PLUS.Comun.General;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Editar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Repositorio;
+using SGDP.PLUS.SEG.Dominio.Entidades;
+using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
 using System;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Modulos.LogicaNegocio;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.LogicaNegocio;
 
 public class GestionModulos : BaseAppService, IGestionModulos
 {

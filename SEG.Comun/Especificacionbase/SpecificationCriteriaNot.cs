@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace SEG.Comun.Especificacionbase
+namespace SGDP.PLUS.Comun.Especificacionbase
 {
     public sealed class SpecificationCriteriaNot<TEntity>
        : SpecificationCriteria<TEntity>

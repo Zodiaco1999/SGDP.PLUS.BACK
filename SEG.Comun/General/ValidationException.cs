@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SEG.Comun.General;
+namespace SGDP.PLUS.Comun.General;
 
 public class ValidationException : System.Exception
 {

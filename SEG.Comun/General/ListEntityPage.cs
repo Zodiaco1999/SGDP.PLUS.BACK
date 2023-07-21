@@ -1,4 +1,4 @@
-﻿namespace SEG.Comun.General;
+﻿namespace SGDP.PLUS.Comun.General;
 
 public class ListEntityPage<TEntity> where TEntity : Entity
 {

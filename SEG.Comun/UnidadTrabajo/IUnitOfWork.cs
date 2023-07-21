@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Data;
 
-namespace SEG.Comun.UnidadTrabajo;
+namespace SGDP.PLUS.Comun.UnidadTrabajo;
 
 public interface IUnitOfWork
 {

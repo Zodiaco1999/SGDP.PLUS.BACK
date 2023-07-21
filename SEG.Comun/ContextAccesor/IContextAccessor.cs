@@ -1,4 +1,4 @@
-﻿namespace SEG.Comun.ContextAccesor;
+﻿namespace SGDP.PLUS.Comun.ContextAccesor;
 
 public interface IContextAccessor
 {

@@ -1,7 +1,7 @@
-﻿using SEG.Comun.General;
+﻿using SGDP.PLUS.Comun.General;
 using System;
 
-namespace SEG.Comun.Entidades
+namespace SGDP.PLUS.Comun.Entidades
 {
     public class CamposLog : Entity
     {

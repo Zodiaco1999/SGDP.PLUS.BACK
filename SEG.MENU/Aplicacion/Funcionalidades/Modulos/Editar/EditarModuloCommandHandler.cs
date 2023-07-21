@@ -1,7 +1,7 @@
 using MediatR;
-using SEG.MENU.Aplicacion.Funcionalidades.Modulos.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.LogicaNegocio;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Modulos.Editar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Editar;
 
 public class EditarModuloCommandHandler : IRequestHandler<EditarModuloCommand>
 {

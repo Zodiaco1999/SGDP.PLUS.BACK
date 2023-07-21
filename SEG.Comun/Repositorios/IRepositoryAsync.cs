@@ -1,6 +1,6 @@
-﻿using SEG.Comun.General;
+﻿using SGDP.PLUS.Comun.General;
 
-namespace SEG.Comun.Repositorios
+namespace SGDP.PLUS.Comun.Repositorios
 {
     public interface IRepositoryAsync<TEntity> : IRepository<TEntity> where TEntity : Entity
     {

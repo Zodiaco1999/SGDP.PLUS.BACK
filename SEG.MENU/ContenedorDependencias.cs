@@ -1,20 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using SEG.Comun.ContextAccesor;
-using SEG.MENU.Aplicacion.Funcionalidades.Apis.LogicaNegocio;
-using SEG.MENU.Aplicacion.Funcionalidades.Apis.Repositorio;
-using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.LogicaNegocio;
-using SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Repositorio;
-using SEG.MENU.Aplicacion.Funcionalidades.Menus.LogicaNegocio;
-using SEG.MENU.Aplicacion.Funcionalidades.Menus.Repositorio;
-using SEG.MENU.Aplicacion.Funcionalidades.Modulos.LogicaNegocio;
-using SEG.MENU.Aplicacion.Funcionalidades.Modulos.Repositorio;
-using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.LogicaNegocio;
-using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.Repositorio;
-using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
-using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.Repositorio;
-using SEG.MENU.Infraestructura.UnidadTrabajo;
+using SGDP.PLUS.Comun.ContextAccesor;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Repositorio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Repositorio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Repositorio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Repositorio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.Repositorio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Repositorio;
+using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
 
 namespace SEG.MENU;
 

@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Apis.Crear;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Crear;
 
 public record struct CrearApiCommand(
     Guid AplicacionId,

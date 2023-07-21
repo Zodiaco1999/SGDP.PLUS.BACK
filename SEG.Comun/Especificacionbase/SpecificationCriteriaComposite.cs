@@ -1,4 +1,4 @@
-﻿namespace SEG.Comun.Especificacionbase
+﻿namespace SGDP.PLUS.Comun.Especificacionbase
 {
     public abstract class SpecificationCriteriaComposite<TEntity>
          : SpecificationCriteria<TEntity>

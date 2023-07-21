@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using SEG.MENU.Dominio.Entidades;
+using SGDP.PLUS.SEG.Dominio.Entidades;
 
-namespace SEG.MENU.Infraestructura.Configuracion;
+namespace SGDP.PLUS.SEG.Infraestructura.Configuracion;
 
 public class ModulosConfiguracion : IEntityTypeConfiguration<Modulo>
 {

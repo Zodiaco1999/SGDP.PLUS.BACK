@@ -1,7 +1,7 @@
 using MediatR;
-using SEG.MENU.Aplicacion.Funcionalidades.Apis.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.LogicaNegocio;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Apis.Editar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Editar;
 
 public class EditarApiCommandHandler : IRequestHandler<EditarApiCommand>
 {

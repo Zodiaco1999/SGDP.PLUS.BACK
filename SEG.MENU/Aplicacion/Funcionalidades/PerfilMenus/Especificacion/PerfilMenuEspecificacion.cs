@@ -1,7 +1,7 @@
-﻿using SEG.Comun.Especificacionbase;
-using SEG.MENU.Dominio.Entidades;
+﻿using SGDP.PLUS.Comun.Especificacionbase;
+using SGDP.PLUS.SEG.Dominio.Entidades;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.Especificacion;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Especificacion;
 
 public class PerfilMenuEspecificacion : SpecificationBase<PerfilMenu>
 {

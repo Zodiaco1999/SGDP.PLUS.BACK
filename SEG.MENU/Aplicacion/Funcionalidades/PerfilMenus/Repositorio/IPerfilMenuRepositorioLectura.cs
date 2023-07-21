@@ -1,7 +1,7 @@
-﻿using SEG.Comun.Repositorios;
-using SEG.MENU.Dominio.Entidades;
+﻿using SGDP.PLUS.Comun.Repositorios;
+using SGDP.PLUS.SEG.Dominio.Entidades;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.Repositorio
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Repositorio
 {
     public interface IPerfilMenuRepositorioLectura : IRepositoryAsync<PerfilMenu>
     {

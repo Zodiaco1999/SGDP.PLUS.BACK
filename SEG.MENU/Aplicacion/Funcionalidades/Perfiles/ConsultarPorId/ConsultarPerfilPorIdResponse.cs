@@ -1,6 +1,6 @@
-﻿using SEG.MENU.Dominio.Entidades;
+﻿using SGDP.PLUS.SEG.Dominio.Entidades;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Perfiles.ConsultarPorId;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.ConsultarPorId;
 
 public record struct ConsultarPerfilPorIdResponse(
     Guid PerfilId,

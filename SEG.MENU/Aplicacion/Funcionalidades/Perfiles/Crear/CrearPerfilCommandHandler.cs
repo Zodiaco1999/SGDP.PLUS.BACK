@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.LogicaNegocio;
-using SEG.MENU.Dominio.Entidades;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.LogicaNegocio;
+using SGDP.PLUS.SEG.Dominio.Entidades;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Perfiles.Crear;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.Crear;
 
 public class CrearPerfilCommandHandler : IRequestHandler<CrearPerfilCommand, CrearPerfilResponse>
 {

@@ -1,7 +1,7 @@
-using SEG.MENU.Aplicacion.Funcionalidades.Modulos.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.Modulos.Editar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Editar;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Modulos.LogicaNegocio;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.LogicaNegocio;
 
 public interface IGestionModulos
 {

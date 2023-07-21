@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.PerfilMenus.ConsultarPorId;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.ConsultarPorId;
 
 public class ConsultarPerfilMenuPorIdQueryHandler : IRequestHandler<ConsultarPerfilMenuPorIdQuery, ConsultarPerfilMenuPorIdResponse>
 {

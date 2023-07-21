@@ -1,4 +1,4 @@
-﻿namespace SEG.MENU.Aplicacion.Funcionalidades.Aplicaciones.Editar;
+﻿namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Editar;
 
 public record struct EditarAplicacionResponse
     (Guid AplicacionId,

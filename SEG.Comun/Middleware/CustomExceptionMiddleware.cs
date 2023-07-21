@@ -4,10 +4,10 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Data.SqlClient;
 using System.Net;
-using SEG.Comun.General;
-using SEG.Comun.ContextAccesor;
+using SGDP.PLUS.Comun.General;
+using SGDP.PLUS.Comun.ContextAccesor;
 
-namespace SEG.Comun.Middleware;
+namespace SGDP.PLUS.Comun.Middleware;
 
 public class CustomExceptionMiddleware
 {
