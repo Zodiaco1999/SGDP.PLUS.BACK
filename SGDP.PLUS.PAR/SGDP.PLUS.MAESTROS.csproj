@@ -7,6 +7,44 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Aplicacion\Funcionalidades\Cargo\**" />
+    <Compile Remove="Aplicacion\Funcionalidades\CategoriasCompra\**" />
+    <Compile Remove="Aplicacion\Funcionalidades\Departamento\**" />
+    <Compile Remove="Aplicacion\Funcionalidades\GrupoEmpresarial\**" />
+    <Compile Remove="Aplicacion\Funcionalidades\Pais\**" />
+    <Compile Remove="Aplicacion\Funcionalidades\SubCategoriasCompra\**" />
+    <Compile Remove="Aplicacion\Funcionalidades\TipoDocumento\**" />
+    <Content Remove="Aplicacion\Funcionalidades\Cargo\**" />
+    <Content Remove="Aplicacion\Funcionalidades\CategoriasCompra\**" />
+    <Content Remove="Aplicacion\Funcionalidades\Departamento\**" />
+    <Content Remove="Aplicacion\Funcionalidades\GrupoEmpresarial\**" />
+    <Content Remove="Aplicacion\Funcionalidades\Pais\**" />
+    <Content Remove="Aplicacion\Funcionalidades\SubCategoriasCompra\**" />
+    <Content Remove="Aplicacion\Funcionalidades\TipoDocumento\**" />
+    <EmbeddedResource Remove="Aplicacion\Funcionalidades\Cargo\**" />
+    <EmbeddedResource Remove="Aplicacion\Funcionalidades\CategoriasCompra\**" />
+    <EmbeddedResource Remove="Aplicacion\Funcionalidades\Departamento\**" />
+    <EmbeddedResource Remove="Aplicacion\Funcionalidades\GrupoEmpresarial\**" />
+    <EmbeddedResource Remove="Aplicacion\Funcionalidades\Pais\**" />
+    <EmbeddedResource Remove="Aplicacion\Funcionalidades\SubCategoriasCompra\**" />
+    <EmbeddedResource Remove="Aplicacion\Funcionalidades\TipoDocumento\**" />
+    <EntityDeploy Remove="Aplicacion\Funcionalidades\Cargo\**" />
+    <EntityDeploy Remove="Aplicacion\Funcionalidades\CategoriasCompra\**" />
+    <EntityDeploy Remove="Aplicacion\Funcionalidades\Departamento\**" />
+    <EntityDeploy Remove="Aplicacion\Funcionalidades\GrupoEmpresarial\**" />
+    <EntityDeploy Remove="Aplicacion\Funcionalidades\Pais\**" />
+    <EntityDeploy Remove="Aplicacion\Funcionalidades\SubCategoriasCompra\**" />
+    <EntityDeploy Remove="Aplicacion\Funcionalidades\TipoDocumento\**" />
+    <None Remove="Aplicacion\Funcionalidades\Cargo\**" />
+    <None Remove="Aplicacion\Funcionalidades\CategoriasCompra\**" />
+    <None Remove="Aplicacion\Funcionalidades\Departamento\**" />
+    <None Remove="Aplicacion\Funcionalidades\GrupoEmpresarial\**" />
+    <None Remove="Aplicacion\Funcionalidades\Pais\**" />
+    <None Remove="Aplicacion\Funcionalidades\SubCategoriasCompra\**" />
+    <None Remove="Aplicacion\Funcionalidades\TipoDocumento\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Ardalis.GuardClauses" Version="4.0.1" />
     <PackageReference Include="MediatR" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.9" />
@@ -19,20 +57,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Aplicacion\Funcionalidades\Ciudad\" />
-    <Folder Include="Aplicacion\Funcionalidades\Departamento\" />
-    <Folder Include="Aplicacion\Funcionalidades\Cargo\" />
-    <Folder Include="Aplicacion\Funcionalidades\GrupoEmpresarial\" />
-    <Folder Include="Aplicacion\Funcionalidades\CategoriasCompra\" />
-    <Folder Include="Aplicacion\Funcionalidades\SubCategoriasCompra\" />
-    <Folder Include="Aplicacion\Funcionalidades\Pais\" />
-    <Folder Include="Aplicacion\Funcionalidades\TipoDocumento\" />
-    <Folder Include="Dominio\" />
-    <Folder Include="Infraestructura\" />
+    <ProjectReference Include="..\SEG.Comun\SGDP.PLUS.Comun.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SEG.Comun\SGDP.PLUS.Comun.csproj" />
+    <Folder Include="Aplicacion\Funcionalidades\" />
   </ItemGroup>
 
 </Project>
