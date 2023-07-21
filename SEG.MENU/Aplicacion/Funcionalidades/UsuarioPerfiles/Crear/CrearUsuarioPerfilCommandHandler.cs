@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.LogicaNegocio;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.Crear;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Crear;
 
 public class CrearUsuarioPerfilCommandHandler : IRequestHandler<CrearUsuarioPerfilCommand, CrearUsuarioPerfilResponse>
 {

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.Editar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Editar;
 
 public record struct EditarUsuarioPerfilCommand(
     string UsuarioId,

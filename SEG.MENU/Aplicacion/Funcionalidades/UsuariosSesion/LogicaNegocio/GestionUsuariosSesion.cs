@@ -1,19 +1,19 @@
 using Ardalis.GuardClauses;
 using SEG.Comun.ContextAccesor;
 using SEG.Comun.General;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.ConsultarPorId;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.Editar;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.ConsultarPorId;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesion.Consultar;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesion.ConsultarPorId;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesion.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesion.Editar;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesion.Especificacion;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesion.Repositorio;
-using SEG.MENU.Dominio.Entidades;
-using SEG.MENU.Infraestructura.UnidadTrabajo;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.ConsultarPorId;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Editar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.ConsultarPorId;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.Consultar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.ConsultarPorId;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.Editar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.Especificacion;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.Repositorio;
+using SGDP.PLUS.SEG.Dominio.Entidades;
+using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesion.LogicaNegocio;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.LogicaNegocio;
 
 public class GestionUsuariosSesion : BaseAppService, IGestionUsuariosSesion
 {

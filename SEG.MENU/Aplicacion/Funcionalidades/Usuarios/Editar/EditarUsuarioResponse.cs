@@ -1,4 +1,4 @@
-namespace SEG.MENU.Aplicacion.Funcionalidades.Usuarios.Editar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Editar;
 
 public record struct EditarUsuarioResponse(
     string UsuarioId,

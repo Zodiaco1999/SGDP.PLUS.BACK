@@ -1,7 +1,7 @@
 using SEG.Comun.Especificacionbase;
-using SEG.MENU.Dominio.Entidades;
+using SGDP.PLUS.SEG.Dominio.Entidades;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Usuarios.Especificacion;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Especificacion;
 
 public class UsuarioEspecificacion : SpecificationBase<Usuario>
 {

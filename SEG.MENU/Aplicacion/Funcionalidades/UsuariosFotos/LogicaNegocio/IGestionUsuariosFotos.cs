@@ -1,10 +1,10 @@
 ﻿using SEG.Comun.General;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.Consultar;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.ConsultarPorId;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.Editar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.Consultar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.ConsultarPorId;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.Editar;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.LogicaNegocio;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.LogicaNegocio;
 
 public interface IGestionUsuariosFotos
 {

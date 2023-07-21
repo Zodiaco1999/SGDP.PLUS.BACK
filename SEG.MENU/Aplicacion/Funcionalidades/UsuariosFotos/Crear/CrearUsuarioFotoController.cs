@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.Crear;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.Crear;
 
 [Route("api/[controller]")]
 [ApiController]

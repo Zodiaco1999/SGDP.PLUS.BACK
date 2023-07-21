@@ -1,4 +1,4 @@
-namespace SEG.MENU.Aplicacion.Funcionalidades.Usuarios.Crear;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Crear;
 
 public record struct CrearUsuarioResponse(
                         string UsuarioId,

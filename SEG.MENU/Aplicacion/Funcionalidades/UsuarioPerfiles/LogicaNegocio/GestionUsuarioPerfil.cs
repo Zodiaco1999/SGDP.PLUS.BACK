@@ -1,17 +1,17 @@
 ﻿using Ardalis.GuardClauses;
 using SEG.Comun.ContextAccesor;
 using SEG.Comun.General;
-using SEG.MENU.Aplicacion.Funcionalidades.Perfiles.Consultar;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.Consultar;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.ConsultarPorId;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.Editar;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.Especificacion;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.Repositorio;
-using SEG.MENU.Dominio.Entidades;
-using SEG.MENU.Infraestructura.UnidadTrabajo;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.Consultar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Consultar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.ConsultarPorId;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Editar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Especificacion;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Repositorio;
+using SGDP.PLUS.SEG.Dominio.Entidades;
+using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.LogicaNegocio;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.LogicaNegocio;
 
 public class GestionUsuarioPerfil : BaseAppService, IGestionUsuarioPerfil
 {

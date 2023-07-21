@@ -1,10 +1,10 @@
 ﻿using SEG.Comun.General;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.Consultar;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.ConsultarPorId;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.Editar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Consultar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.ConsultarPorId;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Editar;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.LogicaNegocio;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.LogicaNegocio;
 
     public interface IGestionUsuarioPerfil
     {

@@ -1,10 +1,10 @@
 using SEG.Comun.General;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesion.Consultar;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesion.ConsultarPorId;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesion.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesion.Editar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.Consultar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.ConsultarPorId;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.Editar;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesion.LogicaNegocio;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.LogicaNegocio;
 
 public interface IGestionUsuariosSesion
 {

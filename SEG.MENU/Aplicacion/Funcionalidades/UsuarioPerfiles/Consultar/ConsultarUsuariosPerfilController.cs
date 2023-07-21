@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SEG.Comun.General;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.Consultar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Consultar;
 
     [Route("api/[controller]")]
     [ApiController]

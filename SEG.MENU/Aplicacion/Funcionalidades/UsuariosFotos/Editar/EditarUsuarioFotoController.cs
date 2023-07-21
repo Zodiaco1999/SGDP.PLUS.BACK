@@ -1,7 +1,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.Editar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.Editar;
 
 [Route("api/[controller]")]
 [ApiController]

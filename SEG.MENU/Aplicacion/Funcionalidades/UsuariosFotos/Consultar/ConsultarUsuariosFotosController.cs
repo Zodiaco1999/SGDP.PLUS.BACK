@@ -2,7 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SEG.Comun.General;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.Consultar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.Consultar;
 
 [Route("api/[controller]")]
 [ApiController]

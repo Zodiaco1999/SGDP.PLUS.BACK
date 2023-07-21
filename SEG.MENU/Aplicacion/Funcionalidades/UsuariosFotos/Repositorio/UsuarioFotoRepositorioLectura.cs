@@ -1,8 +1,8 @@
 ﻿using SEG.Comun.Repositorios;
-using SEG.MENU.Dominio.Entidades;
-using SEG.MENU.Infraestructura.UnidadTrabajo;
+using SGDP.PLUS.SEG.Dominio.Entidades;
+using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.Repositorio;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.Repositorio;
  public class UsuarioFotoRepositorioLectura : Repository<UsuarioFoto>, IUsuarioFotoRepositorioLectura
  {
     public UsuarioFotoRepositorioLectura(IUnitOfWorkSegLectura unitOfWork) : base(unitOfWork) 

@@ -1,8 +1,8 @@
 using MediatR;
 using SEG.Comun.General;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesion.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.LogicaNegocio;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesion.Consultar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.Consultar;
 
 public class ConsultarUsuariosSesionQueryHandler : IRequestHandler<ConsultarUsuariosSesionQuery, DataViewModel<ConsultarUsuariosSesionResponse>>
 {

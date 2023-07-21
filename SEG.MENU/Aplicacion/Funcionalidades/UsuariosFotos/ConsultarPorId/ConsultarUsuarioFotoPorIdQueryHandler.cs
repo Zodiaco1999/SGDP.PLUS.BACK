@@ -1,7 +1,7 @@
 using MediatR;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.LogicaNegocio;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.ConsultarPorId;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.ConsultarPorId;
 
 public class ConsultarUsuarioFotoPorIdQueryHandler : IRequestHandler<ConsultarUsuarioFotoPorIdQuery, ConsultarUsuarioFotoPorIdResponse>
 {

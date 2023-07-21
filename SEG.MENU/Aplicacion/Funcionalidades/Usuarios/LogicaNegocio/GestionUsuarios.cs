@@ -1,17 +1,17 @@
 using Ardalis.GuardClauses;
 using SEG.Comun.ContextAccesor;
 using SEG.Comun.General;
-using SEG.MENU.Aplicacion.Funcionalidades.Usuarios.ActivarInactivar;
-using SEG.MENU.Aplicacion.Funcionalidades.Usuarios.Consultar;
-using SEG.MENU.Aplicacion.Funcionalidades.Usuarios.ConsultarPorId;
-using SEG.MENU.Aplicacion.Funcionalidades.Usuarios.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.Usuarios.Editar;
-using SEG.MENU.Aplicacion.Funcionalidades.Usuarios.Especificacion;
-using SEG.MENU.Aplicacion.Funcionalidades.Usuarios.Repositorio;
-using SEG.MENU.Dominio.Entidades;
-using SEG.MENU.Infraestructura.UnidadTrabajo;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.ActivarInactivar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Consultar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.ConsultarPorId;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Editar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Especificacion;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Repositorio;
+using SGDP.PLUS.SEG.Dominio.Entidades;
+using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Usuarios.LogicaNegocio;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.LogicaNegocio;
 
 public class GestionUsuarios : BaseAppService, IGestionUsuarios
 {

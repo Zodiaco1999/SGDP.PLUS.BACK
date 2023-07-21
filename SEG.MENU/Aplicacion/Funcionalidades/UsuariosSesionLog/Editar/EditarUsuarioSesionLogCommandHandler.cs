@@ -1,7 +1,7 @@
 using MediatR;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesionLog.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesionLog.LogicaNegocio;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesionLog.Editar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesionLog.Editar;
 
 public class EditarUsuarioSesionLogCommandHandler : IRequestHandler<EditarUsuarioSesionLogCommand, EditarUsuarioSesionLogResponse>
 {

@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using SEG.Comun.General;
-using SEG.MENU.Dominio.Entidades;
+using SGDP.PLUS.SEG.Dominio.Entidades;
 
-namespace SEG.MENU.Infraestructura.Configuracion
+namespace SGDP.PLUS.SEG.Infraestructura.Configuracion
 {
     public class UsuarioPerfilConfiguracion : IEntityTypeConfiguration<UsuarioPerfil>
     {

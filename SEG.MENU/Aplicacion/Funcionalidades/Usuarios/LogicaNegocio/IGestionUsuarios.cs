@@ -1,11 +1,11 @@
 using SEG.Comun.General;
-using SEG.MENU.Aplicacion.Funcionalidades.Usuarios.ActivarInactivar;
-using SEG.MENU.Aplicacion.Funcionalidades.Usuarios.Consultar;
-using SEG.MENU.Aplicacion.Funcionalidades.Usuarios.ConsultarPorId;
-using SEG.MENU.Aplicacion.Funcionalidades.Usuarios.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.Usuarios.Editar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.ActivarInactivar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Consultar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.ConsultarPorId;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Editar;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Usuarios.LogicaNegocio;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.LogicaNegocio;
 
 public interface IGestionUsuarios
 {

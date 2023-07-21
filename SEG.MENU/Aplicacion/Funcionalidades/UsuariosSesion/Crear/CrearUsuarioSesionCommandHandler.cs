@@ -1,7 +1,7 @@
 using MediatR;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesion.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.LogicaNegocio;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesion.Crear;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.Crear;
 
 public class CrearUsuarioSesionCommandHandler : IRequestHandler<CrearUsuarioSesionCommand, CrearUsuarioSesionResponse>
 {

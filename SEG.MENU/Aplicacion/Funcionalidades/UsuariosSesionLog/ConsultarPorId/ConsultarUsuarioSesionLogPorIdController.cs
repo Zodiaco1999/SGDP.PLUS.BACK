@@ -1,8 +1,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesion.ConsultarPorId;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.ConsultarPorId;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesionLog.ConsultarPorId;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesionLog.ConsultarPorId;
 
 [Route("api/[controller]")]
 [ApiController]

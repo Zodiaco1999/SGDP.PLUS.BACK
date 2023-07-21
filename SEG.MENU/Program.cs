@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.Middleware;
-using SEG.MENU;
+using SGDP.PLUS.SEG;
 
 var builder = WebApplication.CreateBuilder(args);
 string SpecificOrigins = "specificOrigins";

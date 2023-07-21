@@ -1,7 +1,7 @@
 ﻿using SEG.Comun.Entidades;
 using SEG.Comun.General;
 
-namespace SEG.MENU.Dominio.Entidades
+namespace SGDP.PLUS.SEG.Dominio.Entidades
 {
     public class UsuarioSesionLog : Entity
     {

@@ -1,4 +1,4 @@
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesionLog.Consultar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesionLog.Consultar;
 
 public record struct ConsultarUsuariosSesionLogResponse(
     Guid LogId,

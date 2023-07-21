@@ -1,4 +1,4 @@
-namespace SEG.MENU.Aplicacion.Funcionalidades.Usuarios.Consultar;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Consultar;
 
 public record struct ConsultarUsuariosResponse(
     string UsuarioId,

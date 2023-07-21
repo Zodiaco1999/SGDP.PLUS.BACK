@@ -1,18 +1,18 @@
 ﻿using Ardalis.GuardClauses;
 using SEG.Comun.ContextAccesor;
 using SEG.Comun.General;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.Editar;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.Especificacion;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.Consultar;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.ConsultarPorId;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.Editar;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.Repositorio;
-using SEG.MENU.Dominio.Entidades;
-using SEG.MENU.Infraestructura.UnidadTrabajo;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Editar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Especificacion;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.Consultar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.ConsultarPorId;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.Editar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.Repositorio;
+using SGDP.PLUS.SEG.Dominio.Entidades;
+using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.LogicaNegocio;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.LogicaNegocio;
 
 public class GestionUsuariosFotos : BaseAppService, IGestionUsuariosFotos
 {

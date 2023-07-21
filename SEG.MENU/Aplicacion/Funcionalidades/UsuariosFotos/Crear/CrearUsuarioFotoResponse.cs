@@ -1,4 +1,4 @@
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.Crear;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.Crear;
 
 public record struct CrearUsuarioFotoResponse(
     string UsuarioId,

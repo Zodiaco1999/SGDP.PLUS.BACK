@@ -1,18 +1,18 @@
 using Ardalis.GuardClauses;
 using SEG.Comun.ContextAccesor;
 using SEG.Comun.General;
-using SEG.MENU.Aplicacion.Funcionalidades.Usuarios.ConsultarPorId;
-using SEG.MENU.Aplicacion.Funcionalidades.Usuarios.Editar;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesionLog.Consultar;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesionLog.ConsultarPorId;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesionLog.Crear;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesionLog.Editar;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesionLog.Especificacion;
-using SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesionLog.Repositorio;
-using SEG.MENU.Dominio.Entidades;
-using SEG.MENU.Infraestructura.UnidadTrabajo;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.ConsultarPorId;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Editar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesionLog.Consultar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesionLog.ConsultarPorId;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesionLog.Crear;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesionLog.Editar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesionLog.Especificacion;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesionLog.Repositorio;
+using SGDP.PLUS.SEG.Dominio.Entidades;
+using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesionLog.LogicaNegocio;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesionLog.LogicaNegocio;
 
 public class GestionUsuariosSesionLog : BaseAppService, IGestionUsuariosSesionLog
 {

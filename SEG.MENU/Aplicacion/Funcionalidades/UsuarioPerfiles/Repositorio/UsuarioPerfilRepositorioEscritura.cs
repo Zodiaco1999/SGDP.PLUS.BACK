@@ -1,8 +1,8 @@
 ﻿using SEG.Comun.Repositorios;
-using SEG.MENU.Dominio.Entidades;
-using SEG.MENU.Infraestructura.UnidadTrabajo;
+using SGDP.PLUS.SEG.Dominio.Entidades;
+using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.Repositorio;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Repositorio;
 
     public class UsuarioPerfilRepositorioEscritura : Repository<UsuarioPerfil>, IUsuarioPerfilRepositorioEscritura
     {

@@ -1,8 +1,8 @@
 using MediatR;
-using SEG.MENU.Aplicacion.Funcionalidades.Modulos.LogicaNegocio;
-using SEG.MENU.Dominio.Entidades;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.LogicaNegocio;
+using SGDP.PLUS.SEG.Dominio.Entidades;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.Modulos.ConsultarPorId;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.ConsultarPorId;
 
 public class ConsultarModuloPorIdQueryHandler : IRequestHandler<ConsultarModuloPorIdQuery, ConsultarModuloPorIdResponse>
 {

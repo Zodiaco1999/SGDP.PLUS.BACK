@@ -1,7 +1,7 @@
 ﻿using SEG.Comun.Repositorios;
-using SEG.MENU.Dominio.Entidades;
+using SGDP.PLUS.SEG.Dominio.Entidades;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuariosFotos.Repositorio
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.Repositorio
 {
     public interface IUsuarioFotoRepositorioEscritura : IRepositoryAsync<UsuarioFoto>
     {

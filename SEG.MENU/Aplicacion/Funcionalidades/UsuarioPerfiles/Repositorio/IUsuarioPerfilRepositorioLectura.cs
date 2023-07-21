@@ -1,7 +1,7 @@
 ﻿using SEG.Comun.Repositorios;
-using SEG.MENU.Dominio.Entidades;
+using SGDP.PLUS.SEG.Dominio.Entidades;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuarioPerfiles.Repositorio
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Repositorio
 {
     public interface IUsuarioPerfilRepositorioLectura : IRepositoryAsync<UsuarioPerfil>
     {

@@ -1,6 +1,6 @@
 ﻿using SEG.Comun.Entidades;
 
-namespace SEG.MENU.Dominio.Entidades
+namespace SGDP.PLUS.SEG.Dominio.Entidades
 {
     public class UsuarioPerfil : CamposLog
     {

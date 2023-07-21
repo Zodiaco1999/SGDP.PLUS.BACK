@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace SEG.MENU.Aplicacion.Funcionalidades.UsuariosSesionLog.Crear;
+namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesionLog.Crear;
 
 public record struct CrearUsuarioSesionLogCommand(
         Guid LogId,
