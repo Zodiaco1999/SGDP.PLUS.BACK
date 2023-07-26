@@ -12,13 +12,14 @@ public class UnitOfWorkSegLectura : UnitOfWorkBase, IUnitOfWorkSegLectura
     {
     }
     public virtual DbSet<TipoPersona> TipoPersonas { get; set; }
-   
+    public virtual DbSet<TipoDocumento> TipoDocumentos { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         #region Seg
         modelBuilder.ApplyConfiguration(new TipoPersonaConfiguracion());
-       
+        modelBuilder.ApplyConfiguration(new TipoDocumentoConfiguracion());
         #endregion
     }
 }

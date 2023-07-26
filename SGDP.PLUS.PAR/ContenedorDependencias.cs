@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using SGDP.PLUS.Comun.ContextAccesor;
+using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoDocumentos.LogicaNegocio;
+using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoDocumentos.Repositorio;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoPersonas.LogicaNegocio;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoPersonas.Repositorio;
 using SGDP.PLUS.MAESTROS.Infraestructura.UnidadTrabajo;
@@ -35,6 +37,11 @@ public static class ContenedorDependencias
         services.AddScoped<IGestionTipoPersonas, GestionTipoPersonas>();
         services.AddScoped<ITipoPersonaRepositorioLectura, TipoPersonaRepositorioLectura>();
         services.AddScoped<ITipoPersonaRepositorioEscritura, TipoPersonaRepositorioEscritura>();
+
+        // TipoDocumento
+        services.AddScoped<IGestionTipoDocumentos, GestionTipoDocumentos>();
+        services.AddScoped<ITipoDocumentoRepositorioLectura, TipoDocumentoRepositorioLectura>();
+        services.AddScoped<ITipoDocumentoRepositorioEscritura, TipoDocumentoRepositorioEscritura>();
 
         return services;
 
