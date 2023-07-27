@@ -1,4 +1,5 @@
 using Ardalis.GuardClauses;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.ActivarInactivar;
@@ -87,7 +88,12 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
 
     public async Task<CrearUsuarioResponse> CrearUsuario(CrearUsuarioCommand registroDto)
     {
+        //var usuarioExiste = await _usuarioRepositorioLectura
+        //    .Query(q => q.Email == registroDto.Email)
+        //    .FirstOrDefaultAsync();
+        //if (usuarioExiste) throw new Exception("El usuario o el correo ya existe");
 
+        var hash = Jwt.Hash(registroDto.Contrasena);
         var registro = new Usuario()
         {
             UsuarioId = registroDto.UsuarioId,
@@ -101,7 +107,8 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
             Email = registroDto.Email,
             FechaNacimiento = registroDto.FechaNacimiento,
             Genero = registroDto.Genero,
-            Contrasena = registroDto.Contrasena,
+            Contrasena = hash.Password,
+            Salt = hash.Salt,
             FechaActualizacionContrasena = registroDto.FechaActualizacionContrasena,
             AccesosFallidos = registroDto.AccesosFallidos,
             FechaBloqueo = registroDto.FechaBloqueo,

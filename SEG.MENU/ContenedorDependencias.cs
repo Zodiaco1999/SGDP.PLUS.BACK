@@ -14,6 +14,8 @@ using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.LogicaNegocio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.Repositorio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Repositorio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Seguridad.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Seguridad.Repositorio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.LogicaNegocio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Repositorio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.LogicaNegocio;
@@ -104,6 +106,10 @@ public static class ContenedorDependencias
         services.AddScoped<IGestionApis, GestionApis>();
         services.AddScoped<IApiRepositorioLectura, ApiRepositorioLectura>();
         services.AddScoped<IApiRepositorioEscritura, ApiRepositorioEscritura>();
+        //Seguridad
+        services.AddScoped<IGestionSeguridad, GestionSeguridad>();
+        services.AddScoped<ISeguridadRepositorioLectura, SeguridadRepositorioLectura>();
+        services.AddScoped<ISeguridadRepositorioEscritura, SeguridadRepositorioEscritura>();
 
         return services;
     }

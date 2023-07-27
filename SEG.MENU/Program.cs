@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.IdentityModel.Tokens;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.Middleware;
 using SGDP.PLUS.SEG;
@@ -27,9 +29,24 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-
 builder.Services.AddAplicacionesServices(builder.Configuration);
+
+// Añadir autentificación el Aplicación por JWT
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey =
+                new SymmetricSecurityKey(System.Text.Encoding.UTF8
+                .GetBytes(builder.Configuration.GetSection("JWT:Secreto").Value!)),
+            ClockSkew = TimeSpan.Zero
+        };
+    });
 
 var app = builder.Build();
 
