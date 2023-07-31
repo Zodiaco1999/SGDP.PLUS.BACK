@@ -15,4 +15,10 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Independentsoft.Graph">
+      <HintPath>..\..\..\Librerias\Graph .NET\Lib\Independentsoft.Graph.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
