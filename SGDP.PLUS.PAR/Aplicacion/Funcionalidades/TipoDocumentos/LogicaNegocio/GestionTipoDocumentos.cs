@@ -121,7 +121,7 @@ public class GestionTipoDocumentos : BaseAppService, IGestionTipoDocumentos
         }
         catch (Exception ex)
         {
-            throw new NotFoundException(nameof(TipoPersona), ex.Message);
+            throw new NotFoundException(nameof(TipoDocumento), ex.Message);
         }
     }
 

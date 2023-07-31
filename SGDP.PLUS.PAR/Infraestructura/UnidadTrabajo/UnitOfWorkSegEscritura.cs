@@ -13,6 +13,10 @@ public class UnitOfWorkSegEscritura : UnitOfWorkBase, IUnitOfWorkSegEscritura
     }
     public virtual DbSet<TipoPersona> TipoPersonas { get; set; }
     public virtual DbSet<TipoDocumento> TipoDocumentos { get; set; }
+    public virtual DbSet<Pais> Pais { get; set; }
+    public virtual DbSet<Departamento> Departamento { get; set; }
+    public virtual DbSet<Ciudad> Ciudad { get; set; }
+    public virtual DbSet<Cargo> Cargo { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -20,6 +24,10 @@ public class UnitOfWorkSegEscritura : UnitOfWorkBase, IUnitOfWorkSegEscritura
         #region Seg
         modelBuilder.ApplyConfiguration(new TipoPersonaConfiguracion());
         modelBuilder.ApplyConfiguration(new TipoDocumentoConfiguracion());
+        modelBuilder.ApplyConfiguration(new PaisConfiguracion());
+        modelBuilder.ApplyConfiguration(new DepartamentoConfiguracion());
+        modelBuilder.ApplyConfiguration(new CiudadConfiguracion());
+        modelBuilder.ApplyConfiguration(new CargoConfiguracion());
         #endregion
     }
 }

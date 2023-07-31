@@ -2,6 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using SGDP.PLUS.Comun.ContextAccesor;
+using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Cargos.LogicaNegocio;
+using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Cargos.Repositorio;
+using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Ciudades.LogicaNegocio;
+using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Ciudades.Repositorio;
+using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Departamentos.LogicaNegocio;
+using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Departamentos.Repositorio;
+using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Paises.LogicaNegocio;
+using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Paises.Repositorio;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoDocumentos.LogicaNegocio;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoDocumentos.Repositorio;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoPersonas.LogicaNegocio;
@@ -42,6 +50,26 @@ public static class ContenedorDependencias
         services.AddScoped<IGestionTipoDocumentos, GestionTipoDocumentos>();
         services.AddScoped<ITipoDocumentoRepositorioLectura, TipoDocumentoRepositorioLectura>();
         services.AddScoped<ITipoDocumentoRepositorioEscritura, TipoDocumentoRepositorioEscritura>();
+
+        // Pais
+        services.AddScoped<IGestionPaises, GestionPaises>();
+        services.AddScoped<IPaisRepositorioLectura, PaisRepositorioLectura>();
+        services.AddScoped<IPaisRepositorioEscritura, PaisRepositorioEscritura>();
+
+        // Departamento
+        services.AddScoped<IGestionDepartamentos, GestionDepartamentos>();
+        services.AddScoped<IDepartamentoRepositorioLectura, DepartamentoRepositorioLectura>();
+        services.AddScoped<IDepartamentoRepositorioEscritura, DepartamentoRepositorioEscritura>();
+
+        //Ciudad
+        services.AddScoped<IGestionCiudades, GestionCiudades>();
+        services.AddScoped<ICiudadRepositorioLectura, CiudadRepositorioLectura>();
+        services.AddScoped<ICiudadRepositorioEscritura, CiudadRepositorioEscritura>();
+
+        //Cargo
+        services.AddScoped<IGestionCargos, GestionCargos>();
+        services.AddScoped<ICargoRepositorioLectura, CargoRepositorioLectura>();
+        services.AddScoped<ICargoRepositorioEscritura, CargoRepositorioEscritura>();
 
         return services;
 
