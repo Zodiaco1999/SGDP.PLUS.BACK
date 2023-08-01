@@ -25,14 +25,10 @@ public class UnitOfWorkSegEscritura : UnitOfWorkBase, IUnitOfWorkSegEscritura
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-
         #region Seg
         modelBuilder.ApplyConfiguration(new AplicacionesConfiguracion());
         modelBuilder.ApplyConfiguration(new ModulosConfiguracion());
         modelBuilder.ApplyConfiguration(new ApiConfiguracion());
-        modelBuilder.ApplyConfiguration(new PerfilesConfiguracion());
-        modelBuilder.ApplyConfiguration(new MenusConfiguracion());
-        modelBuilder.ApplyConfiguration(new PerfilMenusConfiguracion());
         modelBuilder.ApplyConfiguration(new PerfilesConfiguracion());
         modelBuilder.ApplyConfiguration(new MenusConfiguracion());
         modelBuilder.ApplyConfiguration(new PerfilMenusConfiguracion());

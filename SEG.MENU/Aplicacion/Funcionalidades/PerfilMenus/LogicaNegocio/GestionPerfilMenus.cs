@@ -20,7 +20,7 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
     private readonly IContextAccessor _contextAccessor;
 
     public GestionPerfilMenus(
-        IPerfilMenuRepositorioLectura perfilMenuRepositorioLectura, 
+        IPerfilMenuRepositorioLectura perfilMenuRepositorioLectura,
         IPerfilMenuRepositorioEscritura perfilMenuRepositorioEscritura,
         IUnitOfWorkSegEscritura unitOfWork,
         IContextAccessor contextAccessor,

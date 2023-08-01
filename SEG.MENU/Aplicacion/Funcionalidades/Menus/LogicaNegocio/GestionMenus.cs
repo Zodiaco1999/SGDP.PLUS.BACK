@@ -1,9 +1,12 @@
 using Ardalis.GuardClauses;
+using LinqKit;
+using NetTopologySuite.Index.HPRtree;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.ActivarInactivar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Consultar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.ConsultarPorId;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.ConusltarPorParametros;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Crear;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Editar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Especificacion;
@@ -36,19 +39,18 @@ public class GestionMenus : BaseAppService, IGestionMenus
 
     public async Task<ActivarInactivarMenuResponse> ActivarInactivarMenu(Guid menuId)
     {
-        var regActualizar = await _menuRepositorioLectura.Query(m => m.MenuId == menuId).FirstOrDefaultAsync();
-
-        if (regActualizar is null)
-            throw new NotFoundException(nameof(Menu), "No se encontró el registro a actualizar");
+        var regActualizar = await _menuRepositorioLectura
+            .Query(m => m.MenuId == menuId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Menu), "No se encontró el registro a actualizar");
 
         regActualizar.Activo = !regActualizar.Activo;
 
         _menuRepositorioEscritura.Update(regActualizar);
         await _unitOfWork.SaveChangesAsync();
 
-        var regActualizado = await _menuRepositorioLectura.Query(m => m.MenuId == menuId).FirstOrDefaultAsync();
-        if (regActualizado is null)
-            throw new NotFoundException(nameof(Menu), "No se encontró el registro actualizado");
+        var regActualizado = await _menuRepositorioLectura
+            .Query(m => m.MenuId == menuId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Menu), "No se encontró el registro actualizado");
 
         return new ActivarInactivarMenuResponse(
             regActualizado.AplicacionId,
@@ -100,7 +102,7 @@ public class GestionMenus : BaseAppService, IGestionMenus
             result.ModificaFecha);
     }
 
-    public async Task<DataViewModel<ConsultarMenusResponse>> ConsultarMenus(Guid aplicacionId, Guid moduloId, string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
+    public async Task<DataViewModel<ConsultarMenusResponse>> ConsultarMenus(Guid aplicacionId, Guid? moduloId, string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
     {
         try
         {
@@ -109,7 +111,7 @@ public class GestionMenus : BaseAppService, IGestionMenus
             var result = await _menuRepositorioLectura
                 .Query(filtroEspecificacion.Criteria)
                 .OrderBy(ordenarPor!, direccionOrdenamientoAsc.GetValueOrDefault())
-                .SelectPageAsync(pagina, registrosPorPagina);
+                .SelectPageAsync(pagina, registrosPorPagina); 
 
             DataViewModel<ConsultarMenusResponse> consulta = new(pagina, registrosPorPagina, result.TotalItems);
 
@@ -145,6 +147,34 @@ public class GestionMenus : BaseAppService, IGestionMenus
         {
             throw new NotFoundException(nameof(Menu), ex.Message);
         }
+    }
+
+    public async Task<IEnumerable<ConsultarMenusPorParametrosResponse>> ConsultarMenusPorParametros(Guid aplicacionId, Guid? moduloId, string filtro)
+    {
+        var filtroEspecificacion = new MenuEspecificacion(aplicacionId, moduloId, filtro);
+
+        var result = await _menuRepositorioLectura
+            .Query(filtroEspecificacion.Criteria.And(m => m.Activo))
+            .SelectAsync();
+
+        IEnumerable<ConsultarMenusPorParametrosResponse> menus = result.Select(m =>
+        new ConsultarMenusPorParametrosResponse(
+            m.AplicacionId,
+            m.ModuloId,
+            m.MenuId,
+            m.NombreMenu,
+            m.EtiquetaMenu,
+            m.DescMenu,
+            m.Url,
+            m.Orden,
+            m.Consulta,
+            m.Inserta,
+            m.Actualiza,
+            m.Elimina,
+            m.Activa,
+            m.Ejecuta));
+
+        return menus;
     }
 
     public async Task<CrearMenuResponse> CrearMenu(CrearMenuCommand registroDto)
