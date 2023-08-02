@@ -10,12 +10,12 @@ public class ActivarInactivarDepartamentoController : ControllerBase
     private readonly IMediator _mediator;
     public ActivarInactivarDepartamentoController(IMediator mediator) => _mediator = mediator;
 
-    [HttpGet]
+    [HttpGet("{departamentoId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ActivarInactivarDepartamento(Guid DepartamentoId)
+    public async Task<IActionResult> ActivarInactivarDepartamento(Guid departamentoId)
     {
-        ActivarInactivarDepartamentoResponse response = await _mediator.Send(new ActivarInactivarDepartamentoCommand(DepartamentoId));
+        ActivarInactivarDepartamentoResponse response = await _mediator.Send(new ActivarInactivarDepartamentoCommand(departamentoId));
 
         return Ok(response);
     }
