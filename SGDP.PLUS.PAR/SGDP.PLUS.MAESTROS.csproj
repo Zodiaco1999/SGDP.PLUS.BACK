@@ -60,8 +60,4 @@
     <ProjectReference Include="..\SEG.Comun\SGDP.PLUS.Comun.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Aplicacion\Funcionalidades\" />
-  </ItemGroup>
-
 </Project>

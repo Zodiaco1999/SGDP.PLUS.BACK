@@ -1,6 +1,6 @@
-namespace SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Paises.Consultar;
+namespace SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Paises.Lista;
 
-public record struct ConsultaPaisesResponse(
+public record struct ListaPaisesResponse(
     Guid PaisId,
     string? Nombre,
     string? Codigo,
@@ -8,5 +8,4 @@ public record struct ConsultaPaisesResponse(
     DateTime CreaFecha,
     string ModificaUsuario,
     DateTime ModificaFecha,
-    bool Activo
-    );
+    bool Activo);

@@ -10,7 +10,7 @@ public class ConsultarTipoDocumentoPorIdController : ControllerBase
     private readonly IMediator _mediator;
     public ConsultarTipoDocumentoPorIdController(IMediator mediator) => _mediator = mediator;
 
-    [HttpGet]
+    [HttpGet("{tipodocumentoId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ConsultarTipoDocumentoPorId(int tipodocumentoId)

@@ -10,7 +10,7 @@ public class ConsultarPaisPorIdController : ControllerBase
     private readonly IMediator _mediator;
     public ConsultarPaisPorIdController(IMediator mediator) => _mediator = mediator;
 
-    [HttpGet]
+    [HttpGet("{paisId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ConsultarPaisPorId(Guid paisId)

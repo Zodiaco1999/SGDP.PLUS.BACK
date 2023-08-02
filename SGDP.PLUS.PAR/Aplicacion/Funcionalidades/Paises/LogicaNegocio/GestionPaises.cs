@@ -7,6 +7,7 @@ using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Paises.ConsultarPorId;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Paises.Crear;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Paises.Editar;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Paises.Especificacion;
+using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Paises.Lista;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Paises.Repositorio;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoDocumentos.Editar;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoPersonas.ActivarInactivar;
@@ -16,6 +17,7 @@ using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoPersonas.Crear;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoPersonas.Especificacion;
 using SGDP.PLUS.MAESTROS.Dominio.Entidades;
 using SGDP.PLUS.MAESTROS.Infraestructura.UnidadTrabajo;
+using System.Data.Entity;
 
 namespace SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Paises.LogicaNegocio;
 
@@ -89,7 +91,7 @@ public class GestionPaises : BaseAppService, IGestionPaises
 
     }
 
-    public async Task<DataViewModel<ConsultarPaisesResponse>> ConsultarPaises(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
+    public async Task<DataViewModel<ConsultaPaisesResponse>> ConsultarPaises(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
     {
         try
         {
@@ -99,13 +101,13 @@ public class GestionPaises : BaseAppService, IGestionPaises
                 .OrderBy(ordenarPor!, direccionOrdenamientoAsc.GetValueOrDefault())
                 .SelectPageAsync(pagina, registrosPorPagina);
 
-            DataViewModel<ConsultarPaisesResponse> consulta = new(pagina, registrosPorPagina, result.TotalItems);
+            DataViewModel<ConsultaPaisesResponse> consulta = new(pagina, registrosPorPagina, result.TotalItems);
 
-            consulta.Data = new List<ConsultarPaisesResponse>();
+            consulta.Data = new List<ConsultaPaisesResponse>();
 
             foreach (var item in result.Items!)
             {
-                var det = new ConsultarPaisesResponse(
+                var det = new ConsultaPaisesResponse(
                                 item.PaisId,
                                 item.Nombre,
                                 item.Codigo,
@@ -174,6 +176,24 @@ public class GestionPaises : BaseAppService, IGestionPaises
             regActualizado.ModificaFecha,
             regActualizado.Activo
             );
+    }
 
+    public async Task<IEnumerable<ListaPaisesResponse>> ListaPaises()
+    {
+        var paises = await _paisRepositorioLectura
+            .Query(p => p.Activo)
+            .SelectAsync();
+
+        IEnumerable<ListaPaisesResponse> response = paises.Select(p => new ListaPaisesResponse(
+            p.PaisId,
+            p.Nombre,
+            p.Codigo,
+            p.CreaUsuario,
+            p.CreaFecha,
+            p.ModificaMaquina,
+            p.ModificaFecha,
+            p.Activo));
+
+        return response;
     }
 }

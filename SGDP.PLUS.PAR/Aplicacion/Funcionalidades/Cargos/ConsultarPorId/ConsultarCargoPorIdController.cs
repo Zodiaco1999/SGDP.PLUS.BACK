@@ -10,7 +10,7 @@ public class ConsultarCargoPorIdController : ControllerBase
     private readonly IMediator _mediator;
     public ConsultarCargoPorIdController(IMediator mediator) => _mediator = mediator;
 
-    [HttpGet]
+    [HttpGet("{cargoId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ConsultarCargoPorId(Guid CargoId)

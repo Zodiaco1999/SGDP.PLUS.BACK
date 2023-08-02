@@ -4,14 +4,14 @@ using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Paises.LogicaNegocio;
 
 namespace SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Paises.Consultar;
 
-public class ConsultarPaisesQueryHandler : IRequestHandler<ConsultarPaisesQuery, DataViewModel<ConsultarPaisesResponse>>
+public class ConsultaPaisesQueryHandler : IRequestHandler<ConsultaPaisesQuery, DataViewModel<ConsultaPaisesResponse>>
 {
     private readonly IGestionPaises _gestionPaises;
-    public ConsultarPaisesQueryHandler(IGestionPaises gestionPaises) => _gestionPaises = gestionPaises;
+    public ConsultaPaisesQueryHandler(IGestionPaises gestionPaises) => _gestionPaises = gestionPaises;
 
-    public async Task<DataViewModel<ConsultarPaisesResponse>> Handle(ConsultarPaisesQuery request, CancellationToken cancellationToken)
+    public async Task<DataViewModel<ConsultaPaisesResponse>> Handle(ConsultaPaisesQuery request, CancellationToken cancellationToken)
     {
-        DataViewModel<ConsultarPaisesResponse> result = await _gestionPaises.ConsultarPaises(request.textoBusqueda, request.pagina, request.registrosPorPagina);
+        DataViewModel<ConsultaPaisesResponse> result = await _gestionPaises.ConsultarPaises(request.textoBusqueda, request.pagina, request.registrosPorPagina);
 
         return result;
     }
