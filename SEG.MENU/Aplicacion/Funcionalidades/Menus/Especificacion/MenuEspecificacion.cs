@@ -25,7 +25,6 @@ public class MenuEspecificacion : SpecificationBase<Menu>
         {
             if (!string.IsNullOrWhiteSpace(s))
             {
-                SpecificationCriteria<Menu> especificacionSpl = new SpecificationCriteriaTrue<Menu>();
                 var eEspecificacion1 = new SpecificationCriteriaDirect<Menu>(c => c.NombreMenu.Contains(s));
                 var eEspecificacion2 = new SpecificationCriteriaDirect<Menu>(c => c.EtiquetaMenu.Contains(s));
                 var eEspecificacion3 = new SpecificationCriteriaDirect<Menu>(c => c.DescMenu.Contains(s));

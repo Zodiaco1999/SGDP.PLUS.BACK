@@ -154,7 +154,7 @@ public class GestionMenus : BaseAppService, IGestionMenus
         var filtroEspecificacion = new MenuEspecificacion(aplicacionId, moduloId, filtro);
 
         var result = await _menuRepositorioLectura
-            .Query(filtroEspecificacion.Criteria.And(m => m.Activo))
+            .Query(filtroEspecificacion.Criteria.And(m => m.Modulo.Activo).And(m => m.Activo))
             .SelectAsync();
 
         IEnumerable<ConsultarMenusPorParametrosResponse> menus = result.Select(m =>

@@ -1,6 +1,7 @@
 using Ardalis.GuardClauses;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.General;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Consultar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.ConsultarPorId;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Crear;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Editar;
@@ -59,6 +60,25 @@ public class GestionModulos : BaseAppService, IGestionModulos
             result.IconoNombre,
             result.Orden,
             result.Activo);
+    }
+
+    public async Task<IEnumerable<ConsultarModulosResponse>> ConsultarModulos(Guid aplicacionId)
+    {
+        var modulos = await _moduloRepositorioLectura
+            .Query(m => m.AplicacionId == aplicacionId && m.Activo)
+            .SelectAsync();
+
+        IEnumerable<ConsultarModulosResponse> response = modulos.Select(m => new ConsultarModulosResponse(
+            m.AplicacionId,
+            m.ModuloId,
+            m.NombreModulo,
+            m.DescModulo,
+            m.IconoPrefijo,
+            m.IconoNombre,
+            m.Orden,
+            m.Activo));
+
+        return response;
     }
 
     public async Task<CrearModuloResponse> CrearModulo(CrearModuloCommand registroDto)

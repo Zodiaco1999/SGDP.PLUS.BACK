@@ -8,6 +8,6 @@ public class Perfil : CamposLog
     public string NombrePerfil { get; set; } = string.Empty;
     public string DescPerfil { get; set; } = string.Empty;
     public bool Activo { get; set; } = true;
-    public virtual PerfilMenu? PerfilMenu { get; set; }
+    public virtual ICollection<PerfilMenu> PerfilMenus { get; set; } = new List<PerfilMenu>();
     public virtual ICollection<UsuarioPerfil> UsuarioPerfiles { get; set; } = new List<UsuarioPerfil>();
 }

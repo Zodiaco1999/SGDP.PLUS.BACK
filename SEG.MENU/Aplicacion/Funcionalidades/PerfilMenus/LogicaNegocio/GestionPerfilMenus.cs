@@ -1,6 +1,7 @@
 ﻿using Ardalis.GuardClauses;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.General;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.ConusltarPorParametros;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Consultar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.ConsultarPorId;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Crear;
@@ -9,6 +10,8 @@ using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Especificacion;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Repositorio;
 using SGDP.PLUS.SEG.Dominio.Entidades;
 using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
+using System;
+using System.Data.SqlClient;
 
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
 
@@ -33,15 +36,16 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
         _contextAccessor = contextAccessor;
     }
 
-    public async Task<DataViewModel<ConsultarPerfilMenusResponse>> ConsultarPerfilMenus(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
+    public async Task<DataViewModel<ConsultarPerfilMenusResponse>> ConsultarPerfilMenus(Guid perfilId, Guid? aplicaionId, Guid? moduloId, string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
     {
         try
         {
-            var filtroEspecificacion = new PerfilMenuEspecificacion(filtro);
+            var filtroEspecificacion = new PerfilMenuEspecificacion(perfilId, aplicaionId, moduloId, filtro);
 
             var result = await _perfilMenuRepositorioLectura
                 .Query(filtroEspecificacion.Criteria)
-                .OrderBy(ordenarPor!, direccionOrdenamientoAsc.GetValueOrDefault())
+                .Include("Menu.Modulo.Apliation")
+                .OrderBy(pm => pm.OrderBy(a => a.AplicacionId))
                 .SelectPageAsync(pagina, registrosPorPagina);
 
             DataViewModel<ConsultarPerfilMenusResponse> consulta = new DataViewModel<ConsultarPerfilMenusResponse>(pagina, registrosPorPagina, result.TotalItems);
@@ -64,7 +68,11 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
                                 item.CreaUsuario,
                                 item.CreaFecha,
                                 item.ModificaUsuario,
-                                item.ModificaFecha));
+                                item.ModificaFecha,
+                                item.Menu.Modulo.Apliation.NombreAplicacion,
+                                item.Menu.Modulo.NombreModulo,
+                                item.Menu.NombreMenu,
+                                item.Menu.DescMenu));
             }
 
             return consulta;
@@ -107,72 +115,116 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
             registro.Ejecuta);
     }
 
-    public async Task<ConsultarPerfilMenuPorIdResponse> ConsultarPerfilMenuPorId(Guid perfilId)
+    public async Task<IEnumerable<ConsultarPerfilMenusPorIdResponse>> ConsultarPerfilMenuPorId(Guid perfilId)
     {
         var result = await _perfilMenuRepositorioLectura
             .Query(p => p.PerfilId == perfilId)
-            .FirstOrDefaultAsync();
+            .Include(p => p.Menu)
+            .SelectAsync();
 
-        return new ConsultarPerfilMenuPorIdResponse(
-            result.PerfilId,
-            result.AplicacionId,
-            result.ModuloId,
-            result.MenuId,
-            result.Consulta,
-            result.Inserta,
-            result.Actualiza,
-            result.Elimina,
-            result.Activa,
-            result.Ejecuta,
-            result.CreaUsuario,
-            result.CreaFecha,
-            result.ModificaUsuario,
-            result.ModificaFecha);
+        IEnumerable<ConsultarPerfilMenusPorIdResponse> perfilMenus = result.Select(pm =>
+        new ConsultarPerfilMenusPorIdResponse(
+            pm.PerfilId,
+            pm.AplicacionId,
+            pm.ModuloId,
+            pm.MenuId,
+            pm.Menu.NombreMenu,
+            pm.Consulta,
+            pm.Inserta,
+            pm.Actualiza,
+            pm.Elimina,
+            pm.Activa,
+            pm.Ejecuta,
+            pm.Menu.Consulta,
+            pm.Menu.Inserta,
+            pm.Menu.Actualiza,
+            pm.Menu.Elimina,
+            pm.Menu.Activa,
+            pm.Menu.Ejecuta));
+
+        return perfilMenus;
     }
 
-    public async Task<EditarPerfilMenuResponse> EditarPerfilMenu(EditarPerfilMenuCommand registroDto)
+    public async Task EditarPerfilMenu(List<EditarPerfilMenuCommand> perfilMenusDto, Guid perfilId)
     {
-        var regActualizar = await _perfilMenuRepositorioEscritura.Query(x => x.PerfilId == registroDto.PerfilId).FirstOrDefaultAsync();
+        var perfilMenusActualizar = await _perfilMenuRepositorioEscritura
+            .Query(x => x.PerfilId == perfilId)
+            .SelectAsync();
 
-        if (regActualizar is null)
+        var perfilMenusActuales = perfilMenusDto
+            .Select(m => new PerfilMenu
+            {
+                PerfilId = perfilId,
+                AplicacionId = m.AplicacionId,
+                ModuloId = m.ModuloId,
+                MenuId = m.MenuId,
+                Consulta = m.Consulta,
+                Inserta = m.Inserta,
+                Actualiza = m.Actualiza,
+                Elimina = m.Elimina,
+                Activa = m.Activa,
+                Ejecuta = m.Ejecuta
+            });
+
+        var menusActuales = perfilMenusActuales.Intersect(perfilMenusActualizar, new PerfilMenuEqualityComparer()).ToList();
+        var menusAgregar = perfilMenusActuales.Except(perfilMenusActualizar, new PerfilMenuEqualityComparer()).ToList();
+        var menusEliminar = perfilMenusActualizar.Except(perfilMenusActuales, new PerfilMenuEqualityComparer()).ToList();
+
+        // Actualizar elementos
+        foreach (var menuActual in menusActuales)
         {
-            throw new NotFoundException(nameof(PerfilMenu), "No se encontró el registro a actualizar");
+            var menuActualizar = perfilMenusActualizar.FirstOrDefault(pm => pm.MenuId == menuActual.MenuId);
+            if (menuActualizar != null)
+            {
+                menuActualizar.Consulta = menuActual.Consulta;
+                menuActualizar.Inserta = menuActual.Inserta;
+                menuActualizar.Actualiza = menuActual.Actualiza;
+                menuActualizar.Elimina = menuActual.Elimina;
+                menuActualizar.Activa = menuActual.Activa;
+                menuActualizar.Ejecuta = menuActual.Ejecuta;
+
+                _perfilMenuRepositorioEscritura.Update(menuActualizar);
+            }
+        }
+        // Agregar elementos
+        if (menusAgregar.Count > 0)
+        {
+            _perfilMenuRepositorioEscritura.InsertRange(menusAgregar);
+        }
+        // Eliminar elementos
+        foreach (var menuEliminar in menusEliminar)
+        {
+            await _perfilMenuRepositorioEscritura.DeleteAsync(menuEliminar.PerfilId, menuEliminar.MenuId);
         }
 
-        regActualizar.PerfilId = registroDto.PerfilId;
-        regActualizar.AplicacionId = registroDto.AplicacionId;
-        regActualizar.ModuloId = registroDto.ModuloId;
-        regActualizar.MenuId = registroDto.MenuId;
-        regActualizar.Consulta = registroDto.Consulta;
-        regActualizar.Inserta = registroDto.Inserta;
-        regActualizar.Actualiza = registroDto.Actualiza;
-        regActualizar.Elimina = registroDto.Elimina;
-        regActualizar.Activa = registroDto.Activa;
-        regActualizar.Ejecuta = registroDto.Ejecuta;
-
-        _perfilMenuRepositorioEscritura.Update(regActualizar);
         await _unitOfWork.SaveChangesAsync();
+    }
 
-        var regActualizado = await _perfilMenuRepositorioEscritura.Query(x => x.PerfilId == registroDto.PerfilId).FirstOrDefaultAsync();
-        if (regActualizado is null)
+    public class PerfilMenuEqualityComparer : IEqualityComparer<PerfilMenu>
+    {
+        public bool Equals(PerfilMenu x, PerfilMenu y)
         {
-            throw new NotFoundException(nameof(PerfilMenu), "No se encontró el registro a actualizado");
+            if (ReferenceEquals(x, y)) return true;
+            if (x is null || y is null) return false;
+
+            return x.PerfilId == y.PerfilId &&
+                   x.AplicacionId == y.AplicacionId &&
+                   x.ModuloId == y.ModuloId &&
+                   x.MenuId == y.MenuId;
         }
 
-        return new EditarPerfilMenuResponse(
-            regActualizado.PerfilId,
-            regActualizado.AplicacionId,
-            regActualizado.ModuloId,
-            regActualizado.MenuId,
-            regActualizado.Consulta,
-            regActualizado.Inserta,
-            regActualizado.Actualiza,
-            regActualizado.Elimina,
-            regActualizado.Activa,
-            regActualizado.Ejecuta,
-            regActualizado.CreaUsuario,
-            regActualizado.CreaFecha,
-            regActualizado.ModificaUsuario,
-            regActualizado.ModificaFecha);
+        public int GetHashCode(PerfilMenu obj)
+        {
+            unchecked
+            {
+                int hashCode = obj.PerfilId.GetHashCode();
+                hashCode = (hashCode * 397) ^ obj.AplicacionId.GetHashCode();
+                hashCode = (hashCode * 397) ^ obj.ModuloId.GetHashCode();
+                hashCode = (hashCode * 397) ^ obj.MenuId.GetHashCode();
+                return hashCode;
+            }
+        }
     }
+
+
 }

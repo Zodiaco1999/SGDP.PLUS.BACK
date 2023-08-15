@@ -8,6 +8,7 @@ using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.Crear;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.Editar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.Especificacion;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.Repositorio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
 using SGDP.PLUS.SEG.Dominio.Entidades;
 using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
 
@@ -19,19 +20,22 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
     private readonly IPerfilRepositorioEscritura _perfilRepositorioEscritura;
     private readonly IUnitOfWorkSegEscritura _unitOfWork;
     private readonly IContextAccessor _contextAccessor;
+    private readonly IGestionPerfilMenus _gestionPerfilMenus;
 
     public GestionPerfiles(
         IPerfilRepositorioLectura perfilRepositorioLectura,
         IPerfilRepositorioEscritura perfilRepositorioEscritura,
         IUnitOfWorkSegEscritura unitOfWork,
         IContextAccessor contextAccessor,
-        ILoggerFactory loggerFactory
+        ILoggerFactory loggerFactory,
+        IGestionPerfilMenus gestionPerfilMenus
         ) : base(contextAccessor, loggerFactory)
     {
         _perfilRepositorioLectura = perfilRepositorioLectura;
         _perfilRepositorioEscritura = perfilRepositorioEscritura;
         _unitOfWork = unitOfWork;
         _contextAccessor = contextAccessor;
+        _gestionPerfilMenus = gestionPerfilMenus;
     }
 
     public async Task<DataViewModel<ConsultarPerfilesResponse>> ConsultarPerfiles(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
@@ -73,6 +77,18 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
     public async Task<CrearPerfilResponse> CrearPerfil(CrearPerfilCommand registroDto)
     {
         var registro = new Perfil { NombrePerfil = registroDto.NombrePerfil, DescPerfil = registroDto.DescPerfil };
+        registro.PerfilMenus = registroDto.PerfilMenus.Select(pm => new PerfilMenu
+        {
+            AplicacionId = pm.AplicacionId,
+            ModuloId = pm.ModuloId,
+            MenuId = pm.MenuId,
+            Consulta = pm.Consulta,
+            Inserta = pm.Inserta,
+            Actualiza = pm.Actualiza,
+            Elimina = pm.Elimina,
+            Activa = pm.Activa,
+            Ejecuta = pm.Ejecuta
+        }).ToList();
 
         _perfilRepositorioEscritura.Insert(registro);
         await _unitOfWork.SaveChangesAsync();
@@ -114,11 +130,7 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
     {
         var result = await _perfilRepositorioLectura
             .Query(p => p.PerfilId == perfilId)
-            .Include(p => p.PerfilMenu!)
-            //.Include(p => p.UsuarioPerfiles)
-            .FirstOrDefaultAsync();
-
-        if (result.PerfilMenu is not null) result.PerfilMenu.Perfil = null!;
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Perfil), "No se encontró el registro");
 
         return new ConsultarPerfilPorIdResponse(
             result.PerfilId,
@@ -128,18 +140,14 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
             result.CreaUsuario,
             result.CreaFecha,
             result.ModificaUsuario,
-            result.ModificaFecha,
-            result.PerfilMenu);
+            result.ModificaFecha);
     }
 
     public async Task<EditarPerfilResponse> EditarPerfil(EditarPerfilCommand registroDto)
     {
-        var regActualizar = await _perfilRepositorioEscritura.Query(x => x.PerfilId == registroDto.PerfilId).FirstOrDefaultAsync();
-
-        if (regActualizar is null)
-        {
-            throw new NotFoundException(nameof(Perfil), "No se encontró el registro a actualizar");
-        }
+        var regActualizar = await _perfilRepositorioEscritura
+            .Query(x => x.PerfilId == registroDto.PerfilId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Perfil), "No se encontró el registro a actualizar");
 
         regActualizar.NombrePerfil = registroDto.NombrePerfil;
         regActualizar.DescPerfil = registroDto.DescPerfil;
@@ -147,11 +155,11 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
         _perfilRepositorioEscritura.Update(regActualizar);
         await _unitOfWork.SaveChangesAsync();
 
-        var regActualizado = await _perfilRepositorioEscritura.Query(x => x.PerfilId == registroDto.PerfilId).FirstOrDefaultAsync();
-        if (regActualizado is null)
-        {
-            throw new NotFoundException(nameof(Perfil), "No se encontró el registro actualizado");
-        }
+        await _gestionPerfilMenus.EditarPerfilMenu(registroDto.perfilMenus, registroDto.PerfilId);
+
+        var regActualizado = await _perfilRepositorioEscritura
+            .Query(x => x.PerfilId == registroDto.PerfilId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Perfil), "No se encontró el registro actualizado");
 
         return new EditarPerfilResponse(
             regActualizado.PerfilId,

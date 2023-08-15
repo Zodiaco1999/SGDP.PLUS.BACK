@@ -8,6 +8,7 @@ using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.ConsultarPorId;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Crear;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Editar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Especificacion;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Lista;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Repositorio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Crear;
 using SGDP.PLUS.SEG.Dominio.Entidades;
@@ -185,5 +186,22 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
             regActualizado.CreaFecha,
             regActualizado.ModificaUsuario,
             regActualizado.ModificaFecha);
+    }
+
+    public async Task<IEnumerable<ListaAplicacionesResponse>> ListaAplicaciones()
+    {
+        var aplicaciones = await _aplicacionRepositorioLectura
+            .Query(a => a.Activo)
+            .OrderBy(o => o.OrderBy(a => a.NombreAplicacion))
+            .SelectAsync();
+
+        IEnumerable<ListaAplicacionesResponse> result = aplicaciones.Select(a => new ListaAplicacionesResponse(
+            a.AplicacionId,
+            a.NombreAplicacion,
+            a.DescAplicacion,
+            a.RutaUrl,
+            a.Activo));
+
+        return result;
     }
 }

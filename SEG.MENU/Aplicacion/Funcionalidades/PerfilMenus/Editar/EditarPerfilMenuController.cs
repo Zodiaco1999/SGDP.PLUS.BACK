@@ -19,8 +19,8 @@ public class EditarPerfilMenuController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> EditarPerfilMenu(EditarPerfilMenuCommand command)
     {
-        EditarPerfilMenuResponse response = await _mediator.Send(command);
+        await _mediator.Send(command);
 
-        return Ok(response);
+        return Ok();
     }
 }

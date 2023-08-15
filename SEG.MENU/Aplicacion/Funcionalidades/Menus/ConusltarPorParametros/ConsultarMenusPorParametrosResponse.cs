@@ -9,9 +9,9 @@ public record struct ConsultarMenusPorParametrosResponse(
     string DescMenu,
     string Url,
     short Orden,
-    bool Consulta,
-    bool Inserta,
-    bool Actualiza,
-    bool Elimina,
-    bool Activa,
-    bool Ejecuta);
+    bool MenuConsulta,
+    bool MenuInserta,
+    bool MenuActualiza,
+    bool MenuElimina,
+    bool MenuActiva,
+    bool MenuEjecuta);
