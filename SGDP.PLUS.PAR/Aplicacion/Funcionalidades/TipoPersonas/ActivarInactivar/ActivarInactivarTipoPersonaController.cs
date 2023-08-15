@@ -10,7 +10,7 @@ public class ActivarInactivarTipoPersonaController : ControllerBase
     private readonly IMediator _mediator;
     public ActivarInactivarTipoPersonaController(IMediator mediator) => _mediator = mediator;
 
-    [HttpGet]
+    [HttpGet("{tipopersonaId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ActivarInactivarTipoPersona(Guid tipopersonaId)

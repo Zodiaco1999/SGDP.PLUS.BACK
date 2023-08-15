@@ -10,7 +10,7 @@ public class ActivarInactivarCargoController : ControllerBase
     private readonly IMediator _mediator;
     public ActivarInactivarCargoController(IMediator mediator) => _mediator = mediator;
 
-    [HttpGet]
+    [HttpGet("{cargoId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ActivarInactivarCargo(Guid CargoId)

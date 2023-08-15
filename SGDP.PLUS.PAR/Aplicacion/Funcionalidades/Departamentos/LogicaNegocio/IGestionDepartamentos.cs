@@ -4,6 +4,7 @@ using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Departamentos.Consultar;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Departamentos.ConsultarPorId;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Departamentos.Crear;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Departamentos.Editar;
+using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Departamentos.Lista;
 
 namespace SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Departamentos.LogicaNegocio;
 
@@ -14,4 +15,5 @@ public interface IGestionDepartamentos
     Task<CrearDepartamentoResponse> CrearDepartamento(CrearDepartamentoCommand registroDto);
     Task<EditarDepartamentoResponse> EditarDepartamento(EditarDepartamentoCommand registroDto);
     Task<ActivarInactivarDepartamentoResponse> ActivarInactivarDepartamento(Guid departamentoId);
+    Task<IEnumerable<ListaDepartamentosResponse>> ListaDepartamentos();
 }

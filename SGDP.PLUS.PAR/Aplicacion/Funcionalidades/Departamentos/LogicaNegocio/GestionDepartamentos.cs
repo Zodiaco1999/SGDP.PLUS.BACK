@@ -7,13 +7,8 @@ using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Departamentos.ConsultarPorId
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Departamentos.Crear;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Departamentos.Editar;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Departamentos.Especificacion;
+using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Departamentos.Lista;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Departamentos.Repositorio;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Paises.ActivarInactivar;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Paises.Consultar;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Paises.ConsultarPorId;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Paises.Crear;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Paises.Editar;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Paises.Especificacion;
 using SGDP.PLUS.MAESTROS.Dominio.Entidades;
 using SGDP.PLUS.MAESTROS.Infraestructura.UnidadTrabajo;
 
@@ -181,5 +176,24 @@ public class GestionDepartamentos : BaseAppService, IGestionDepartamentos
             regActualizado.Activo
             );
 
+    }
+
+    public async Task<IEnumerable<ListaDepartamentosResponse>> ListaDepartamentos()
+    {
+        var departamentos = await _departamentoRepositorioLectura
+            .Query(p => p.Activo)
+            .SelectAsync();
+
+        IEnumerable<ListaDepartamentosResponse> response = departamentos.Select(p => new ListaDepartamentosResponse(
+            p.DepartamentoId,
+            p.Nombre,
+            p.Codigo,
+            p.CreaUsuario,
+            p.CreaFecha,
+            p.ModificaMaquina,
+            p.ModificaFecha,
+            p.Activo));
+
+        return response;
     }
 }

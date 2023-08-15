@@ -10,7 +10,7 @@ public class ActivarInactivarPaisController : ControllerBase
     private readonly IMediator _mediator;
     public ActivarInactivarPaisController(IMediator mediator) => _mediator = mediator;
 
-    [HttpGet]
+    [HttpGet("{paisId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ActivarInactivarPais(Guid paisId)

@@ -8,12 +8,6 @@ using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Cargos.Crear;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Cargos.Editar;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Cargos.Especificacion;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Cargos.Repositorio;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Ciudades.ActivarInactivar;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Ciudades.Consultar;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Ciudades.ConsultarPorId;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Ciudades.Crear;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Ciudades.Editar;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Ciudades.Especificacion;
 using SGDP.PLUS.MAESTROS.Dominio.Entidades;
 using SGDP.PLUS.MAESTROS.Infraestructura.UnidadTrabajo;
 
