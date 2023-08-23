@@ -155,26 +155,26 @@ public class GestionMenus : BaseAppService, IGestionMenus
 
         var result = await _menuRepositorioLectura
             .Query(filtroEspecificacion.Criteria.And(m => m.Modulo.Activo).And(m => m.Activo))
-            .SelectAsync();
+            .Include(p => p.Modulo.Apliation)
+            .SelectAsync(m => new ConsultarMenusPorParametrosResponse(
+                m.AplicacionId,
+                m.ModuloId,
+                m.MenuId,
+                m.NombreMenu,
+                m.EtiquetaMenu,
+                m.DescMenu,
+                m.Url,
+                m.Orden,
+                m.Modulo.NombreModulo,
+                m.Modulo.Apliation.NombreAplicacion,
+                m.Consulta,
+                m.Inserta,
+                m.Actualiza,
+                m.Elimina,
+                m.Activa,
+                m.Ejecuta));
 
-        IEnumerable<ConsultarMenusPorParametrosResponse> menus = result.Select(m =>
-        new ConsultarMenusPorParametrosResponse(
-            m.AplicacionId,
-            m.ModuloId,
-            m.MenuId,
-            m.NombreMenu,
-            m.EtiquetaMenu,
-            m.DescMenu,
-            m.Url,
-            m.Orden,
-            m.Consulta,
-            m.Inserta,
-            m.Actualiza,
-            m.Elimina,
-            m.Activa,
-            m.Ejecuta));
-
-        return menus;
+        return result;
     }
 
     public async Task<CrearMenuResponse> CrearMenu(CrearMenuCommand registroDto)

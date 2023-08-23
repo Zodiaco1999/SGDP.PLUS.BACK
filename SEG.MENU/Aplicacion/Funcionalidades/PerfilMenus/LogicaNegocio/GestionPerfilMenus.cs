@@ -1,7 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.General;
-using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.ConusltarPorParametros;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Consultar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.ConsultarPorId;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Crear;
@@ -10,8 +9,6 @@ using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Especificacion;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Repositorio;
 using SGDP.PLUS.SEG.Dominio.Entidades;
 using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
-using System;
-using System.Data.SqlClient;
 
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
 
@@ -117,32 +114,31 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
 
     public async Task<IEnumerable<ConsultarPerfilMenusPorIdResponse>> ConsultarPerfilMenuPorId(Guid perfilId)
     {
-        var result = await _perfilMenuRepositorioLectura
+        return await _perfilMenuRepositorioLectura
             .Query(p => p.PerfilId == perfilId)
-            .Include(p => p.Menu)
-            .SelectAsync();
-
-        IEnumerable<ConsultarPerfilMenusPorIdResponse> perfilMenus = result.Select(pm =>
-        new ConsultarPerfilMenusPorIdResponse(
-            pm.PerfilId,
-            pm.AplicacionId,
-            pm.ModuloId,
-            pm.MenuId,
-            pm.Menu.NombreMenu,
-            pm.Consulta,
-            pm.Inserta,
-            pm.Actualiza,
-            pm.Elimina,
-            pm.Activa,
-            pm.Ejecuta,
-            pm.Menu.Consulta,
-            pm.Menu.Inserta,
-            pm.Menu.Actualiza,
-            pm.Menu.Elimina,
-            pm.Menu.Activa,
-            pm.Menu.Ejecuta));
-
-        return perfilMenus;
+            .Include("Menu.Modulo.Apliation")
+            .SelectAsync(pm => new ConsultarPerfilMenusPorIdResponse(
+                pm.PerfilId,
+                pm.AplicacionId,
+                pm.ModuloId,
+                pm.MenuId,
+                pm.Menu.NombreMenu,
+                pm.Menu.DescMenu,
+                pm.Menu.Modulo.NombreModulo,
+                pm.Menu.Modulo.Apliation.NombreAplicacion,
+                pm.Consulta,
+                pm.Inserta,
+                pm.Actualiza,
+                pm.Elimina,
+                pm.Activa,
+                pm.Ejecuta,
+                pm.Menu.Consulta,
+                pm.Menu.Inserta,
+                pm.Menu.Actualiza,
+                pm.Menu.Elimina,
+                pm.Menu.Activa,
+                pm.Menu.Ejecuta,
+                true));         
     }
 
     public async Task EditarPerfilMenu(List<EditarPerfilMenuCommand> perfilMenusDto, Guid perfilId)
@@ -225,6 +221,4 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
             }
         }
     }
-
-
 }

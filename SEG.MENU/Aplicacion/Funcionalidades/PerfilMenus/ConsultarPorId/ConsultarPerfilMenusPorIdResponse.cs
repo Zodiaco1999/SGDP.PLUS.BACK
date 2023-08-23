@@ -6,6 +6,9 @@ public record struct ConsultarPerfilMenusPorIdResponse(
     Guid ModuloId,
     Guid MenuId,
     string NombreMenu,
+    string DescMenu,
+    string NombreModulo,
+    string NombreAplicacion,
     bool Consulta,
     bool Inserta,
     bool Actualiza,
@@ -17,4 +20,5 @@ public record struct ConsultarPerfilMenusPorIdResponse(
     bool MenuActualiza,
     bool MenuElimina,
     bool MenuActiva,
-    bool MenuEjecuta);
+    bool MenuEjecuta,
+    bool TodosInde);

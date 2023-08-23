@@ -80,6 +80,11 @@ namespace SGDP.PLUS.Comun.Repositorios
             return await _repository.SelectAsync(_expression, _orderBy, _propertyOrderBy, _sortDirection, _includes, _includesString, _ignoreQueryFilters);
         }
 
+        public async Task<IEnumerable<TResult>> SelectAsync<TResult>(Expression<Func<TEntity, TResult>> selector)
+        {
+            return await _repository.SelectAsync(selector, _expression, _orderBy, _propertyOrderBy, _sortDirection, _includes, _includesString, _ignoreQueryFilters);
+        }
+
         public IQueryable<TEntity> SqlQuery(string query, params object[] parameters)
         {
             return _repository.SelectQuery(query, parameters).AsQueryable();
