@@ -1,4 +1,5 @@
 using Ardalis.GuardClauses;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.General;
@@ -8,6 +9,7 @@ using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.ConsultarPorId;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Crear;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Editar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Especificacion;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Lista;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Repositorio;
 using SGDP.PLUS.SEG.Dominio.Entidades;
 using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
@@ -88,12 +90,7 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
 
     public async Task<CrearUsuarioResponse> CrearUsuario(CrearUsuarioCommand registroDto)
     {
-        //var usuarioExiste = await _usuarioRepositorioLectura
-        //    .Query(q => q.Email == registroDto.Email)
-        //    .FirstOrDefaultAsync();
-        //if (usuarioExiste) throw new Exception("El usuario o el correo ya existe");
-
-        var hash = Jwt.Hash(registroDto.Contrasena);
+        var hash = Jwt.Hash(registroDto.Contrasena = registroDto.UsuarioId);
         var registro = new Usuario()
         {
             UsuarioId = registroDto.UsuarioId,
@@ -109,16 +106,22 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
             Genero = registroDto.Genero,
             Contrasena = hash.Password,
             Salt = hash.Salt,
-            FechaActualizacionContrasena = registroDto.FechaActualizacionContrasena,
+            FechaActualizacionContrasena = DateTime.Now,
             AccesosFallidos = registroDto.AccesosFallidos,
             FechaBloqueo = registroDto.FechaBloqueo,
             CodigoAsignacion = registroDto.CodigoAsignacion,
             VenceCodigoAsignacion = registroDto.VenceCodigoAsignacion,
 
         };
-
-        _usuarioRepositorioEscritura.Insert(registro);
-        await _unitOfWork.SaveChangesAsync();
+        try
+        {
+            _usuarioRepositorioEscritura.Insert(registro);
+            await _unitOfWork.SaveChangesAsync();
+        }
+        catch(Exception ex) 
+        {
+            throw new NotFoundException(nameof(Usuario), $"No se creo el registro: { ex.InnerException.Message! }");
+        }
 
         return new CrearUsuarioResponse(
             registro.UsuarioId,
@@ -175,12 +178,10 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
 
     public async Task<EditarUsuarioResponse> EditarUsuario(EditarUsuarioCommand registroDto)
     {
-        var regActualizar = await _usuarioRepositorioEscritura.Query(x => x.UsuarioId == registroDto.UsuarioId).FirstOrDefaultAsync();
-
-        if (regActualizar is null)
-        {
-            throw new NotFoundException(nameof(Usuario), "No se encontro el registro");
-        }
+        var regActualizar = await _usuarioRepositorioEscritura
+            .Query(x => x.UsuarioId == registroDto.UsuarioId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "No se encontro el registro");
+        
 
         regActualizar.UsuarioId = registroDto.UsuarioId;
         regActualizar.UsuarioDominio = registroDto.UsuarioDominio;
@@ -195,7 +196,7 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
         regActualizar.FechaNacimiento = registroDto.FechaNacimiento;
         regActualizar.Genero = registroDto.Genero;
         regActualizar.Contrasena = registroDto.Contrasena;
-        regActualizar.FechaActualizacionContrasena = registroDto.FechaActualizacionContrasena;
+        regActualizar.FechaActualizacionContrasena = DateTime.Now;
         regActualizar.AccesosFallidos = registroDto.AccesosFallidos;
         regActualizar.FechaBloqueo = registroDto.FechaBloqueo;
         regActualizar.CodigoAsignacion = registroDto.CodigoAsignacion;
@@ -205,11 +206,9 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
         _usuarioRepositorioEscritura.Update(regActualizar);
         await _unitOfWork.SaveChangesAsync();
 
-        var regActualizado = await _usuarioRepositorioEscritura.Query(x => x.UsuarioId == registroDto.UsuarioId).FirstOrDefaultAsync();
-        if (regActualizado is null)
-        {
-            throw new NotFoundException(nameof(Usuario), "No se encontró el registro a actualizado");
-        }
+        var regActualizado = await _usuarioRepositorioEscritura
+            .Query(x => x.UsuarioId == registroDto.UsuarioId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "No se encontró el registro a actualizado");
 
         return new EditarUsuarioResponse(
             regActualizado.UsuarioId,
@@ -239,22 +238,18 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
 
     public async Task<ActivarInactivarUsuarioResponse> ActivarInactivarUsuario(string usuarioId)
     {
-        var regActualizar = await _usuarioRepositorioEscritura.Query(x => x.UsuarioId == usuarioId).FirstOrDefaultAsync();
+        var regActualizar = await _usuarioRepositorioEscritura
+            .Query(x => x.UsuarioId == usuarioId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "No se encontró el registro a actualizar");
 
-        if (regActualizar is null)
-        {
-            throw new NotFoundException(nameof(Usuario), "No se encontró el registro a actualizar");
-        }
-        regActualizar.Activo = !regActualizar.Activo;
+            regActualizar.Activo = !regActualizar.Activo;
 
         _usuarioRepositorioEscritura.Update(regActualizar);
         await _unitOfWork.SaveChangesAsync();
 
-        var regActualizado = await _usuarioRepositorioEscritura.Query(x => x.UsuarioId == usuarioId).FirstOrDefaultAsync();
-        if (regActualizado is null)
-        {
-            throw new NotFoundException(nameof(Usuario), "No se encontró el registro actualizado");
-        }
+        var regActualizado = await _usuarioRepositorioEscritura
+            .Query(x => x.UsuarioId == usuarioId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "No se encontró el registro actualizado");
 
         return new ActivarInactivarUsuarioResponse(
             regActualizado.UsuarioId,
@@ -281,4 +276,15 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
             regActualizado.ModificaUsuario,
             regActualizado.ModificaFecha);
     }
+
+    //public async Task<IEnumerable<ListaTipoDocumentoResponse>> ListaTipoDocumento()
+    //{
+    //    var documento = await _usuarioRepositorioLectura
+    //        .Queryable()
+    //        .ToListAsync();
+
+    //    IEnumerable<ListaTipoDocumentoResponse> response = documento.Select(p=> new ListaTipoDocumentoResponse(
+    //        p.TipoDocumentoId,
+    //        p.Nombre))
+    //}
 }

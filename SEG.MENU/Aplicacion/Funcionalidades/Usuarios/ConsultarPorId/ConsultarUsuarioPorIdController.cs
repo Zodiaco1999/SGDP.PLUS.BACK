@@ -10,7 +10,7 @@ public class ConsultarUsuarioPorIdController : ControllerBase
     private readonly IMediator _mediator;
     public ConsultarUsuarioPorIdController(IMediator mediator) => _mediator = mediator;
 
-    [HttpGet]
+    [HttpGet("{usuarioId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> ConsultarUsuarioPorId(string usuarioId)

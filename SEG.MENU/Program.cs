@@ -20,6 +20,7 @@ builder.Services.AddCors(options =>
         builder.WithOrigins(corsOrigins!).AllowAnyHeader().AllowAnyMethod();
     });
 });
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
