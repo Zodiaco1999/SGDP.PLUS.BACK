@@ -1,4 +1,5 @@
 using Ardalis.GuardClauses;
+using Microsoft.EntityFrameworkCore;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoDocumentos.ActivarInactivar;
@@ -7,13 +8,8 @@ using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoDocumentos.ConsultarPorI
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoDocumentos.Crear;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoDocumentos.Editar;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoDocumentos.Especificacion;
+using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoDocumentos.Lista;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoDocumentos.Repositorio;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoPersonas.ActivarInactivar;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoPersonas.Consultar;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoPersonas.ConsultarPorId;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoPersonas.Crear;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoPersonas.Editar;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoPersonas.Especificacion;
 using SGDP.PLUS.MAESTROS.Dominio.Entidades;
 using SGDP.PLUS.MAESTROS.Infraestructura.UnidadTrabajo;
 
@@ -129,6 +125,7 @@ public class GestionTipoDocumentos : BaseAppService, IGestionTipoDocumentos
     {
         var registro = new TipoDocumento
         {
+            TipoDocumentoId =  _tipodocumentoRepositorioLectura.Query().Select().Count()+1, 
             Nombre = registroDto.Nombre,
             Abreviatura = registroDto.Abreviatura
         };
@@ -174,5 +171,20 @@ public class GestionTipoDocumentos : BaseAppService, IGestionTipoDocumentos
             regActualizado.Activo
             );
 
+    }
+
+    public async Task<IEnumerable<ListaTipoDocumentoResponse>> ListaTipoDocumento()
+    {
+        var tipoDocumento = await _tipodocumentoRepositorioLectura
+            .Queryable()
+            .ToListAsync();
+
+        IEnumerable<ListaTipoDocumentoResponse> response = tipoDocumento.Select(t => new ListaTipoDocumentoResponse(
+            t.TipoDocumentoId,
+            t.Nombre,
+            t.Abreviatura,
+            t.Activo));
+
+        return response;
     }
 }

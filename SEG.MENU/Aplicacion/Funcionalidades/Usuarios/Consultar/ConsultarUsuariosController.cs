@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SGDP.PLUS.Comun.General;
 
@@ -6,6 +7,7 @@ namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Consultar;
 
 [Route("api/[controller]")]
 [ApiController]
+//[Authorize]
 public class ConsultarUsuariosController : ControllerBase
 {
     private readonly IMediator _mediator;

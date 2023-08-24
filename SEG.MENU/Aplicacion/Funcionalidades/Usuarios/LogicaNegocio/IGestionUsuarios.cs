@@ -4,6 +4,7 @@ using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Consultar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.ConsultarPorId;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Crear;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Editar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Lista;
 
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.LogicaNegocio;
 
@@ -14,4 +15,5 @@ public interface IGestionUsuarios
     Task<CrearUsuarioResponse> CrearUsuario(CrearUsuarioCommand registroDto);
     Task<EditarUsuarioResponse> EditarUsuario(EditarUsuarioCommand registroDto);
     Task<ActivarInactivarUsuarioResponse> ActivarInactivarUsuario(string usuarioId);
+    //Task<IEnumerable<ListaTipoDocumentoResponse>> ListaTipoDocumento();
 }

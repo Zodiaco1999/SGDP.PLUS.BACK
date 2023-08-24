@@ -15,6 +15,7 @@ public record struct CrearUsuarioCommand(
                         DateTime? FechaNacimiento,
                         string Genero,
                         string? Contrasena,
+                        string? Salt,
                         DateTime FechaActualizacionContrasena,
                         short? AccesosFallidos,
                         DateTime? FechaBloqueo,
