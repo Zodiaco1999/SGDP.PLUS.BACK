@@ -8,7 +8,9 @@
 
   <ItemGroup>
     <PackageReference Include="EFCore.BulkExtensions" Version="7.1.2" />
+    <PackageReference Include="Independentsoft.Graph" Version="1.1.940" />
     <PackageReference Include="LinqKit" Version="1.2.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="7.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

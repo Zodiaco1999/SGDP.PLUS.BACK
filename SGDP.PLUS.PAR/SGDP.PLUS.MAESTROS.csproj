@@ -57,6 +57,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Dominio\" />
+    <Folder Include="Infraestructura\" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SEG.Comun\SGDP.PLUS.Comun.csproj" />
   </ItemGroup>
 

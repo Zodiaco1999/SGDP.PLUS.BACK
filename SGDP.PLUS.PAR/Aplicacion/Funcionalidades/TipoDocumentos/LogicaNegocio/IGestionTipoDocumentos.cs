@@ -4,6 +4,7 @@ using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoDocumentos.Consultar;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoDocumentos.ConsultarPorId;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoDocumentos.Crear;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoDocumentos.Editar;
+using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoDocumentos.Lista;
 
 namespace SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoDocumentos.LogicaNegocio;
 
@@ -14,4 +15,5 @@ public interface IGestionTipoDocumentos
     Task<CrearTipoDocumentoResponse> CrearTipoDocumento(CrearTipoDocumentoCommand registroDto);
     Task<EditarTipoDocumentoResponse> EditarTipoDocumento(EditarTipoDocumentoCommand registroDto);
     Task<ActivarInactivarTipoDocumentoResponse> ActivarInactivarTipoDocumento(int tipodocumentoId);
+    Task<IEnumerable<ListaTipoDocumentoResponse>> ListaTipoDocumento();
 }

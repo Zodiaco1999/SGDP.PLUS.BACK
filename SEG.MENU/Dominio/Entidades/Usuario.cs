@@ -28,7 +28,13 @@ namespace SGDP.PLUS.SEG.Dominio.Entidades
 
         public string? Contrasena { get; set; }
 
+        public string? Salt { get; set; }
+
         public DateTime FechaActualizacionContrasena { get; set; }
+
+        public string? Token { get; set; }
+
+        public DateTime? FechaExpiracionToken { get; set; }
 
         public short? AccesosFallidos { get; set; }
 

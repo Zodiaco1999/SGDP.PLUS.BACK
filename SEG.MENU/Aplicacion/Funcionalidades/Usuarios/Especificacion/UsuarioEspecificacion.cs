@@ -21,12 +21,14 @@ public class UsuarioEspecificacion : SpecificationBase<Usuario>
             if (!string.IsNullOrWhiteSpace(s))
             {
                 SpecificationCriteria<Usuario> especificacionSpl = new SpecificationCriteriaTrue<Usuario>();
-                var eEspecificacion1 = new SpecificationCriteriaDirect<Usuario>(c => c.UsuarioId.Contains(s));
-                var eEspecificacion2 = new SpecificationCriteriaDirect<Usuario>(c => c.PrimerNombre.Contains(s));
+                var eEspecificacion1 = new SpecificationCriteriaDirect<Usuario>(c => c.PrimerNombre.Contains(s));
+                var eEspecificacion2 = new SpecificationCriteriaDirect<Usuario>(c => c.SegundoNombre.Contains(s));
                 var eEspecificacion3 = new SpecificationCriteriaDirect<Usuario>(c => c.PrimerApellido.Contains(s));
-                var eEspecificacion4 = new SpecificationCriteriaDirect<Usuario>(c => c.Email.Contains(s));
+                var eEspecificacion4 = new SpecificationCriteriaDirect<Usuario>(c => c.SegundoApellido.Contains(s));
+                var eEspecificacion5 = new SpecificationCriteriaDirect<Usuario>(c => c.Email.Contains(s));
+                var eEspecificacion6 = new SpecificationCriteriaDirect<Usuario>(c => c.Genero.Contains(s));
 
-                especificacionSpl &= (eEspecificacion1 || eEspecificacion2 || eEspecificacion3 || eEspecificacion4);
+                especificacionSpl &= (eEspecificacion1 || eEspecificacion2 || eEspecificacion3 || eEspecificacion4 || eEspecificacion5 || eEspecificacion6);
 
                 especificacion &= especificacionSpl;
             }
