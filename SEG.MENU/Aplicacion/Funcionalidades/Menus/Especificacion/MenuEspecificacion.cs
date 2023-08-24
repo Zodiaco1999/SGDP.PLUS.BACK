@@ -6,16 +6,16 @@ namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Especificacion;
 public class MenuEspecificacion : SpecificationBase<Menu>
 {
     public Guid AplicacionId { get; set; }
-    public Guid ModuloId { get; set; }
-    public MenuEspecificacion(Guid aplicacionId, Guid moduloId, string textoBusqueda, int? pagina = null,
+    public Guid? ModuloId { get; set; }
+    public MenuEspecificacion(Guid aplicacionId, Guid? moduloId, string textoBusqueda, int? pagina = null,
         int? registrosPorPagina = null, string ordenarPor = null, string direccionOrdenamiento = "asc")
     {
         AplicacionId = aplicacionId;
         ModuloId = moduloId;
-        Criteria = BusquedaTextoCompleto(textoBusqueda).SatisfiedBy();
+        Criteria = BusquedaFiltro(textoBusqueda).SatisfiedBy();
     }
 
-    private ISpecificationCriteria<Menu> BusquedaTextoCompleto(string texto)
+    private ISpecificationCriteria<Menu> BusquedaFiltro(string texto)
     {
         SpecificationCriteria<Menu> especificacion = new SpecificationCriteriaTrue<Menu>();
 
@@ -25,7 +25,6 @@ public class MenuEspecificacion : SpecificationBase<Menu>
         {
             if (!string.IsNullOrWhiteSpace(s))
             {
-                SpecificationCriteria<Menu> especificacionSpl = new SpecificationCriteriaTrue<Menu>();
                 var eEspecificacion1 = new SpecificationCriteriaDirect<Menu>(c => c.NombreMenu.Contains(s));
                 var eEspecificacion2 = new SpecificationCriteriaDirect<Menu>(c => c.EtiquetaMenu.Contains(s));
                 var eEspecificacion3 = new SpecificationCriteriaDirect<Menu>(c => c.DescMenu.Contains(s));
@@ -35,8 +34,10 @@ public class MenuEspecificacion : SpecificationBase<Menu>
             }
         }
 
-        var eEspecificacionId = new SpecificationCriteriaDirect<Menu>(c => c.AplicacionId == AplicacionId && c.ModuloId == ModuloId);
-        especificacion &= eEspecificacionId; 
+        var eEspecificacionId = ModuloId != null ? new SpecificationCriteriaDirect<Menu>(c => c.AplicacionId == AplicacionId && c.ModuloId == ModuloId) :
+            new SpecificationCriteriaDirect<Menu>(c => c.AplicacionId == AplicacionId);
+
+        especificacion &= eEspecificacionId;
 
         return especificacion;
     }

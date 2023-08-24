@@ -32,9 +32,6 @@ public class UnitOfWorkSegLectura : UnitOfWorkBase, IUnitOfWorkSegLectura
         modelBuilder.ApplyConfiguration(new PerfilesConfiguracion());
         modelBuilder.ApplyConfiguration(new MenusConfiguracion());
         modelBuilder.ApplyConfiguration(new PerfilMenusConfiguracion());
-        modelBuilder.ApplyConfiguration(new PerfilesConfiguracion());
-        modelBuilder.ApplyConfiguration(new MenusConfiguracion());
-        modelBuilder.ApplyConfiguration(new PerfilMenusConfiguracion());
         modelBuilder.ApplyConfiguration(new TipoDocumentoConfiguracion());
         modelBuilder.ApplyConfiguration(new UsuarioConfiguracion());
         modelBuilder.ApplyConfiguration(new UsuarioFotoConfiguracion());

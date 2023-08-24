@@ -27,6 +27,8 @@ namespace SGDP.PLUS.Comun.Repositorios
 
         Task<IEnumerable<TEntity>> SelectAsync();
 
+        Task<IEnumerable<TResult>> SelectAsync<TResult>(Expression<Func<TEntity, TResult>> selector = null);
+
         Task<TEntity> FirstOrDefaultAsync();
 
         TEntity FirstOrDefault();

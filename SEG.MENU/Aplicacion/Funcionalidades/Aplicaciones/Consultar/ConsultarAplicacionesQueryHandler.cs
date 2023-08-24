@@ -14,8 +14,6 @@ public class ConsultarAplicacionesQueryHandler : IRequestHandler<ConsultarAplica
     }
 
     public async Task<DataViewModel<ConsultarAplicacionesResponse>> Handle(ConsultarAplicacionesQuery request, CancellationToken cancellationToken)
-    {
-        DataViewModel<ConsultarAplicacionesResponse> res = await _gestionAplicaciones.ConsultarAplicaciones(request.textoBusqueda, request.pagina, request.registrosPorPagina);
-        return res;        
-    }
+        => await _gestionAplicaciones.ConsultarAplicaciones(request.textoBusqueda, request.pagina, request.registrosPorPagina);
+        
 }

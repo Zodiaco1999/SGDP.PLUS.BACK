@@ -18,7 +18,7 @@ public class Menu : CamposLog
     public bool Elimina { get; set; }
     public bool Activa { get; set; }
     public bool Ejecuta { get; set; }
-    public bool Activo { get; set; }
+    public bool Activo { get; set; } = true;
 
     public virtual Modulo Modulo { get; set; } = null!;
     public virtual ICollection<PerfilMenu> PerfilMenus { get; set; } = new List<PerfilMenu>();

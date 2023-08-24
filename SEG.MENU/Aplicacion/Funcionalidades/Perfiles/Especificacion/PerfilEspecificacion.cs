@@ -20,13 +20,10 @@ public class PerfilEspecificacion : SpecificationBase<Perfil>
         {
             if (!string.IsNullOrWhiteSpace(s))
             {
-                SpecificationCriteria<Perfil> especificacionSpl = new SpecificationCriteriaTrue<Perfil>();
                 var eEspecificacion1 = new SpecificationCriteriaDirect<Perfil>(c => c.NombrePerfil.Contains(s));
                 var eEspecificacion2 = new SpecificationCriteriaDirect<Perfil>(c => c.DescPerfil.Contains(s));
 
-                especificacionSpl &= (eEspecificacion1 || eEspecificacion2);
-
-                especificacion &= especificacionSpl;
+                especificacion &= eEspecificacion1 || eEspecificacion2;
             }
         }
 

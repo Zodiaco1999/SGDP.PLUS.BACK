@@ -1,4 +1,5 @@
-﻿using SGDP.PLUS.SEG.Dominio.Entidades;
+﻿using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.ConsultarPorId;
+using SGDP.PLUS.SEG.Dominio.Entidades;
 
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.ConsultarPorId;
 
@@ -10,5 +11,4 @@ public record struct ConsultarPerfilPorIdResponse(
     string CreaUsuario,
     DateTime CreaFecha,
     string ModificaUsuario,
-    DateTime ModificaFecha,
-    PerfilMenu? PerfilMenu);
+    DateTime ModificaFecha);

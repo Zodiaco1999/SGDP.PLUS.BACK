@@ -3,7 +3,7 @@
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Editar;
 
 public record struct EditarPerfilMenuCommand(
-    Guid PerfilId,
+    Guid? PerfilId,
     Guid AplicacionId,
     Guid ModuloId,
     Guid MenuId,
@@ -12,5 +12,5 @@ public record struct EditarPerfilMenuCommand(
     bool Actualiza,
     bool Elimina,
     bool Activa,
-    bool Ejecuta) : IRequest<EditarPerfilMenuResponse>;
+    bool Ejecuta) : IRequest;
 

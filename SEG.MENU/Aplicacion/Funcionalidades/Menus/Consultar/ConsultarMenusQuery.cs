@@ -5,7 +5,7 @@ namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Consultar;
 
 public record struct ConsultarMenusQuery(
     Guid AplicacionId, 
-    Guid ModuloId,
+    Guid? ModuloId,
     string TextoBusqueda, 
     int Pagina, 
     int RegistrosPorPagina) : IRequest<DataViewModel<ConsultarMenusResponse>>;
