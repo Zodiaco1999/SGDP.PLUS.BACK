@@ -116,7 +116,6 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
     {
         return await _perfilMenuRepositorioLectura
             .Query(p => p.PerfilId == perfilId)
-            .Include("Menu.Modulo.Apliation")
             .SelectAsync(pm => new ConsultarPerfilMenusPorIdResponse(
                 pm.PerfilId,
                 pm.AplicacionId,

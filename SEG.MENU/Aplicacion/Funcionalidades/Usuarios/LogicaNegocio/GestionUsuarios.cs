@@ -90,7 +90,7 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
 
     public async Task<CrearUsuarioResponse> CrearUsuario(CrearUsuarioCommand registroDto)
     {
-        var hash = Jwt.Hash(registroDto.Contrasena = registroDto.UsuarioId);
+        var hash = HashCustom.Hash(registroDto.Contrasena = registroDto.UsuarioId);
         var registro = new Usuario()
         {
             UsuarioId = registroDto.UsuarioId,

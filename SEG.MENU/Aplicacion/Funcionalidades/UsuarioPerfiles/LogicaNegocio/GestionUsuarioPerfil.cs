@@ -34,8 +34,6 @@ public class GestionUsuarioPerfil : BaseAppService, IGestionUsuarioPerfil
         _contextAccessor = contextAccessor;
     }
 
-
-
     public async Task<DataViewModel<ConsultarUsuariosPerfilResponse>> ConsultarUsuariosPerfil(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
     {
         try
