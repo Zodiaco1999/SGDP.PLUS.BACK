@@ -90,8 +90,8 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
 
     public async Task<CrearUsuarioResponse> CrearUsuario(CrearUsuarioCommand registroDto)
     {
-        var hash = Jwt.Hash(registroDto.Contrasena = registroDto.UsuarioId);
-        var registro = new Usuario()
+        var hash = Jwt.Hash(registroDto.UsuarioId);
+        var registro = new Usuario
         {
             UsuarioId = registroDto.UsuarioId,
             UsuarioDominio = registroDto.UsuarioDominio,
@@ -107,21 +107,37 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
             Contrasena = hash.Password,
             Salt = hash.Salt,
             FechaActualizacionContrasena = DateTime.Now,
-            AccesosFallidos = registroDto.AccesosFallidos,
-            FechaBloqueo = registroDto.FechaBloqueo,
-            CodigoAsignacion = registroDto.CodigoAsignacion,
-            VenceCodigoAsignacion = registroDto.VenceCodigoAsignacion,
-
         };
-        try
+
+
+        if (!string.IsNullOrEmpty(registroDto.Foto))
         {
-            _usuarioRepositorioEscritura.Insert(registro);
-            await _unitOfWork.SaveChangesAsync();
+            try
+            {
+
+                registro.UsuarioFoto = new UsuarioFoto()
+                {
+                    Foto = registroDto.Foto.Substring(registroDto.Foto.IndexOf(',') + 1),
+                    Formato = registroDto.Foto.Substring(0, registroDto.Foto.IndexOf(','))
+                };
+            }
+            catch
+            {
+                throw new ApplicationException($"Imagen no valida");
+            }
         }
-        catch(Exception ex) 
+
+        registro.UsuarioPerfiles = registroDto.UsuarioPerfiles.Select(up => new UsuarioPerfil
         {
-            throw new NotFoundException(nameof(Usuario), $"No se creo el registro: { ex.InnerException.Message! }");
-        }
+            PerfilId = up.PerfilId,
+            FechaInicia = up.FechaInicia,
+            FechaTermina = up.FechaTermina
+        }).ToList();
+
+
+        _usuarioRepositorioEscritura.Insert(registro);
+        await _unitOfWork.SaveChangesAsync();
+        
 
         return new CrearUsuarioResponse(
             registro.UsuarioId,
@@ -144,11 +160,20 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
             registro.LogearLdap,
             registro.Activo);
     }
+
     public async Task<ConsultarUsuarioPorIdResponse> ConsultarUsuarioPorId(string usuarioId)
     {
         var result = await _usuarioRepositorioLectura
               .Query(p => p.UsuarioId == usuarioId)
-              .FirstOrDefaultAsync();
+              .Include(p => p.UsuarioFoto!)
+              .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "No se encontro el registro"); ;
+
+        string foto = string.Empty;
+
+        if (result.UsuarioFoto is not null)
+        {
+            foto = $"{result.UsuarioFoto.Formato},{result.UsuarioFoto.Foto}";
+        }
 
         return new ConsultarUsuarioPorIdResponse(
             result.UsuarioId,
@@ -160,6 +185,7 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
             result.PrimerApellido,
             result.SegundoApellido,
             result.Email,
+            foto,
             result.FechaNacimiento,
             result.Genero,
             result.Contrasena,

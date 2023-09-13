@@ -6,8 +6,8 @@ namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Especificacion;
 
 public class PerfilMenuEspecificacion : SpecificationBase<PerfilMenu>
 {
-    public PerfilMenuEspecificacion(Guid perfilId, Guid? aplicaionId, Guid? moduloId,
-        string textoBusqueda, int? pagina = null, int? registrosPorPagina = null, string ordenarPor = null, string direccionOrdenamiento = "asc")
+    public PerfilMenuEspecificacion(Guid perfilId, Guid? aplicaionId, Guid? moduloId, string textoBusqueda, int? pagina = null,
+        int? registrosPorPagina = null, string ordenarPor = null, string direccionOrdenamiento = "asc")
     {
         Criteria = BusquedaParametros(perfilId, aplicaionId, moduloId, textoBusqueda).SatisfiedBy();
     }
