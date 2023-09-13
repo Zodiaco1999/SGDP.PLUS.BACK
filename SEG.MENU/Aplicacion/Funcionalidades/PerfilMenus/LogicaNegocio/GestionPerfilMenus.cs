@@ -1,7 +1,9 @@
 ﻿using Ardalis.GuardClauses;
+using LinqKit;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Consultar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.ConsultarPerfilesPorApp;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.ConsultarPorId;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Crear;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Editar;
@@ -9,6 +11,7 @@ using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Especificacion;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Repositorio;
 using SGDP.PLUS.SEG.Dominio.Entidades;
 using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
+using System;
 
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
 
@@ -31,6 +34,20 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
         _perfilMenuRepositorioEscritura = perfilMenuRepositorioEscritura;
         _unitOfWork = unitOfWork;
         _contextAccessor = contextAccessor;
+    }
+
+    public async Task<IEnumerable<ConsultarPerfilesPorAplicacionResponse>> ConsultarPerfilesPorAplicacion(Guid aplicacionId)
+    {
+       
+        var result = await _perfilMenuRepositorioLectura
+            .Query(p => p.AplicacionId == aplicacionId)
+            .SelectAsync(p => new ConsultarPerfilesPorAplicacionResponse(
+                p.AplicacionId,
+                p.PerfilId,
+                p.Menu.Modulo.Apliation.NombreAplicacion,
+                p.Perfil.NombrePerfil));
+
+        return result.DistinctBy(p => p.PerfilId);
     }
 
     public async Task<DataViewModel<ConsultarPerfilMenusResponse>> ConsultarPerfilMenus(Guid perfilId, Guid? aplicaionId, Guid? moduloId, string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
@@ -139,7 +156,7 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
                 pm.Menu.Ejecuta,
                 true));         
     }
-
+  
     public async Task EditarPerfilMenu(List<EditarPerfilMenuCommand> perfilMenusDto, Guid perfilId)
     {
         var perfilMenusActualizar = await _perfilMenuRepositorioEscritura

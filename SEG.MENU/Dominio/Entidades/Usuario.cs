@@ -46,7 +46,7 @@ namespace SGDP.PLUS.SEG.Dominio.Entidades
 
         public bool? LogearLdap { get; set; }
 
-        public bool Activo { get; set; }
+        public bool Activo { get; set; } = true;
 
         public virtual TipoDocumento? TipoDocumento { get; set; }
 

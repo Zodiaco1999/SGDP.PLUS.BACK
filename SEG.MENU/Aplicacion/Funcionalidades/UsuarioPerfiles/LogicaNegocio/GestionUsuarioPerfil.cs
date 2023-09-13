@@ -75,7 +75,6 @@ public class GestionUsuarioPerfil : BaseAppService, IGestionUsuarioPerfil
     {
         var registro = new UsuarioPerfil()
         {
-            UsuarioId = registroDto.UsuarioId,
             PerfilId = registroDto.PerfilId,
             FechaInicia = registroDto.FechaInicia,
             FechaTermina = registroDto.FechaTermina

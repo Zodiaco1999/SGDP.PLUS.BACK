@@ -10,6 +10,7 @@ public record struct ConsultarUsuarioPorIdResponse(
     string PrimerApellido,
     string? SegundoApellido,
     string Email,
+    string Foto,
     DateTime? FechaNacimiento,
     string Genero,
     string? Contrasena,
