@@ -19,6 +19,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Autenticacion.LogicaNegocio;
+
 public class GestionAutenticacion : BaseAppService, IGestionAutenticacion
 {
     private readonly IUsuarioRepositorioLectura _usuarioRepositorioLectura;

@@ -7,6 +7,7 @@ public record struct ConsultarPerfilPorIdResponse(
     Guid PerfilId,
     string NombrePerfil,
     string DescPerfil,
+    string NombreAplicacion,
     bool Activo,
     string CreaUsuario,
     DateTime CreaFecha,

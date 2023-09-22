@@ -1,5 +1,4 @@
 ﻿using Ardalis.GuardClauses;
-using LinqKit;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Consultar;
@@ -11,7 +10,6 @@ using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Especificacion;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Repositorio;
 using SGDP.PLUS.SEG.Dominio.Entidades;
 using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
-using System;
 
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
 
@@ -38,7 +36,7 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
 
     public async Task<IEnumerable<ConsultarPerfilesPorAplicacionResponse>> ConsultarPerfilesPorAplicacion(Guid aplicacionId)
     {
-       
+
         var result = await _perfilMenuRepositorioLectura
             .Query(p => p.AplicacionId == aplicacionId)
             .SelectAsync(p => new ConsultarPerfilesPorAplicacionResponse(
@@ -58,8 +56,8 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
 
             var result = await _perfilMenuRepositorioLectura
                 .Query(filtroEspecificacion.Criteria)
-                .Include("Menu.Modulo.Apliation")
-                .OrderBy(pm => pm.OrderBy(a => a.AplicacionId))
+                .Include("Menu.Modulo")
+                .OrderBy(pm => pm.OrderBy(a => a.ModuloId))
                 .SelectPageAsync(pagina, registrosPorPagina);
 
             DataViewModel<ConsultarPerfilMenusResponse> consulta = new DataViewModel<ConsultarPerfilMenusResponse>(pagina, registrosPorPagina, result.TotalItems);
@@ -83,7 +81,6 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
                                 item.CreaFecha,
                                 item.ModificaUsuario,
                                 item.ModificaFecha,
-                                item.Menu.Modulo.Apliation.NombreAplicacion,
                                 item.Menu.Modulo.NombreModulo,
                                 item.Menu.NombreMenu,
                                 item.Menu.DescMenu));
@@ -154,9 +151,9 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
                 pm.Menu.Elimina,
                 pm.Menu.Activa,
                 pm.Menu.Ejecuta,
-                true));         
+                true));
     }
-  
+
     public async Task EditarPerfilMenu(List<EditarPerfilMenuCommand> perfilMenusDto, Guid perfilId)
     {
         var perfilMenusActualizar = await _perfilMenuRepositorioEscritura

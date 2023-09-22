@@ -1,4 +1,5 @@
 ﻿using Ardalis.GuardClauses;
+using NetTopologySuite.Index.HPRtree;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.ActivarInactivar;
@@ -46,6 +47,7 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
 
             var result = await _perfilRepositorioLectura
                 .Query(filtroEspecificacion.Criteria)
+                .Include("PerfilMenus.Menu.Modulo.Apliation")
                 .OrderBy(ordenarPor!, direccionOrdenamientoAsc.GetValueOrDefault())
                 .SelectPageAsync(pagina, registrosPorPagina);
 
@@ -59,6 +61,8 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
                                 item.PerfilId,
                                 item.NombrePerfil,
                                 item.DescPerfil,
+                                item.PerfilMenus.FirstOrDefault() != null ?
+                                item.PerfilMenus.FirstOrDefault()!.Menu.Modulo.Apliation.NombreAplicacion : "N/A",
                                 item.Activo,
                                 item.CreaUsuario,
                                 item.CreaFecha,
@@ -130,12 +134,14 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
     {
         var result = await _perfilRepositorioLectura
             .Query(p => p.PerfilId == perfilId)
+            .Include("PerfilMenus.Menu.Modulo.Apliation")
             .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Perfil), "No se encontró el registro");
 
         return new ConsultarPerfilPorIdResponse(
             result.PerfilId,
             result.NombrePerfil,
             result.DescPerfil,
+            result.PerfilMenus.FirstOrDefault() != null ? result.PerfilMenus.FirstOrDefault()!.Menu.Modulo.Apliation.NombreAplicacion : "N/A",
             result.Activo,
             result.CreaUsuario,
             result.CreaFecha,

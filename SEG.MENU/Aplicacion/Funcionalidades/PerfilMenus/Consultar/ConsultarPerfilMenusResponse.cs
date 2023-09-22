@@ -15,7 +15,6 @@ public record struct ConsultarPerfilMenusResponse(
     DateTime CreaFecha,
     string ModificaUsuario,
     DateTime ModificaFecha,
-    string nombreAplicacion,
     string nombreModulo,
     string nombreMenu,
     string DescMenu);

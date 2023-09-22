@@ -90,7 +90,7 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
 
     public async Task<CrearUsuarioResponse> CrearUsuario(CrearUsuarioCommand registroDto)
     {
-        var hash = HashCustom.Hash(registroDto.Contrasena = registroDto.UsuarioId);
+        var hash = HashCustom.Hash(registroDto.UsuarioId);
         var registro = new Usuario()
         {
             UsuarioId = registroDto.UsuarioId,
@@ -108,7 +108,6 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
             Salt = hash.Salt,
             FechaActualizacionContrasena = DateTime.Now,
         };
-
 
         if (!string.IsNullOrEmpty(registroDto.Foto))
         {
@@ -134,11 +133,9 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
             FechaTermina = up.FechaTermina
         }).ToList();
 
-
         _usuarioRepositorioEscritura.Insert(registro);
         await _unitOfWork.SaveChangesAsync();
         
-
         return new CrearUsuarioResponse(
             registro.UsuarioId,
             registro.UsuarioDominio,
@@ -208,7 +205,6 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
             .Query(x => x.UsuarioId == registroDto.UsuarioId)
             .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "No se encontro el registro");
         
-
         regActualizar.UsuarioId = registroDto.UsuarioId;
         regActualizar.UsuarioDominio = registroDto.UsuarioDominio;
         regActualizar.UsuarioDominio = registroDto.UsuarioDominio;
@@ -227,7 +223,6 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
         regActualizar.FechaBloqueo = registroDto.FechaBloqueo;
         regActualizar.CodigoAsignacion = registroDto.CodigoAsignacion;
         regActualizar.VenceCodigoAsignacion = registroDto.VenceCodigoAsignacion;
-
 
         _usuarioRepositorioEscritura.Update(regActualizar);
         await _unitOfWork.SaveChangesAsync();
