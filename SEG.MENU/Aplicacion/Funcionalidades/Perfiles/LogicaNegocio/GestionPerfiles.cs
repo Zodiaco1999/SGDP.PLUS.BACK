@@ -168,7 +168,7 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
             regActualizado.Activo,
             regActualizado.CreaUsuario,
             regActualizado.CreaFecha,
-            regActualizado.ModificaUsuario,
+            regActualizado.ModificaUsuario, 
             regActualizado.ModificaFecha);
     }
 }

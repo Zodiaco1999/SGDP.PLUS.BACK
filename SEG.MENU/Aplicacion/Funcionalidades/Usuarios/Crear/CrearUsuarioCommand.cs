@@ -16,4 +16,4 @@ public record struct CrearUsuarioCommand(
     string Foto,
     DateTime? FechaNacimiento,
     string Genero,                
-    List<CrearUsuarioPerfilCommand> UsuarioPerfiles) : IRequest<CrearUsuarioResponse>;
+    List<CrearUsuarioPerfilCommand> usuarioPerfiles) : IRequest<CrearUsuarioResponse>;

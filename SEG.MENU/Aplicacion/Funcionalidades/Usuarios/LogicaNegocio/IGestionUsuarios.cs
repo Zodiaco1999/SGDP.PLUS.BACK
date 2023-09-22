@@ -15,5 +15,4 @@ public interface IGestionUsuarios
     Task<CrearUsuarioResponse> CrearUsuario(CrearUsuarioCommand registroDto);
     Task<EditarUsuarioResponse> EditarUsuario(EditarUsuarioCommand registroDto);
     Task<ActivarInactivarUsuarioResponse> ActivarInactivarUsuario(string usuarioId);
-    //Task<IEnumerable<ListaTipoDocumentoResponse>> ListaTipoDocumento();
 }

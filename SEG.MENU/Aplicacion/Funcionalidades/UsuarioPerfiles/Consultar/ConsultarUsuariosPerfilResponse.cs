@@ -3,8 +3,8 @@
     public record struct ConsultarUsuariosPerfilResponse(
         string UsuarioId,
         Guid PerfilId,
-        DateTime FechaInicia,
-        DateTime FechaTermina,
+        DateTime? FechaInicia,
+        DateTime? FechaTermina,
         string CreaUsuario,
         DateTime CreaFecha,
         string ModificaUsuario,
