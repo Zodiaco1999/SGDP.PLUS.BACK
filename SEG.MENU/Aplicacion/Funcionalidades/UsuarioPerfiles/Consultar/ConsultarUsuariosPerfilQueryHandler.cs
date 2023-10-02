@@ -11,10 +11,8 @@ namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Consultar;
         
 
         public async Task<DataViewModel<ConsultarUsuariosPerfilResponse>> Handle(ConsultarUsuariosPerfilQuery request, CancellationToken cancellationToken)
-        {
-            DataViewModel<ConsultarUsuariosPerfilResponse> result = await _gestionUsuarioPerfil.ConsultarUsuariosPerfil(request.textoBusqueda, request.pagina, request.registrosPorPagina);
+            =>await _gestionUsuarioPerfil.ConsultarUsuariosPerfil(request.UsuarioId, request.AplicaionId, request.TextoBusqueda, request.Pagina, request.RegistrosPorPagina);
 
-            return result;
-        }
+            
     }
 

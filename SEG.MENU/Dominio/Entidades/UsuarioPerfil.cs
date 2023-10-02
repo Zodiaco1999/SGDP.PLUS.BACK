@@ -8,9 +8,9 @@ namespace SGDP.PLUS.SEG.Dominio.Entidades
 
         public Guid PerfilId { get; set; }
 
-        public DateTime FechaInicia { get; set; }
+        public DateTime? FechaInicia { get; set; }
 
-        public DateTime FechaTermina { get; set; }
+        public DateTime? FechaTermina { get; set; }
 
         public virtual Perfil Perfil { get; set; } = null!;
 

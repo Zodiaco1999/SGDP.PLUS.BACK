@@ -5,5 +5,8 @@ namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.ConsultarPorI
 public record struct ConsultarUsuarioPerfilPorIdResponse(
     Guid PerfilId,
     string NombrePerfil,
+    string NombreAplicacion,
     string DescPerfil,
+    DateTime? FechaInicia,
+    DateTime? FechaTermina,
     bool Activo);

@@ -1,6 +1,8 @@
 ﻿using Ardalis.GuardClauses;
+using NetTopologySuite.Index.HPRtree;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.General;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Repositorio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.Consultar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Consultar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.ConsultarPorId;
@@ -10,6 +12,7 @@ using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Especificacion;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Repositorio;
 using SGDP.PLUS.SEG.Dominio.Entidades;
 using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
+using static SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio.GestionPerfilMenus;
 
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.LogicaNegocio;
 
@@ -17,12 +20,14 @@ public class GestionUsuarioPerfil : BaseAppService, IGestionUsuarioPerfil
 {
     private readonly IUsuarioPerfilRepositorioLectura _usuarioPerfilRepositorioLectura;
     private readonly IUsuarioPerfilRepositorioEscritura _usuarioPerfilRepositorioEscritura;
+    private readonly IAplicationRepositorioLectura _aplicacionRepositorioLectura;
     private readonly IUnitOfWorkSegEscritura _unitOfWork;
     private readonly IContextAccessor _contextAccessor;
 
     public GestionUsuarioPerfil(
-        IUsuarioPerfilRepositorioLectura  usuarioPerfilRepositorioLectura,
+        IUsuarioPerfilRepositorioLectura usuarioPerfilRepositorioLectura,
         IUsuarioPerfilRepositorioEscritura usuarioPerfilRepositorioEscritura,
+        IAplicationRepositorioLectura aplicationRepositorioLectura,
         IUnitOfWorkSegEscritura unitOfWork,
         IContextAccessor contextAccessor,
         ILoggerFactory loggerFactory
@@ -30,42 +35,56 @@ public class GestionUsuarioPerfil : BaseAppService, IGestionUsuarioPerfil
     {
         _usuarioPerfilRepositorioLectura = usuarioPerfilRepositorioLectura;
         _usuarioPerfilRepositorioEscritura = usuarioPerfilRepositorioEscritura;
+        _aplicacionRepositorioLectura = aplicationRepositorioLectura;
         _unitOfWork = unitOfWork;
         _contextAccessor = contextAccessor;
     }
 
-    public async Task<DataViewModel<ConsultarUsuariosPerfilResponse>> ConsultarUsuariosPerfil(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
+    public async Task<DataViewModel<ConsultarUsuariosPerfilResponse>> ConsultarUsuariosPerfil(string usuarioId, Guid? aplicaionId, string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
     {
         try
         {
-            var filtroEspecificacion = new UsuarioPerfilEspecificacion(filtro);
+            var filtroEspecificacion = new UsuarioPerfilEspecificacion(usuarioId, aplicaionId, filtro);
 
             var result = await _usuarioPerfilRepositorioLectura
                 .Query(filtroEspecificacion.Criteria)
-                .OrderBy(ordenarPor!, direccionOrdenamientoAsc.GetValueOrDefault())
+                .Include("Perfil.PerfilMenus")
                 .SelectPageAsync(pagina, registrosPorPagina);
 
-            DataViewModel<ConsultarUsuariosPerfilResponse> consulta = new(pagina, registrosPorPagina, result.TotalItems);
+            var aplicaciones = await _aplicacionRepositorioLectura
+                .Query()
+                .SelectAsync();
+
+            var consulta = new DataViewModel<ConsultarUsuariosPerfilResponse>(pagina, registrosPorPagina, result.TotalItems);
 
             consulta.Data = new List<ConsultarUsuariosPerfilResponse>();
 
             foreach (var item in result.Items!)
             {
-                var det = new ConsultarUsuariosPerfilResponse(
+                string nombreAplicacion = "N/A";
+
+                if (item.Perfil.PerfilMenus.Count > 0)
+                {
+                    nombreAplicacion = aplicaciones.First(a => a.AplicacionId == item.Perfil.PerfilMenus.First().AplicacionId).NombreAplicacion;
+                }
+
+                consulta.Data.Add(new ConsultarUsuariosPerfilResponse(
                                 item.UsuarioId,
                                 item.PerfilId,
+                                item.Perfil!.NombrePerfil,
+                                nombreAplicacion,
                                 item.FechaInicia,
                                 item.FechaTermina,
                                 item.CreaUsuario,
                                 item.CreaFecha,
                                 item.ModificaUsuario,
                                 item.ModificaFecha
-                                );
-                consulta.Data.Add(det);
+                                ));
             }
+
             return consulta;
         }
-        catch(Exception ex) 
+        catch (Exception ex)
         {
             throw new NotFoundException(nameof(UsuarioPerfil), ex.Message);
         }
@@ -92,56 +111,88 @@ public class GestionUsuarioPerfil : BaseAppService, IGestionUsuarioPerfil
 
     public async Task<IEnumerable<ConsultarUsuarioPerfilPorIdResponse>> ConsultarUsuarioPerfilPorId(string usuarioId)
     {
-        var perfiles = _usuarioPerfilRepositorioLectura
-            .Query(u => u.UsuarioId == usuarioId)
-            .Include(p => p.Perfil)
-            .Select(p => p.Perfil);
-
-        var perfilesResponse = new List<ConsultarUsuarioPerfilPorIdResponse>();
-
-        foreach(var perfil in perfiles)
-        {
-            perfilesResponse.Add(new ConsultarUsuarioPerfilPorIdResponse(
-                perfil.PerfilId, 
-                perfil.NombrePerfil, 
-                perfil.DescPerfil, 
-                perfil.Activo));
-        }
-
-        return perfilesResponse;
+        return await _usuarioPerfilRepositorioLectura
+             .Query(u => u.UsuarioId == usuarioId)
+             .SelectAsync(up => new ConsultarUsuarioPerfilPorIdResponse(
+                up.PerfilId,
+                up.Perfil.NombrePerfil,
+                up.Perfil.PerfilMenus.FirstOrDefault(p => p.PerfilId == up.PerfilId)!.Menu.Modulo.Apliation.NombreAplicacion ?? "NA",
+                up.Perfil.DescPerfil,
+                up.FechaInicia,
+                up.FechaTermina,
+                up.Perfil.Activo));
     }
 
-    public async Task<EditarUsuarioPerfilResponse> EditarUsuarioPerfil(EditarUsuarioPerfilCommand registroDto)
+    public async Task EditarUsuarioPerfil(List<EditarUsuarioPerfilCommand> usuarioPerfilDto, string usuarioId)
     {
-        var regActualizar = await _usuarioPerfilRepositorioEscritura.Query(x => x.UsuarioId == registroDto.UsuarioId && x.PerfilId == registroDto.PerfilId).FirstOrDefaultAsync();
+        var usuarioPerfilActualizar = await _usuarioPerfilRepositorioEscritura
+            .Query(x => x.UsuarioId == usuarioId)
+            .SelectAsync();
 
-        if (regActualizar is null)
+        if (usuarioPerfilActualizar is null)
         {
             throw new NotFoundException(nameof(UsuarioPerfil), "No se encontro el registro");
         }
 
-        regActualizar.UsuarioId = registroDto.UsuarioId;
-        regActualizar.PerfilId = registroDto.PerfilId;
-        regActualizar.FechaInicia = registroDto.FechaInicia;
-        regActualizar.FechaTermina = registroDto.FechaTermina;
+        var usuarioPerfilesActuales = usuarioPerfilDto
+            .Select(u => new UsuarioPerfil
+            {
+                UsuarioId = usuarioId,
+                PerfilId = u.PerfilId,
+                FechaInicia = u.FechaInicia,
+                FechaTermina = u.FechaTermina
+            });
 
-        _usuarioPerfilRepositorioEscritura.Update(regActualizar);
-        await _unitOfWork.SaveChangesAsync();
+        var perfilesActuales = usuarioPerfilesActuales.Intersect(usuarioPerfilActualizar, new UsuarioPerfilEqualityComparer()).ToList();
+        var perfilesAgregar = usuarioPerfilesActuales.Except(usuarioPerfilActualizar, new UsuarioPerfilEqualityComparer()).ToList();
+        var perfilesEliminar = usuarioPerfilActualizar.Except(usuarioPerfilesActuales, new UsuarioPerfilEqualityComparer()).ToList();
 
-        var regActualizado = await _usuarioPerfilRepositorioEscritura.Query(x => x.UsuarioId == registroDto.UsuarioId && x.PerfilId == registroDto.PerfilId).FirstOrDefaultAsync();
-        if (regActualizado is null)
+        //Actuaizar elementos
+        foreach (var perfilActual in perfilesActuales)
         {
-            throw new NotFoundException(nameof(UsuarioPerfil), "No se encontró el registro a actualizado");
+            var perfilActualizar = usuarioPerfilActualizar.FirstOrDefault(up => up.PerfilId == perfilActual.PerfilId);
+            if (perfilActualizar != null)
+            {
+                perfilActualizar.FechaInicia = perfilActual.FechaInicia;
+                perfilActualizar.FechaTermina = perfilActual.FechaTermina;
+
+                _usuarioPerfilRepositorioEscritura.Update(perfilActualizar);
+            }
+        }
+        // Agregar elementos
+        if (perfilesAgregar.Count > 0)
+        {
+            _usuarioPerfilRepositorioEscritura.InsertRange(perfilesAgregar);
+        }
+        // Eliminar elementos
+        foreach (var perfilEliminar in perfilesEliminar)
+        {
+            await _usuarioPerfilRepositorioEscritura.DeleteAsync(perfilEliminar.UsuarioId, perfilEliminar.PerfilId);
         }
 
-        return new EditarUsuarioPerfilResponse(
-            regActualizado.UsuarioId,
-            regActualizado.PerfilId,
-            regActualizado.FechaInicia,
-            regActualizado.FechaTermina,
-            regActualizado.CreaUsuario,
-            regActualizado.CreaFecha,
-            regActualizado.ModificaUsuario,
-            regActualizado.ModificaFecha);
+        await _unitOfWork.SaveChangesAsync();
     }
-}    
+
+    public class UsuarioPerfilEqualityComparer : IEqualityComparer<UsuarioPerfil>
+    {
+        public bool Equals(UsuarioPerfil x, UsuarioPerfil y)
+        {
+            if (ReferenceEquals(x, y)) return true;
+            if (x is null || y is null) return false;
+
+            return x.UsuarioId == y.UsuarioId &&
+                   x.PerfilId == y.PerfilId;
+        }
+
+        public int GetHashCode(UsuarioPerfil obj)
+        {
+            unchecked
+            {
+                int hashCode = obj.UsuarioId.GetHashCode();
+                hashCode = (hashCode * 397) ^ obj.PerfilId.GetHashCode();
+                return hashCode;
+            }
+        }
+    }
+
+}

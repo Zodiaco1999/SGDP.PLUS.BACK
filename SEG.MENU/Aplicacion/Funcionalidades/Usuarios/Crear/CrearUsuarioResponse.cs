@@ -13,10 +13,4 @@ public record struct CrearUsuarioResponse(
     DateTime? FechaNacimiento,
     string Genero,
     string? Contrasena,
-    DateTime FechaActualizacionContrasena,
-    short? AccesosFallidos,
-    DateTime? FechaBloqueo,
-    string? CodigoAsignacion,
-    DateTime? VenceCodigoAsignacion,
-    bool? LogearLdap,
-    bool Activo);
+    DateTime FechaActualizacionContrasena);
