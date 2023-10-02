@@ -14,6 +14,6 @@ public class ConsultarPerfilMenusQueryHandler : IRequestHandler<ConsultarPerfilM
     }
 
     public async Task<DataViewModel<ConsultarPerfilMenusResponse>> Handle(ConsultarPerfilMenusQuery request, CancellationToken cancellationToken)
-        =>await _gestionPerfilMenus.ConsultarPerfilMenus(request.PerfilId, request.AplicaionId, request.ModuloId, request.TextoBusqueda, request.Pagina, request.RegistrosPorPagina);
+        =>await _gestionPerfilMenus.ConsultarPerfilMenus(request.PerfilId, request.ModuloId, request.TextoBusqueda, request.Pagina, request.RegistrosPorPagina);
 
 }

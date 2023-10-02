@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SGDP.PLUS.Comun.General;
@@ -16,6 +17,7 @@ public class ConsultarMenuUsuarioController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [Authorize]
     public async Task<IActionResult> ConsultarMenuUsuario()
     {
         var response = await _mediator.Send(new ConsultarMenuUsuarioQuery());

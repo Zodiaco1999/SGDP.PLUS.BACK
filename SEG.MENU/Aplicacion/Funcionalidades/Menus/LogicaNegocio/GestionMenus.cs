@@ -232,6 +232,7 @@ public class GestionMenus : BaseAppService, IGestionMenus
                     Name = perfilMenu.Key.NombreMenu,
                     SubName = perfilMenu.Key.EtiquetaMenu,
                     Url = perfilMenu.Key.Url,
+                    Order = perfilMenu.Key.Orden,
                     Create = perfilMenu.Max(m => m.Inserta) && perfilMenu.Key.Inserta,
                     Read = perfilMenu.Max(m => m.Consulta) && perfilMenu.Key.Consulta,
                     Update = perfilMenu.Max(m => m.Actualiza) && perfilMenu.Key.Actualiza,

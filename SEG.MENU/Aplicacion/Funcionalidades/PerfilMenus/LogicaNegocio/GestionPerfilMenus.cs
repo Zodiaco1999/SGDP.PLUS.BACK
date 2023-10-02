@@ -48,11 +48,11 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
         return result.DistinctBy(p => p.PerfilId);
     }
 
-    public async Task<DataViewModel<ConsultarPerfilMenusResponse>> ConsultarPerfilMenus(Guid perfilId, Guid? aplicaionId, Guid? moduloId, string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
+    public async Task<DataViewModel<ConsultarPerfilMenusResponse>> ConsultarPerfilMenus(Guid perfilId, Guid? moduloId, string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
     {
         try
         {
-            var filtroEspecificacion = new PerfilMenuEspecificacion(perfilId, aplicaionId, moduloId, filtro);
+            var filtroEspecificacion = new PerfilMenuEspecificacion(perfilId, moduloId, filtro);
 
             var result = await _perfilMenuRepositorioLectura
                 .Query(filtroEspecificacion.Criteria)

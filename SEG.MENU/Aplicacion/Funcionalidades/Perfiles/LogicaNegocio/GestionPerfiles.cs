@@ -137,11 +137,23 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
             .Include("PerfilMenus.Menu.Modulo.Apliation")
             .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Perfil), "No se encontró el registro");
 
+        Guid aplicacionId = new();
+        string nombreAplicacion = "N/A";
+   
+        var perfilmenu = result.PerfilMenus.FirstOrDefault();
+
+        if (perfilmenu != null)
+        {
+            aplicacionId = perfilmenu.AplicacionId;
+            nombreAplicacion = perfilmenu.Menu.Modulo.Apliation.NombreAplicacion;
+        }
+
         return new ConsultarPerfilPorIdResponse(
             result.PerfilId,
             result.NombrePerfil,
             result.DescPerfil,
-            result.PerfilMenus.FirstOrDefault() != null ? result.PerfilMenus.FirstOrDefault()!.Menu.Modulo.Apliation.NombreAplicacion : "N/A",
+            aplicacionId,
+            nombreAplicacion,
             result.Activo,
             result.CreaUsuario,
             result.CreaFecha,

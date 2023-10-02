@@ -14,9 +14,9 @@ public class ConsultarPerfilMenusController : ControllerBase
     [HttpGet("{perfilId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ConsultarPerfilMenus(Guid perfilId, Guid? aplicacionId, Guid? moduloId, int pagina = 1, int registrosPorPagina = 20, string textoBusqueda = "", string ordenarPor = "", bool direccionOrdenamientoAsc = true)
+    public async Task<IActionResult> ConsultarPerfilMenus(Guid perfilId, Guid? moduloId, int pagina = 1, int registrosPorPagina = 20, string textoBusqueda = "", string ordenarPor = "", bool direccionOrdenamientoAsc = true)
     {
-        DataViewModel<ConsultarPerfilMenusResponse> resultado = await _mediator.Send(new ConsultarPerfilMenusQuery(perfilId, aplicacionId, moduloId, textoBusqueda, pagina, registrosPorPagina));
+        DataViewModel<ConsultarPerfilMenusResponse> resultado = await _mediator.Send(new ConsultarPerfilMenusQuery(perfilId, moduloId, textoBusqueda, pagina, registrosPorPagina));
 
         return Ok(resultado);
     }

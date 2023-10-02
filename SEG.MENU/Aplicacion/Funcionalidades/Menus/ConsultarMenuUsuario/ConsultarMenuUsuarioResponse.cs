@@ -20,6 +20,7 @@ public record struct ModuleOption(
     string Name,
     string SubName,
     string Url,
+    int Order,
     bool Create,
     bool Read,
     bool Update,
