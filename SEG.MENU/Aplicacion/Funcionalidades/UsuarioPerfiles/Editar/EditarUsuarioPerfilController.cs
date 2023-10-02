@@ -21,9 +21,9 @@ namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Editar;
 
         public async Task<IActionResult> EditarUsuarioPerfil(EditarUsuarioPerfilCommand command)
         {
-            EditarUsuarioPerfilResponse response = await _mediator.Send(command);
+            await _mediator.Send(command);
 
-            return Ok(response);
+            return Ok();
         }
 }
 

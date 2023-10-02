@@ -6,25 +6,21 @@ namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Especificacion;
 
 public class PerfilMenuEspecificacion : SpecificationBase<PerfilMenu>
 {
-    public PerfilMenuEspecificacion(Guid perfilId, Guid? aplicaionId, Guid? moduloId,
-        string textoBusqueda, int? pagina = null, int? registrosPorPagina = null, string ordenarPor = null, string direccionOrdenamiento = "asc")
+    public PerfilMenuEspecificacion(Guid perfilId, Guid? moduloId, string textoBusqueda, int? pagina = null,
+        int? registrosPorPagina = null, string ordenarPor = null, string direccionOrdenamiento = "asc")
     {
-        Criteria = BusquedaParametros(perfilId, aplicaionId, moduloId, textoBusqueda).SatisfiedBy();
+        Criteria = BusquedaParametros(perfilId, moduloId, textoBusqueda).SatisfiedBy();
     }
 
-    private ISpecificationCriteria<PerfilMenu> BusquedaParametros(Guid perfilId, Guid? aplicacionId, Guid? moduloId, string texto)
+    private ISpecificationCriteria<PerfilMenu> BusquedaParametros(Guid perfilId, Guid? moduloId, string texto)
     {
         SpecificationCriteria<PerfilMenu> especificacion = new SpecificationCriteriaTrue<PerfilMenu>();
 
         especificacion = new SpecificationCriteriaDirect<PerfilMenu>(c => c.PerfilId == perfilId);
 
-        if (aplicacionId is not null)
+        if (moduloId is not null)
         {
-            var eEspecificacionIds = moduloId is not null ? 
-                new SpecificationCriteriaDirect<PerfilMenu>(c => c.AplicacionId == aplicacionId && c.ModuloId == moduloId) :
-                new SpecificationCriteriaDirect<PerfilMenu>(c => c.AplicacionId == aplicacionId);
-
-            especificacion &= eEspecificacionIds;
+            especificacion &= new SpecificationCriteriaDirect<PerfilMenu>(c => c.ModuloId == moduloId);
         }
 
         var spl = texto.ToLower().Trim().Split(' ');

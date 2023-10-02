@@ -29,8 +29,9 @@ public class MenuEspecificacion : SpecificationBase<Menu>
                 var eEspecificacion2 = new SpecificationCriteriaDirect<Menu>(c => c.EtiquetaMenu.Contains(s));
                 var eEspecificacion3 = new SpecificationCriteriaDirect<Menu>(c => c.DescMenu.Contains(s));
                 var eEspecificacion4 = new SpecificationCriteriaDirect<Menu>(c => c.Url.Contains(s));
+                var eEspecificacion5 = new SpecificationCriteriaDirect<Menu>(c => c.Orden.ToString().Contains(s));
 
-                especificacion &= eEspecificacion1 || eEspecificacion2 || eEspecificacion3 || eEspecificacion4;
+                especificacion &= eEspecificacion1 || eEspecificacion2 || eEspecificacion3 || eEspecificacion4 || eEspecificacion5;
             }
         }
 

@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using SGDP.PLUS.Comun.ContextAccesor;
+using Microsoft.IdentityModel.Tokens;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.LogicaNegocio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Repositorio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.LogicaNegocio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Repositorio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Autenticacion.LogicaNegocio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Autenticacion.Seguridad.JWT;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.LogicaNegocio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Repositorio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.LogicaNegocio;
@@ -14,8 +15,6 @@ using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.LogicaNegocio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.Repositorio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Repositorio;
-using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Seguridad.LogicaNegocio;
-using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Seguridad.Repositorio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.LogicaNegocio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Repositorio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.LogicaNegocio;
@@ -27,6 +26,7 @@ using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.Repositorio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesionLog.LogicaNegocio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesionLog.Repositorio;
 using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
+using System.Text;
 
 namespace SGDP.PLUS.SEG;
 
@@ -34,7 +34,6 @@ public static class ContenedorDependencias
 {
     public static IServiceCollection AddAplicacionesServices(this IServiceCollection services, IConfiguration configuration)
     {
-
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 
         #region Configuración unidades de trabajo
@@ -47,11 +46,45 @@ public static class ContenedorDependencias
 
         #endregion
 
-        services.AddHttpContextAccessor();
-        services.AddControllers();
-        services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>();
+        #region Configuración Autenticación con JWT
 
-        services.AddSingleton<IContextAccessor, ContextAccessor>();
+        var jwtOptions = configuration.GetSection(nameof(JwtOptions));
+
+        services.Configure<JwtOptions>(options =>
+        {
+            options.Issuer = jwtOptions[nameof(JwtOptions.Issuer)]!;
+            options.Audience = jwtOptions[nameof(JwtOptions.Audience)]!;
+            options.ValidForMinutes = int.Parse(jwtOptions[nameof(JwtOptions.ValidForMinutes)]!);
+            options.SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(configuration["SecretKeyJWT"]!)), SecurityAlgorithms.HmacSha384);
+        });
+
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = jwtOptions[nameof(JwtOptions.Issuer)],
+
+                    ValidateAudience = true,
+                    ValidAudience = jwtOptions[nameof(JwtOptions.Audience)],
+
+                    RequireExpirationTime = true,
+                    ValidateLifetime = true,
+
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey =
+                        new SymmetricSecurityKey(System.Text.Encoding.UTF8
+                        .GetBytes(configuration["SecretKeyJWT"]!)),
+
+                    ClockSkew = TimeSpan.FromMinutes(1)
+                };
+            });
+
+        services.AddScoped<IJwtFactory, JwtFactory>();
+
+        #endregion
 
         // Aplicacion
         services.AddScoped<IGestionAplicaciones, GestionAplicaciones>();
@@ -65,23 +98,23 @@ public static class ContenedorDependencias
         services.AddScoped<IGestionPerfilMenus, GestionPerfilMenus>();
         services.AddScoped<IPerfilMenuRepositorioLectura, PerfilMenuRepositorioLectura>();
         services.AddScoped<IPerfilMenuRepositorioEscritura, PerfilMenuRepositorioEscritura>();
-        //UsuarioPerfil
+        // UsuarioPerfil
         services.AddScoped<IGestionUsuarioPerfil, GestionUsuarioPerfil>();
         services.AddScoped<IUsuarioPerfilRepositorioLectura, UsuarioPerfilRepositorioLectura>();
         services.AddScoped<IUsuarioPerfilRepositorioEscritura, UsuarioPerfilRepositorioEscritura>();
-        //UsuarioFoto
+        // UsuarioFoto
         services.AddScoped<IGestionUsuariosFotos, GestionUsuariosFotos>();
         services.AddScoped<IUsuarioFotoRepositorioLectura, UsuarioFotoRepositorioLectura>();
         services.AddScoped<IUsuarioFotoRepositorioEscritura, UsuarioFotoRepositorioEscritura>();
-        //Usuario
+        // Usuario
         services.AddScoped<IGestionUsuarios, GestionUsuarios>();
         services.AddScoped<IUsuarioRepositorioLectura, UsuarioRepositorioLectura>();
         services.AddScoped<IUsuarioRepositorioEscritura, UsuarioRepositorioEscritura>();
-        //UsuarioSesion
+        // UsuarioSesion
         services.AddScoped<IGestionUsuariosSesion, GestionUsuariosSesion>();
         services.AddScoped<IUsuarioSesionRepositorioLectura, UsuarioSesionRepositorioLectura>();
         services.AddScoped<IUsuarioSesionRepositorioEscritura, UsuarioSesionRepositorioEscritura>();
-        //UsuarioSesionLog
+        // UsuarioSesionLog
         services.AddScoped<IGestionUsuariosSesionLog, GestionUsuariosSesionLog>();
         services.AddScoped<IUsuarioSesionLogRepositorioLectura, UsuarioSesionLogRepositorioLectura>();
         services.AddScoped<IUsuarioSesionLogRepositorioEscritura, UsuarioSesionLogRepositorioEscritura>();
@@ -106,10 +139,8 @@ public static class ContenedorDependencias
         services.AddScoped<IGestionApis, GestionApis>();
         services.AddScoped<IApiRepositorioLectura, ApiRepositorioLectura>();
         services.AddScoped<IApiRepositorioEscritura, ApiRepositorioEscritura>();
-        //Seguridad
-        services.AddScoped<IGestionSeguridad, GestionSeguridad>();
-        services.AddScoped<ISeguridadRepositorioLectura, SeguridadRepositorioLectura>();
-        services.AddScoped<ISeguridadRepositorioEscritura, SeguridadRepositorioEscritura>();
+        // Autenticacion
+        services.AddScoped<IGestionAutenticacion, GestionAutenticacion>();
 
         return services;
     }

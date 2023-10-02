@@ -3,5 +3,5 @@
     public record struct CrearUsuarioPerfilResponse(
         string UsuarioId,
         Guid PerfilId,
-        DateTime FechaInicia,
-        DateTime FechaTermina);
+        DateTime? FechaInicia,
+        DateTime? FechaTermina);

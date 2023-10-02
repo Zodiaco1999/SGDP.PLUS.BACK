@@ -1,16 +1,18 @@
 using Ardalis.GuardClauses;
 using LinqKit;
-using NetTopologySuite.Index.HPRtree;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.General;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Repositorio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.ActivarInactivar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Consultar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.ConsultarMenuUsuario;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.ConsultarPorId;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.ConusltarPorParametros;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Crear;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Editar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Especificacion;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Repositorio;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Repositorio;
 using SGDP.PLUS.SEG.Dominio.Entidades;
 using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
 
@@ -20,12 +22,16 @@ public class GestionMenus : BaseAppService, IGestionMenus
 {
     private readonly IMenuRepositorioLectura _menuRepositorioLectura;
     private readonly IMenuRepositorioEscritura _menuRepositorioEscritura;
+    private readonly IAplicationRepositorioLectura _aplicacionRepositorioLectura;
+    private readonly IPerfilMenuRepositorioLectura _perfilMenuRepositorioLectura;
     private readonly IUnitOfWorkSegEscritura _unitOfWork;
     private readonly IContextAccessor _contextAccessor;
 
     public GestionMenus(
         IMenuRepositorioLectura menuRepositorioLectura,
         IMenuRepositorioEscritura menuRepositorioEscritura,
+        IAplicationRepositorioLectura aplicacionRepositorioLectura,
+        IPerfilMenuRepositorioLectura perfilMenuRepositorioLectura,
         IUnitOfWorkSegEscritura unitOfWork,
         IContextAccessor contextAccessor,
         ILoggerFactory loggerFactory
@@ -33,6 +39,8 @@ public class GestionMenus : BaseAppService, IGestionMenus
     {
         _menuRepositorioLectura = menuRepositorioLectura;
         _menuRepositorioEscritura = menuRepositorioEscritura;
+        _aplicacionRepositorioLectura = aplicacionRepositorioLectura;
+        _perfilMenuRepositorioLectura = perfilMenuRepositorioLectura;
         _unitOfWork = unitOfWork;
         _contextAccessor = contextAccessor;
     }
@@ -111,7 +119,7 @@ public class GestionMenus : BaseAppService, IGestionMenus
             var result = await _menuRepositorioLectura
                 .Query(filtroEspecificacion.Criteria)
                 .OrderBy(ordenarPor!, direccionOrdenamientoAsc.GetValueOrDefault())
-                .SelectPageAsync(pagina, registrosPorPagina); 
+                .SelectPageAsync(pagina, registrosPorPagina);
 
             DataViewModel<ConsultarMenusResponse> consulta = new(pagina, registrosPorPagina, result.TotalItems);
 
@@ -175,6 +183,74 @@ public class GestionMenus : BaseAppService, IGestionMenus
                 m.Ejecuta));
 
         return result;
+    }
+
+    public async Task<ConsultarMenuUsuarioResponse> ConsultarMenuUsuario()
+    {
+        var aplicacionId = ContextAccessor.AppId;
+
+        var aplicacion = await _aplicacionRepositorioLectura
+            .Query(q => q.AplicacionId == aplicacionId && !q.Eliminado)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), "Aplicación no valida");
+
+        if (!aplicacion.Activo)
+        {
+            throw new ValidationException("Aplicación inactiva");
+        }
+
+        var response = new ConsultarMenuUsuarioResponse(
+            aplicacion.AplicacionId,
+            aplicacion.NombreAplicacion,
+            aplicacion.DescAplicacion,
+            new List<Module>());
+
+        var usuarioPerfil = _perfilMenuRepositorioLectura
+            .Query(q => q.AplicacionId == aplicacionId && q.Perfil.Activo && q.Menu.Activo && q.Menu.Modulo.Activo &&
+                   q.Perfil.UsuarioPerfiles.FirstOrDefault(f => f.UsuarioId == ContextAccessor.UserId) != null)
+            .Include(i => i.Menu.Modulo)
+            .Select().OrderBy(o => o.Menu.Orden).ThenBy(o => o.Menu.Modulo.Orden).ToList();
+
+        foreach (var modulo in usuarioPerfil.GroupBy(g => g.Menu.Modulo).OrderBy(o => o.Key.Orden).ToList())
+        {
+            Module moduloDTO = new Module()
+            {
+                Id = modulo.Key.ModuloId,
+                Name = modulo.Key.NombreModulo,
+                SubName = modulo.Key.DescModulo,
+                IconPrefix = modulo.Key.IconoPrefijo,
+                IconName = modulo.Key.IconoNombre,
+                Active = modulo.Key.Activo,
+                Options = new List<ModuleOption>()
+            };
+            response.Modules.Add(moduloDTO);
+
+            foreach (var perfilMenu in modulo.GroupBy(g => g.Menu).OrderBy(o => o.Key.Orden).ToList())
+            {
+                ModuleOption menuDTO = new ModuleOption()
+                {
+                    Id = perfilMenu.Key.MenuId,
+                    Name = perfilMenu.Key.NombreMenu,
+                    SubName = perfilMenu.Key.EtiquetaMenu,
+                    Url = perfilMenu.Key.Url,
+                    Order = perfilMenu.Key.Orden,
+                    Create = perfilMenu.Max(m => m.Inserta) && perfilMenu.Key.Inserta,
+                    Read = perfilMenu.Max(m => m.Consulta) && perfilMenu.Key.Consulta,
+                    Update = perfilMenu.Max(m => m.Actualiza) && perfilMenu.Key.Actualiza,
+                    Activate = perfilMenu.Max(m => m.Activa) && perfilMenu.Key.Activa,
+                    Delete = perfilMenu.Max(m => m.Elimina) && perfilMenu.Key.Elimina,
+                    Execute = perfilMenu.Max(m => m.Ejecuta) && perfilMenu.Key.Ejecuta,
+                    MenuCreate = perfilMenu.Key.Inserta,
+                    MenuRead = perfilMenu.Key.Consulta,
+                    MenuUpdate = perfilMenu.Key.Actualiza,
+                    MenuDelete = perfilMenu.Key.Elimina,
+                    MenuActivate = perfilMenu.Key.Activa,
+                    MenuExecute = perfilMenu.Key.Ejecuta
+                };
+                moduloDTO.Options.Add(menuDTO);
+            }
+        }
+
+        return response;
     }
 
     public async Task<CrearMenuResponse> CrearMenu(CrearMenuCommand registroDto)

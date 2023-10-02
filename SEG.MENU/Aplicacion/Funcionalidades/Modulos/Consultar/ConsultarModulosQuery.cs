@@ -1,5 +1,4 @@
 using MediatR;
-using SGDP.PLUS.Comun.General;
 
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Consultar;
 

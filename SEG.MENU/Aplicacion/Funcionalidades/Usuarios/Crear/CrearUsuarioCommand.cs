@@ -1,23 +1,19 @@
 using MediatR;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Crear;
 
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Crear;
 
 public record struct CrearUsuarioCommand(
-                        string UsuarioId,
-                        string? UsuarioDominio,
-                        int? TipoDocumentoId,
-                        string? NumeroIdentificacion,
-                        string PrimerNombre,
-                        string? SegundoNombre,
-                        string PrimerApellido,
-                        string? SegundoApellido,
-                        string Email,
-                        DateTime? FechaNacimiento,
-                        string Genero,
-                        string? Contrasena,
-                        string? Salt,
-                        DateTime FechaActualizacionContrasena,
-                        short? AccesosFallidos,
-                        DateTime? FechaBloqueo,
-                        string? CodigoAsignacion,
-                        DateTime? VenceCodigoAsignacion) : IRequest<CrearUsuarioResponse>;
+    string UsuarioId,
+    string? UsuarioDominio,
+    int? TipoDocumentoId,
+    string? NumeroIdentificacion,
+    string PrimerNombre,
+    string? SegundoNombre,
+    string PrimerApellido,
+    string? SegundoApellido,
+    string Email,
+    string Foto,
+    DateTime? FechaNacimiento,
+    string Genero,                
+    List<CrearUsuarioPerfilCommand> usuarioPerfiles) : IRequest<CrearUsuarioResponse>;

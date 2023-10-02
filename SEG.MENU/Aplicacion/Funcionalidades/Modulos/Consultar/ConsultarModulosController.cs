@@ -14,7 +14,7 @@ public class ConsultarModulosController : ControllerBase
     [HttpGet("{aplicacionId}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ConsultarMenus(Guid aplicacionId)
+    public async Task<IActionResult> ConsultarModulos(Guid aplicacionId)
     {
         IEnumerable<ConsultarModulosResponse> response = await _mediator.Send(new ConsultarModulosQuery(aplicacionId));
 

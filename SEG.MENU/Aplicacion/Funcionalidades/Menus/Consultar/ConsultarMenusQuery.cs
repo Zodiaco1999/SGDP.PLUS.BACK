@@ -8,4 +8,6 @@ public record struct ConsultarMenusQuery(
     Guid? ModuloId,
     string TextoBusqueda, 
     int Pagina, 
-    int RegistrosPorPagina) : IRequest<DataViewModel<ConsultarMenusResponse>>;
+    int RegistrosPorPagina,
+    string? ordenarPor,
+    bool direccionOrdenamientoAsc) : IRequest<DataViewModel<ConsultarMenusResponse>>;

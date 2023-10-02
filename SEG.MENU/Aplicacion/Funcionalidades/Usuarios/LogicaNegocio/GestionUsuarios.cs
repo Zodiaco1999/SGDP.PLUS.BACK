@@ -1,8 +1,10 @@
 using Ardalis.GuardClauses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration.UserSecrets;
+using Microsoft.Win32;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.General;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.LogicaNegocio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.ActivarInactivar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Consultar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.ConsultarPorId;
@@ -22,19 +24,23 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
     private readonly IUsuarioRepositorioEscritura _usuarioRepositorioEscritura;
     private readonly IUnitOfWorkSegEscritura  _unitOfWork;
     private readonly IContextAccessor _contextAccessor;
+    private readonly IGestionUsuarioPerfil _gestionUsuarioPerfil;
+
 
     public GestionUsuarios(
         IUsuarioRepositorioLectura usuarioLectura,
         IUsuarioRepositorioEscritura usuarioEscritura,
         IUnitOfWorkSegEscritura unitOfWork,
         IContextAccessor contextAccessor,
-        ILoggerFactory loggerFactory
+        ILoggerFactory loggerFactory,
+        IGestionUsuarioPerfil gestionUsuarioPerfil
         ) : base(contextAccessor, loggerFactory)
     {
         _usuarioRepositorioLectura = usuarioLectura;
         _usuarioRepositorioEscritura = usuarioEscritura;
         _unitOfWork = unitOfWork;
         _contextAccessor = contextAccessor;
+        _gestionUsuarioPerfil = gestionUsuarioPerfil;
     }
 
     public async Task<DataViewModel<ConsultarUsuariosResponse>> ConsultarUsuarios(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
@@ -90,7 +96,7 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
 
     public async Task<CrearUsuarioResponse> CrearUsuario(CrearUsuarioCommand registroDto)
     {
-        var hash = Jwt.Hash(registroDto.Contrasena = registroDto.UsuarioId);
+        var hash = HashCustom.Hash(registroDto.UsuarioId);
         var registro = new Usuario()
         {
             UsuarioId = registroDto.UsuarioId,
@@ -107,22 +113,35 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
             Contrasena = hash.Password,
             Salt = hash.Salt,
             FechaActualizacionContrasena = DateTime.Now,
-            AccesosFallidos = registroDto.AccesosFallidos,
-            FechaBloqueo = registroDto.FechaBloqueo,
-            CodigoAsignacion = registroDto.CodigoAsignacion,
-            VenceCodigoAsignacion = registroDto.VenceCodigoAsignacion,
-
         };
-        try
+
+        if (!string.IsNullOrEmpty(registroDto.Foto))
         {
-            _usuarioRepositorioEscritura.Insert(registro);
-            await _unitOfWork.SaveChangesAsync();
-        }
-        catch(Exception ex) 
-        {
-            throw new NotFoundException(nameof(Usuario), $"No se creo el registro: { ex.InnerException.Message! }");
+            try
+            {
+
+                registro.UsuarioFoto = new UsuarioFoto()
+                {
+                    Foto = registroDto.Foto.Substring(registroDto.Foto.IndexOf(',') + 1),
+                    Formato = registroDto.Foto.Substring(0, registroDto.Foto.IndexOf(','))
+                };
+            }
+            catch
+            {
+                throw new ApplicationException($"Imagen no valida");
+            }
         }
 
+        registro.UsuarioPerfiles = registroDto.usuarioPerfiles.Select(up => new UsuarioPerfil
+        {
+            PerfilId = up.PerfilId,
+            FechaInicia = up.FechaInicia,
+            FechaTermina = up.FechaTermina
+        }).ToList();
+
+        _usuarioRepositorioEscritura.Insert(registro);
+        await _unitOfWork.SaveChangesAsync();
+        
         return new CrearUsuarioResponse(
             registro.UsuarioId,
             registro.UsuarioDominio,
@@ -136,19 +155,22 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
             registro.FechaNacimiento,
             registro.Genero,
             registro.Contrasena,
-            registro.FechaActualizacionContrasena,
-            registro.AccesosFallidos,
-            registro.FechaBloqueo,
-            registro.CodigoAsignacion,
-            registro.VenceCodigoAsignacion,
-            registro.LogearLdap,
-            registro.Activo);
+            registro.FechaActualizacionContrasena);
     }
+
     public async Task<ConsultarUsuarioPorIdResponse> ConsultarUsuarioPorId(string usuarioId)
     {
         var result = await _usuarioRepositorioLectura
               .Query(p => p.UsuarioId == usuarioId)
-              .FirstOrDefaultAsync();
+              .Include(p => p.UsuarioFoto!)
+              .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "No se encontro el registro"); ;
+
+        string foto = string.Empty;
+
+        if (result.UsuarioFoto is not null)
+        {
+            foto = $"{result.UsuarioFoto.Formato},{result.UsuarioFoto.Foto}";
+        }
 
         return new ConsultarUsuarioPorIdResponse(
             result.UsuarioId,
@@ -160,6 +182,7 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
             result.PrimerApellido,
             result.SegundoApellido,
             result.Email,
+            foto,
             result.FechaNacimiento,
             result.Genero,
             result.Contrasena,
@@ -180,10 +203,9 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
     {
         var regActualizar = await _usuarioRepositorioEscritura
             .Query(x => x.UsuarioId == registroDto.UsuarioId)
+            .Include(us => us.UsuarioFoto)
             .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "No se encontro el registro");
-        
 
-        regActualizar.UsuarioId = registroDto.UsuarioId;
         regActualizar.UsuarioDominio = registroDto.UsuarioDominio;
         regActualizar.UsuarioDominio = registroDto.UsuarioDominio;
         regActualizar.TipoDocumentoId = registroDto.TipoDocumentoId;
@@ -195,16 +217,29 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
         regActualizar.Email = registroDto.Email;
         regActualizar.FechaNacimiento = registroDto.FechaNacimiento;
         regActualizar.Genero = registroDto.Genero;
-        regActualizar.Contrasena = registroDto.Contrasena;
         regActualizar.FechaActualizacionContrasena = DateTime.Now;
-        regActualizar.AccesosFallidos = registroDto.AccesosFallidos;
-        regActualizar.FechaBloqueo = registroDto.FechaBloqueo;
-        regActualizar.CodigoAsignacion = registroDto.CodigoAsignacion;
-        regActualizar.VenceCodigoAsignacion = registroDto.VenceCodigoAsignacion;
 
+        if (!string.IsNullOrEmpty(registroDto.Foto))
+        {
+            try
+            {
+
+                regActualizar.UsuarioFoto = new UsuarioFoto()
+                {
+                    Foto = registroDto.Foto.Substring(registroDto.Foto.IndexOf(',') + 1),
+                    Formato = registroDto.Foto.Substring(0, registroDto.Foto.IndexOf(','))
+                };
+            }
+            catch
+            {
+                throw new ApplicationException($"Imagen no valida");
+            }
+        }
 
         _usuarioRepositorioEscritura.Update(regActualizar);
         await _unitOfWork.SaveChangesAsync();
+
+        await _gestionUsuarioPerfil.EditarUsuarioPerfil(registroDto.usuarioPerfiles, registroDto.UsuarioId);
 
         var regActualizado = await _usuarioRepositorioEscritura
             .Query(x => x.UsuarioId == registroDto.UsuarioId)
@@ -222,7 +257,6 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
             regActualizado.Email,
             regActualizado.FechaNacimiento,
             regActualizado.Genero,
-            regActualizado.Contrasena,
             regActualizado.FechaActualizacionContrasena,
             regActualizado.AccesosFallidos,
             regActualizado.FechaBloqueo,
@@ -276,15 +310,4 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
             regActualizado.ModificaUsuario,
             regActualizado.ModificaFecha);
     }
-
-    //public async Task<IEnumerable<ListaTipoDocumentoResponse>> ListaTipoDocumento()
-    //{
-    //    var documento = await _usuarioRepositorioLectura
-    //        .Queryable()
-    //        .ToListAsync();
-
-    //    IEnumerable<ListaTipoDocumentoResponse> response = documento.Select(p=> new ListaTipoDocumentoResponse(
-    //        p.TipoDocumentoId,
-    //        p.Nombre))
-    //}
 }

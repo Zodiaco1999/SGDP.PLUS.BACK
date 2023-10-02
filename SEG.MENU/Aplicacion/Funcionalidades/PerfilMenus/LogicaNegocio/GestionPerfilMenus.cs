@@ -2,6 +2,7 @@
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Consultar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.ConsultarPerfilesPorApp;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.ConsultarPorId;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Crear;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Editar;
@@ -33,16 +34,30 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
         _contextAccessor = contextAccessor;
     }
 
-    public async Task<DataViewModel<ConsultarPerfilMenusResponse>> ConsultarPerfilMenus(Guid perfilId, Guid? aplicaionId, Guid? moduloId, string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
+    public async Task<IEnumerable<ConsultarPerfilesPorAplicacionResponse>> ConsultarPerfilesPorAplicacion(Guid aplicacionId)
+    {
+
+        var result = await _perfilMenuRepositorioLectura
+            .Query(p => p.AplicacionId == aplicacionId)
+            .SelectAsync(p => new ConsultarPerfilesPorAplicacionResponse(
+                p.AplicacionId,
+                p.PerfilId,
+                p.Menu.Modulo.Apliation.NombreAplicacion,
+                p.Perfil.NombrePerfil));
+
+        return result.DistinctBy(p => p.PerfilId);
+    }
+
+    public async Task<DataViewModel<ConsultarPerfilMenusResponse>> ConsultarPerfilMenus(Guid perfilId, Guid? moduloId, string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
     {
         try
         {
-            var filtroEspecificacion = new PerfilMenuEspecificacion(perfilId, aplicaionId, moduloId, filtro);
+            var filtroEspecificacion = new PerfilMenuEspecificacion(perfilId, moduloId, filtro);
 
             var result = await _perfilMenuRepositorioLectura
                 .Query(filtroEspecificacion.Criteria)
-                .Include("Menu.Modulo.Apliation")
-                .OrderBy(pm => pm.OrderBy(a => a.AplicacionId))
+                .Include("Menu.Modulo")
+                .OrderBy(pm => pm.OrderBy(a => a.ModuloId))
                 .SelectPageAsync(pagina, registrosPorPagina);
 
             DataViewModel<ConsultarPerfilMenusResponse> consulta = new DataViewModel<ConsultarPerfilMenusResponse>(pagina, registrosPorPagina, result.TotalItems);
@@ -66,7 +81,6 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
                                 item.CreaFecha,
                                 item.ModificaUsuario,
                                 item.ModificaFecha,
-                                item.Menu.Modulo.Apliation.NombreAplicacion,
                                 item.Menu.Modulo.NombreModulo,
                                 item.Menu.NombreMenu,
                                 item.Menu.DescMenu));
@@ -116,7 +130,6 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
     {
         return await _perfilMenuRepositorioLectura
             .Query(p => p.PerfilId == perfilId)
-            .Include("Menu.Modulo.Apliation")
             .SelectAsync(pm => new ConsultarPerfilMenusPorIdResponse(
                 pm.PerfilId,
                 pm.AplicacionId,
@@ -138,7 +151,7 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
                 pm.Menu.Elimina,
                 pm.Menu.Activa,
                 pm.Menu.Ejecuta,
-                true));         
+                true));
     }
 
     public async Task EditarPerfilMenu(List<EditarPerfilMenuCommand> perfilMenusDto, Guid perfilId)

@@ -104,7 +104,7 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
 
         var regActualizado = await _aplicacionRepositorioEscritura
             .Query(x => x.AplicacionId == registro.AplicacionId)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), "No se encontró el registro a actualziado");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), "No se encontró el registro a actualzado");
 
         return new EditarAplicacionResponse(
             regActualizado.AplicacionId,
