@@ -89,22 +89,13 @@ public class GestionUsuariosFotos : BaseAppService, IGestionUsuariosFotos
             registro.Formato);
     }
 
-    public async Task<ConsultarUsuarioFotoPorIdResponse> ConsultarUsuarioFotoPorId(string usuarioId)
+    public async Task<ConsultarUsuarioFotoPorIdResponse> ConsultarUsuarioFotoPorId()
     {
         var result = await _usuarioFotoRepositorioLectura
-              .Query(p => p.UsuarioId == usuarioId)
-              .FirstOrDefaultAsync();
+            .FindAsync(ContextAccessor.UserId) ?? throw new NotFoundException(nameof(UsuarioFoto), "No se encontró la foto del usuario");
 
-        return new ConsultarUsuarioFotoPorIdResponse(
-            result.UsuarioId,
-            result.Foto,
-            result.Formato,
-            result.CreaUsuario,
-            result.CreaFecha,
-            result.ModificaUsuario,
-            result.ModificaFecha);
+        return new ConsultarUsuarioFotoPorIdResponse($"{result.Formato},{result.Foto}");
     }
-
 
     public async Task<EditarUsuarioFotoResponse> EditarUsuarioFoto(EditarUsuarioFotoCommand registroDto)
     {

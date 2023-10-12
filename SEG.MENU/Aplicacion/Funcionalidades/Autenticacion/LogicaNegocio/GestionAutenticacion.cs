@@ -258,8 +258,8 @@ public class GestionAutenticacion : BaseAppService, IGestionAutenticacion
     public async Task<CambiarContrasenaResponse> CambiarContraseña(CambiarContrasenaCommand registroDto)
     {
         var user = await _usuarioRepositorioEscritura
-            .Query(x => x.Email == registroDto.Email)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "El email no existe");
+            .Query(x => x.UsuarioId == ContextAccessor.UserId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "El usuario no existe");
 
         if (!HashCustom.CheckHash(registroDto.PasswordActual, user.Contrasena, user.Salt))
             throw new Exception("Contraseña actual invalida");
@@ -333,6 +333,7 @@ public class GestionAutenticacion : BaseAppService, IGestionAutenticacion
         var user = await _usuarioRepositorioLectura
                         .Query(q => q.Email == correo)
                         .FirstOrDefaultAsync();
+
         if (user == null || user.Token != token || user.FechaExpiracionToken < DateTime.Now)
             throw new Exception("El tiempo para restablecer la contraseña caducó, por favor vuelva a solicitarlo nuevamente.");
     }

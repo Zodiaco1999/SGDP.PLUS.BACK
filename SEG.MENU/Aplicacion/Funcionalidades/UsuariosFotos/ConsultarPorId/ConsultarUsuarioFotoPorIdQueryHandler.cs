@@ -9,9 +9,6 @@ public class ConsultarUsuarioFotoPorIdQueryHandler : IRequestHandler<ConsultarUs
     public ConsultarUsuarioFotoPorIdQueryHandler(IGestionUsuariosFotos gestionUsuariosFotos) => _gestionUsuariosFotos = gestionUsuariosFotos;
 
     public async Task<ConsultarUsuarioFotoPorIdResponse> Handle(ConsultarUsuarioFotoPorIdQuery request, CancellationToken cancellationToken)
-    {
-        ConsultarUsuarioFotoPorIdResponse result = await _gestionUsuariosFotos.ConsultarUsuarioFotoPorId(request.usuarioId);
+        => await _gestionUsuariosFotos.ConsultarUsuarioFotoPorId();
 
-        return result;
-    }
 }

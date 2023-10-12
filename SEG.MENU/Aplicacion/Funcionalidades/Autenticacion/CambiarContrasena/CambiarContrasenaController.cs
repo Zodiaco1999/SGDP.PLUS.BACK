@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Autenticacion.CambiarContrasena;
 
@@ -6,6 +7,7 @@ namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Autenticacion.CambiarContrase
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CambiarContrasenaController : ControllerBase
     {
         private readonly IMediator _mediator;
