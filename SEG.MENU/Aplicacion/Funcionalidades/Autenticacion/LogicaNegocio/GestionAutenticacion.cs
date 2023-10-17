@@ -312,9 +312,13 @@ public class GestionAutenticacion : BaseAppService, IGestionAutenticacion
     public async Task<ReestablecerContrasenaResponse> ReestablecerContrasena(ReestablecerContrasenaCommand registroDto)
     {
         await VerificarToken(registroDto.Email, registroDto.Token);
+
         var user = await _usuarioRepositorioLectura
                         .Query(q => q.Email == registroDto.Email)
                         .FirstOrDefaultAsync();
+
+        if (!registroDto.PasswordNueva.Equals(registroDto.PasswordConfirmacion))
+            throw new ValidationException("Las contraseñas no coinciden");
 
         var hash = HashCustom.Hash(registroDto.PasswordNueva);
         user.Contrasena = hash.Password;

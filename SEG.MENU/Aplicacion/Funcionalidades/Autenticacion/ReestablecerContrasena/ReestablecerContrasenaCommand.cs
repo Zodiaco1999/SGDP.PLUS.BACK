@@ -5,6 +5,6 @@ namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Autenticacion.ReestablecerCon
 public record struct ReestablecerContrasenaCommand(
     string Email,
     string PasswordNueva,
-    string PasswordConfirmar,
+    string PasswordConfirmacion,
     string Token) : IRequest<ReestablecerContrasenaResponse>;
 
