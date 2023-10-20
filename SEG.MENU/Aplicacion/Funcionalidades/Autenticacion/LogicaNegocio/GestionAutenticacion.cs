@@ -1,11 +1,12 @@
 ﻿using Ardalis.GuardClauses;
+using RTools_NTS.Util;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Autenticacion.CambiarContrasena;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Autenticacion.CambiarContraseña;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Autenticacion.EnviarCorreoContrasena;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Autenticacion.Login;
-using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Autenticacion.ReestablecerContrasena;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Autenticacion.RestablecerContrasena;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Autenticacion.Refresh;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Autenticacion.Seguridad.Entidades;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Autenticacion.Seguridad.JWT;
@@ -278,7 +279,6 @@ public class GestionAutenticacion : BaseAppService, IGestionAutenticacion
 
     public async Task<EnviarCorreoContrasenaResponse> EnviarCorreoContrasena(EnviarCorreoContrasenaCommand registroDto)
     {
-
         var user = await _usuarioRepositorioEscritura
                        .Query(q => q.Email == registroDto.Email)
                        .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "No se encontró el usuario");
@@ -290,11 +290,14 @@ public class GestionAutenticacion : BaseAppService, IGestionAutenticacion
         };
 
         string token = CrearTokenRandom();
-        string link = $"{_configuration.GetSection("Client:url").Value}/restablecercontrasena/{registroDto.Email}/{token}";
+        string link = $"{_configuration.GetValue<string>("AngularClient:ResetPasswordUrl")}/{registroDto.Email}/{token}";
+
+        GraphClientCustom client = new();
+        _configuration.Bind("GraphClient", client);
 
         try
         {
-            await correo.SendResetPasswordEmail(link);
+            await correo.SendResetPasswordEmail(link, client);
         }
         catch (Exception ex)
         {
@@ -309,13 +312,14 @@ public class GestionAutenticacion : BaseAppService, IGestionAutenticacion
         return new EnviarCorreoContrasenaResponse("Correo enviado correctamente");
     }
 
-    public async Task<ReestablecerContrasenaResponse> ReestablecerContrasena(ReestablecerContrasenaCommand registroDto)
+    public async Task<RestablecerContrasenaResponse> RestablecerContrasena(RestablecerContrasenaCommand registroDto)
     {
-        await VerificarToken(registroDto.Email, registroDto.Token);
-
         var user = await _usuarioRepositorioLectura
                         .Query(q => q.Email == registroDto.Email)
-                        .FirstOrDefaultAsync();
+                        .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "No se encontró el usuario, email invalido");
+
+        if (user.Token != registroDto.Token || user.FechaExpiracionToken < DateTime.Now)
+            throw new Exception("El tiempo para restablecer la contraseña caducó, por favor realice el proceso nuevamente.");
 
         if (!registroDto.PasswordNueva.Equals(registroDto.PasswordConfirmacion))
             throw new ValidationException("Las contraseñas no coinciden");
@@ -329,17 +333,7 @@ public class GestionAutenticacion : BaseAppService, IGestionAutenticacion
         _usuarioRepositorioEscritura.Update(user);
         await _unitOfWork.SaveChangesAsync();
 
-        return new ReestablecerContrasenaResponse("Contraseña reestablecida correctamente");
-    }
-
-    private async Task VerificarToken(string correo, string token)
-    {
-        var user = await _usuarioRepositorioLectura
-                        .Query(q => q.Email == correo)
-                        .FirstOrDefaultAsync();
-
-        if (user == null || user.Token != token || user.FechaExpiracionToken < DateTime.Now)
-            throw new Exception("El tiempo para restablecer la contraseña caducó, por favor vuelva a solicitarlo nuevamente.");
+        return new RestablecerContrasenaResponse("Contraseña reestablecida correctamente");
     }
 
     private string CrearTokenRandom()
