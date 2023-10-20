@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SGDP.PLUS.Comun.General;
+﻿namespace SGDP.PLUS.Comun.General;
 
 public class ValidationException : System.Exception
 {

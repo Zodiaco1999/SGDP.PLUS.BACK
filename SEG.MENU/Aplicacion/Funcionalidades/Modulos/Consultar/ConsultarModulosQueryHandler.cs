@@ -9,5 +9,5 @@ public class ConsultarModulosQueryHandler : IRequestHandler<ConsultarModulosQuer
     public ConsultarModulosQueryHandler(IGestionModulos gestionModulos) => _gestionModulos = gestionModulos;
 
     public async Task<IEnumerable<ConsultarModulosResponse>> Handle(ConsultarModulosQuery request, CancellationToken cancellationToken)
-        => await _gestionModulos.ConsultarModulos(request.AplicacionId);
+        => await _gestionModulos.ConsultarModulos(request.AplicacionId, request.Activo);
 }

@@ -1,6 +1,7 @@
 using Ardalis.GuardClauses;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.General;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Consultar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Crear;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Editar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Repositorio;
@@ -41,6 +42,20 @@ public class GestionApis : BaseAppService, IGestionApis
 
         _apiRepositorioEscritura.Update(regActualizar);
         await _unitOfWork.SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<ConsultarApisResponse>> ConsultarApis(Guid aplicacionId)
+    {
+        return await _apiRepositorioLectura
+            .Query(a => a.AplicacionId == aplicacionId)
+            .SelectAsync(a => new ConsultarApisResponse(
+                a.AplicacionId,
+                a.ApiId,
+                a.NombreApi,
+                a.DescripcionApi,
+                a.UrlPrueba,
+                a.UrlProduccion,
+                a.Activo));
     }
 
     public async Task<CrearApiResponse> CrearApi(CrearApiCommand registroDto)
