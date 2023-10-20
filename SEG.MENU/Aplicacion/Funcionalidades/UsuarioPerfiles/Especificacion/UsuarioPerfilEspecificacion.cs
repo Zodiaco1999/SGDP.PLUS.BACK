@@ -28,7 +28,7 @@ namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Especificacio
             if (!string.IsNullOrWhiteSpace(s))
             {
                 var eEspecificacion1 = new SpecificationCriteriaDirect<UsuarioPerfil>(c => c.Perfil.NombrePerfil.Contains(s));
-                var eEspecificacion2 = new SpecificationCriteriaDirect<UsuarioPerfil>(c => c.PerfilId.ToString().Contains(s));
+                var eEspecificacion2 = new SpecificationCriteriaDirect<UsuarioPerfil>(c => c.Perfil.PerfilMenus.FirstOrDefault()!.Menu.Modulo.Apliation.NombreAplicacion.Contains(s));
 
                 especificacion &= eEspecificacion1 || eEspecificacion2;
             }

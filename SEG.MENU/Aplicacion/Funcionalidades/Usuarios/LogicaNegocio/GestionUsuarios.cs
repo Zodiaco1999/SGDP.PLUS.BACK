@@ -163,6 +163,7 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
         var result = await _usuarioRepositorioLectura
               .Query(p => p.UsuarioId == usuarioId)
               .Include(p => p.UsuarioFoto!)
+              .Include(t => t.TipoDocumento)
               .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "No se encontro el registro"); ;
 
         string foto = string.Empty;
@@ -176,6 +177,7 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
             result.UsuarioId,
             result.UsuarioDominio,
             result.TipoDocumentoId,
+            result.TipoDocumento.Nombre,
             result.NumeroIdentificacion,
             result.PrimerNombre,
             result.SegundoNombre,
