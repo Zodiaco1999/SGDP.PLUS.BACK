@@ -6,6 +6,7 @@ namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.ConsultarPorId;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class ConsultarUsuarioFotoPorIdController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -14,7 +15,6 @@ public class ConsultarUsuarioFotoPorIdController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [Authorize]
     public async Task<IActionResult> ConsultarUsuarioFotoPorId()
     {
         var response = await _mediator.Send(new ConsultarUsuarioFotoPorIdQuery());

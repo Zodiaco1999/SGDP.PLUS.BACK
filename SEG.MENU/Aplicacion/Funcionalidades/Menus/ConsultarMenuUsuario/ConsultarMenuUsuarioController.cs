@@ -9,6 +9,7 @@ namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.ConsultarMenuUsuario;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class ConsultarMenuUsuarioController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -17,7 +18,6 @@ public class ConsultarMenuUsuarioController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [Authorize]
     public async Task<IActionResult> ConsultarMenuUsuario()
     {
         var response = await _mediator.Send(new ConsultarMenuUsuarioQuery());
