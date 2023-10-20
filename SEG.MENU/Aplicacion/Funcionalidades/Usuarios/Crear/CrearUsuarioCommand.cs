@@ -13,7 +13,7 @@ public record struct CrearUsuarioCommand(
     string PrimerApellido,
     string? SegundoApellido,
     string Email,
-    string Foto,
+    string? Foto,
     DateTime? FechaNacimiento,
     string Genero,                
     List<CrearUsuarioPerfilCommand> usuarioPerfiles) : IRequest<CrearUsuarioResponse>;
