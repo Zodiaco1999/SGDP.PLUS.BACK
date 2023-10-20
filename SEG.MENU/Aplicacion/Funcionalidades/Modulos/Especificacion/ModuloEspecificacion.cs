@@ -5,9 +5,22 @@ namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Especificacion;
 
 public class ModuloEspecificacion : SpecificationBase<Modulo>
 {
-    public ModuloEspecificacion(string textoBusqueda, int? pagina = null, int? registrosPorPagina = null, string ordenarPor = null, string direccionOrdenamiento = "asc")
+    public ModuloEspecificacion(Guid aplicacionId, bool? activo)
     {
-        Criteria = BusquedaTextoCompleto(textoBusqueda).SatisfiedBy();
+        Criteria = BusquedaModulo(aplicacionId, activo).SatisfiedBy();
+    }
+
+    private ISpecificationCriteria<Modulo> BusquedaModulo(Guid aplicacionId, bool? activo)
+    {
+        SpecificationCriteria<Modulo> especificacion = new SpecificationCriteriaTrue<Modulo>();
+
+        var eEspecificacion1 = activo == null ? 
+            new SpecificationCriteriaDirect<Modulo>(m =>  m.AplicacionId == aplicacionId) :
+            new SpecificationCriteriaDirect<Modulo>(m => m.AplicacionId == aplicacionId && m.Activo == activo);
+
+        especificacion &= eEspecificacion1;
+
+        return especificacion;
     }
 
     private ISpecificationCriteria<Modulo> BusquedaTextoCompleto(string texto)

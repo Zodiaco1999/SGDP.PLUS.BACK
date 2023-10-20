@@ -122,30 +122,7 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
     {
         var result = await _aplicacionRepositorioLectura
                 .Query(t => t.AplicacionId == aplicacionId)
-                .Include(t => t.Modulos)
-                .Include(t => t.Apis)
                 .FirstOrDefaultAsync();
-
-        IEnumerable<CrearModuloResponse> listaModulos = result.Modulos.Select(mod =>
-        new CrearModuloResponse(
-            mod.AplicacionId,
-            mod.ModuloId,
-            mod.NombreModulo,
-            mod.DescModulo,
-            mod.IconoPrefijo,
-            mod.IconoNombre,
-            mod.Orden,
-            mod.Activo));
-
-        IEnumerable<CrearApiResponse> listaApis = result.Apis.Select(api =>
-        new CrearApiResponse(
-           api.AplicacionId,
-           api.ApiId,
-           api.NombreApi,
-           api.DescripcionApi,
-           api.UrlPrueba,
-           api.UrlProduccion,
-           api.Activo));
 
         return new ConsultarAplicacionPorIdResponse(
             result.AplicacionId,
@@ -156,9 +133,7 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
             result.CreaUsuario,
             result.CreaFecha,
             result.ModificaUsuario,
-            result.ModificaFecha,
-            listaModulos,
-            listaApis);
+            result.ModificaFecha);
     }
 
     public async Task<ActivarInactivarAplicacionResponse> ActivarInactivarAplicacion(Guid aplicacionId)

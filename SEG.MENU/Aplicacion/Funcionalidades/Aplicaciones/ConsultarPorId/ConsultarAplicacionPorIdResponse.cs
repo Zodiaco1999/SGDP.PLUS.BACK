@@ -1,7 +1,4 @@
-﻿using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Crear;
-using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Crear;
-
-namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.ConsultarPorId;
+﻿namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.ConsultarPorId;
 
 public record struct ConsultarAplicacionPorIdResponse(
     Guid AplicacionId,
@@ -12,6 +9,4 @@ public record struct ConsultarAplicacionPorIdResponse(
     string CreaUsuario,
     DateTime CreaFecha,
     string ModificaUsuario,
-    DateTime ModificaFecha,
-    IEnumerable<CrearModuloResponse> ListaModulos,
-    IEnumerable<CrearApiResponse> ListaApis);
+    DateTime ModificaFecha);

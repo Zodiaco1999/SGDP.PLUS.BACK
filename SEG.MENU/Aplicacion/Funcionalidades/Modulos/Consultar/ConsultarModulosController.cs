@@ -11,12 +11,12 @@ public class ConsultarModulosController : ControllerBase
     private readonly IMediator _mediator;
     public ConsultarModulosController(IMediator mediator) => _mediator = mediator;
 
-    [HttpGet("{aplicacionId}")]
+    [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ConsultarModulos(Guid aplicacionId)
+    public async Task<IActionResult> ConsultarModulos(Guid aplicacionId, bool? activo = null)
     {
-        IEnumerable<ConsultarModulosResponse> response = await _mediator.Send(new ConsultarModulosQuery(aplicacionId));
+        IEnumerable<ConsultarModulosResponse> response = await _mediator.Send(new ConsultarModulosQuery(aplicacionId, activo));
 
         return Ok(response);
     }

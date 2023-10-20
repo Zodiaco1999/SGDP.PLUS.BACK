@@ -11,5 +11,5 @@ public interface IGestionModulos
     Task EditarModulo(EditarModuloCommand registroDto);
     Task ActivarInactivarModulo(Guid moduloId);
     Task<ConsultarModuloPorIdResponse> ConsultarModuloPorId(Guid moduloId);
-    Task<IEnumerable<ConsultarModulosResponse>> ConsultarModulos(Guid aplicacionId);
+    Task<IEnumerable<ConsultarModulosResponse>> ConsultarModulos(Guid aplicacionId, bool? activo);
 }

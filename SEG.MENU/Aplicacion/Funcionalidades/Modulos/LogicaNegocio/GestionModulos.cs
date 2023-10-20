@@ -5,6 +5,7 @@ using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Consultar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.ConsultarPorId;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Crear;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Editar;
+using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Especificacion;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Repositorio;
 using SGDP.PLUS.SEG.Dominio.Entidades;
 using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
@@ -62,23 +63,21 @@ public class GestionModulos : BaseAppService, IGestionModulos
             result.Activo);
     }
 
-    public async Task<IEnumerable<ConsultarModulosResponse>> ConsultarModulos(Guid aplicacionId)
+    public async Task<IEnumerable<ConsultarModulosResponse>> ConsultarModulos(Guid aplicacionId, bool? activo)
     {
-        var modulos = await _moduloRepositorioLectura
-            .Query(m => m.AplicacionId == aplicacionId && m.Activo)
-            .SelectAsync();
+        var filtroEspecificacion = new ModuloEspecificacion(aplicacionId, activo);
 
-        IEnumerable<ConsultarModulosResponse> response = modulos.Select(m => new ConsultarModulosResponse(
-            m.AplicacionId,
-            m.ModuloId,
-            m.NombreModulo,
-            m.DescModulo,
-            m.IconoPrefijo,
-            m.IconoNombre,
-            m.Orden,
-            m.Activo));
-
-        return response;
+        return await _moduloRepositorioLectura
+            .Query(filtroEspecificacion.Criteria)
+            .SelectAsync(m => new ConsultarModulosResponse(
+                m.AplicacionId,
+                m.ModuloId,
+                m.NombreModulo,
+                m.DescModulo,
+                m.IconoPrefijo,
+                m.IconoNombre,
+                m.Orden,
+                m.Activo));
     }
 
     public async Task<CrearModuloResponse> CrearModulo(CrearModuloCommand registroDto)
