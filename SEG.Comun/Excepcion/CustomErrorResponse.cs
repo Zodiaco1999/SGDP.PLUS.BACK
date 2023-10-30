@@ -1,4 +1,4 @@
-﻿namespace SGDP.PLUS.Comun.General;
+﻿namespace SGDP.PLUS.Comun.Excepcion;
 
 public class CustomErrorResponse
 {

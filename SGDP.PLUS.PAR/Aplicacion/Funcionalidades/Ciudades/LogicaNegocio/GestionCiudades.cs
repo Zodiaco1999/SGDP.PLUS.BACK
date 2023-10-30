@@ -1,5 +1,5 @@
-using Ardalis.GuardClauses;
 using SGDP.PLUS.Comun.ContextAccesor;
+using SGDP.PLUS.Comun.Excepcion;
 using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Ciudades.ActivarInactivar;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Ciudades.Consultar;
@@ -8,12 +8,6 @@ using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Ciudades.Crear;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Ciudades.Editar;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Ciudades.Especificacion;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Ciudades.Repositorio;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Departamentos.ActivarInactivar;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Departamentos.Consultar;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Departamentos.ConsultarPorId;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Departamentos.Crear;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Departamentos.Editar;
-using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.Departamentos.Especificacion;
 using SGDP.PLUS.MAESTROS.Dominio.Entidades;
 using SGDP.PLUS.MAESTROS.Infraestructura.UnidadTrabajo;
 
@@ -23,7 +17,7 @@ public class GestionCiudades : BaseAppService, IGestionCiudades
 {
     private readonly ICiudadRepositorioLectura _ciudadRepositorioLectura;
     private readonly ICiudadRepositorioEscritura _ciudadRepositorioEscritura;
-    private readonly IUnitOfWorkSegEscritura  _unitOfWork;
+    private readonly IUnitOfWorkSegEscritura _unitOfWork;
     private readonly IContextAccessor _contextAccessor;
 
     public GestionCiudades(

@@ -1,5 +1,5 @@
-using Ardalis.GuardClauses;
 using SGDP.PLUS.Comun.ContextAccesor;
+using SGDP.PLUS.Comun.Excepcion;
 using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Consultar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Crear;
@@ -7,7 +7,6 @@ using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Editar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Repositorio;
 using SGDP.PLUS.SEG.Dominio.Entidades;
 using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
-using System;
 
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.LogicaNegocio;
 
@@ -36,7 +35,7 @@ public class GestionApis : BaseAppService, IGestionApis
     {
         var regActualizar = await _apiRepositorioLectura
             .Query(x => x.ApiId == apiId)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Api), "No se encontró el registro a actualizar");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Api), apiId);
 
         regActualizar.Activo = !regActualizar.Activo;
 
@@ -55,7 +54,7 @@ public class GestionApis : BaseAppService, IGestionApis
                 a.DescripcionApi,
                 a.UrlPrueba,
                 a.UrlProduccion,
-                a.Activo));
+                a.Activo)) ?? new List<ConsultarApisResponse>();
     }
 
     public async Task<CrearApiResponse> CrearApi(CrearApiCommand registroDto)
@@ -87,7 +86,7 @@ public class GestionApis : BaseAppService, IGestionApis
     {
         var regActualizar = await _apiRepositorioLectura
             .Query(x => x.ApiId == registroDto.ApiId)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Modulo), "No se encontró el registro a actualizar");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Api), registroDto.ApiId);
 
         regActualizar.NombreApi = registroDto.NombreApi;
         regActualizar.DescripcionApi = registroDto.DescripcionApi;

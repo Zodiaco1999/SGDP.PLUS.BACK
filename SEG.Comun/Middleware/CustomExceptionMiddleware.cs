@@ -4,8 +4,9 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Data.SqlClient;
 using System.Net;
-using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.Comun.ContextAccesor;
+using Newtonsoft.Json.Serialization;
+using SGDP.PLUS.Comun.Excepcion;
 
 namespace SGDP.PLUS.Comun.Middleware;
 
@@ -28,15 +29,13 @@ public class CustomExceptionMiddleware
         {
             try
             {
-                //context.Request.EnableBuffering();
-
                 var body = await new StreamReader(context.Request.Body).ReadToEndAsync();
 
                 context.Request.Body.Position = 0;
 
-                var json = JsonConvert.SerializeObject(new { path = context.Request.Path.Value, userid = context.User.Identity.Name, method = context.Request.Method, remoteIp = $"{context.Connection.RemoteIpAddress}:{context.Connection.RemotePort}", body });
+                var json = JsonConvert.SerializeObject(new { path = context.Request.Path.Value, userid = context.User.Identity?.Name, method = context.Request.Method, remoteIp = $"{context.Connection.RemoteIpAddress}:{context.Connection.RemotePort}", body });
 
-                _logger.LogInformation("Invoke: {0}", JsonConvert.SerializeObject(json));
+                _logger.LogInformation("Invoke: {0}", json);
             }
             catch (Exception e)
             {
@@ -58,107 +57,86 @@ public class CustomExceptionMiddleware
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "CustomErrorId: {@CustomErrorId}. Message: {@Message}. Description: {@description}. Host: {@Host}. Path: {@Path}. UserId: {@UserId}. Method: {@Method}. RemoteIpAddress: {@RemoteIpAddress}", idError, ex.Message, "Error leyendo 'Request.Body'", context.Request.Host.Value, context.Request.Path.Value, context.User.Identity.Name, context.Request.Method, context.Connection.RemoteIpAddress.ToString());
+                _logger.LogError(e, "CustomErrorId: {@CustomErrorId}. Message: {@Message}. Description: {@description}. Host: {@Host}. Path: {@Path}. UserId: {@UserId}. Method: {@Method}. RemoteIpAddress: {@RemoteIpAddress}", idError, ex.Message, "Error leyendo 'Request.Body'", context.Request.Host.Value, context.Request.Path.Value, context.User.Identity?.Name, context.Request.Method, context.Connection.RemoteIpAddress.ToString());
             }
-
-            await HandleExceptionAsync(context, ex);
+            
+            await HandleExceptionAsync(context, ex, idError);
 
         }
     }
 
-    private async Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private async Task HandleExceptionAsync(HttpContext context, Exception exception, int idError)
     {
         var response = context.Response;
 
-        var json = JsonConvert.SerializeObject(new { path = context.Request.Path.Value, userid = context.User.Identity.Name, method = context.Request.Method, remoteIp = $"{context.Connection.RemoteIpAddress}:{context.Connection.RemotePort}" });
+        var json = JsonConvert.SerializeObject(new { path = context.Request.Path.Value, userid = context.User.Identity?.Name, method = context.Request.Method, remoteIp = $"{context.Connection.RemoteIpAddress}:{context.Connection.RemotePort}" });
 
         CustomErrorResponse customError = new CustomErrorResponse();
 
-        if (exception is DbUpdateException)
+        if (exception is DbUpdateException dbUpdateException && dbUpdateException.InnerException is SqlException sqlException && sqlException.Number == 547)
         {
-            if (exception.InnerException is SqlException && ((SqlException)(exception).InnerException).Number == 547)
+            customError.StatusCode = (int)HttpStatusCode.BadRequest;
+            customError.Message = "Validación";
+            customError.Description = $"Se generó un conflicto con una restricción asociada a la entidad. No se pudo finalizar la transacción";
+            customError.IsWarning = true;
+            customError.Id = idError;
+
+            _logger.LogError(exception, "CustomErrorId: {@CustomErrorId}. Message: {@Message}. Description: {@description}. Host: {@Host}. Path: {@Path}. UserId: {@UserId}. Method: {@Method}. RemoteIpAddress: {@RemoteIpAddress}", customError.Id, customError.Message, customError.Description, context.Request.Host.Value, context.Request.Path.Value, context.User.Identity.Name, context.Request.Method, context.Connection.RemoteIpAddress.ToString());
+        }
+        else if (exception is BaseCustomException customException)
+        {
+            customError.StatusCode = customException.Code;
+            customError.Message = customException.Message;
+            customError.Description = customException.Description;
+
+            if (customException.IsWarning)
             {
-                customError.StatusCode = (int)HttpStatusCode.BadRequest;
-                customError.Message = "Validación";
-                customError.Description = $"Se generó un conflicto con una restricción asociada a la entidad. No se pudo finalizar la transacción";
-                customError.IsWarning = true;
-                customError.Id = new Random().Next(100000, 999999);
-
-
-                _logger.LogError(exception, "CustomErrorId: {@CustomErrorId}. Message: {@Message}. Description: {@description}. Host: {@Host}. Path: {@Path}. UserId: {@UserId}. Method: {@Method}. RemoteIpAddress: {@RemoteIpAddress}", customError.Id, customError.Message, customError.Description, context.Request.Host.Value, context.Request.Path.Value, context.User.Identity.Name, context.Request.Method, context.Connection.RemoteIpAddress.ToString());
-                {
-                    customError.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    customError.Message = "Ha surgido un error";
-                    customError.Description = "Intente de nuevo, si el problema persiste contacte con soporte";
-                    customError.Id = new Random().Next(100000, 999999);
-                    customError.Detail = $"Código error: '{customError.Id}'";
-
-                    _logger.LogError(exception, "CustomErrorId: {@CustomErrorId}. Message: {@Message}. Description: {@description}. Host: {@Host}. Path: {@Path}. UserId: {@UserId}. Method: {@Method}. RemoteIpAddress: {@RemoteIpAddress}", customError.Id, customError.Message, customError.Description, context.Request.Host.Value, context.Request.Path.Value, context.User.Identity.Name, context.Request.Method, context.Connection.RemoteIpAddress.ToString());
-                    //_logger.LogError(exception, $"{customError.Id} - {customError.Message}. {json}");
-
-                }
-            }
-            else if (exception is BaseCustomException customException)
-            {
-                customError.StatusCode = customException.Code;
-                customError.Message = customException.Message;
-                customError.Description = customException.Description;
-
-                if (customException.IsWarning)
-                {
-                    _logger.LogWarning(customException, $"{customException.Description}. {json}");
-                }
-                else
-                {
-                    customError.Id = new Random().Next(100000, 999999);
-                    customError.Detail = $"Código error: '{customError.Id}'";
-                    //_logger.LogError(exception, $"{customError.Id} - {customError.Message}. {json}");
-                    _logger.LogError(exception, "CustomErrorId: {@CustomErrorId}. Message: {@Message}. Description: {@description}. Host: {@Host}. Path: {@Path}. UserId: {@UserId}. Method: {@Method}. RemoteIpAddress: {@RemoteIpAddress}", customError.Id, customError.Message, customError.Description, context.Request.Host.Value, context.Request.Path.Value, context.User.Identity.Name, context.Request.Method, context.Connection.RemoteIpAddress.ToString());
-                }
-            }
-            else if (exception is System.ComponentModel.DataAnnotations.ValidationException validationException)
-            {
-                customError.StatusCode = (int)HttpStatusCode.NotAcceptable;
-                customError.Message = "Validación";
-                customError.Description = validationException.Message;
-                customError.IsWarning = true;
-
-                //_logger.LogWarning(exception, json);
-                _logger.LogWarning(exception, "CustomErrorId: {@CustomErrorId}. Message: {@Message}. Description: {@description}. Host: {@Host}. Path: {@Path}. UserId: {@UserId}. Method: {@Method}. RemoteIpAddress: {@RemoteIpAddress}", customError.Id, customError.Message, customError.Description, context.Request.Host.Value, context.Request.Path.Value, context.User.Identity.Name, context.Request.Method, context.Connection.RemoteIpAddress.ToString());
-                //_logger.LogWarning(exception, "customErrorId {@customErrorId}. UserId {@userId}. Path {@path}. Method {@method}. RemoteIp {@remoteIp}", customError.Id, context.User.Identity.Name
-                //    , context.Request.Path.Value, context.Request.Method, context.Connection.RemoteIpAddress);
-            }
-            else if (exception is ValidationException eValidationException)
-            {
-                customError.StatusCode = (int)HttpStatusCode.NotAcceptable;
-                customError.Message = "Validación";
-                customError.Description = eValidationException.Message;
-                customError.IsWarning = true;
-
-                //_logger.LogWarning(exception, json);
-                _logger.LogWarning(exception, "CustomErrorId: {@CustomErrorId}. Message: {@Message}. Description: {@description}. Host: {@Host}. Path: {@Path}. UserId: {@UserId}. Method: {@Method}. RemoteIpAddress: {@RemoteIpAddress}", customError.Id, customError.Message, customError.Description, context.Request.Host.Value, context.Request.Path.Value, context.User.Identity.Name, context.Request.Method, context.Connection.RemoteIpAddress.ToString());
-                //_logger.LogWarning(exception, "customErrorId {@customErrorId}. UserId {@userId}. Path {@path}. Method {@method}. RemoteIp {@remoteIp}", customError.Id, context.User.Identity.Name
-                //    , context.Request.Path.Value, context.Request.Method, context.Connection.RemoteIpAddress);
+                _logger.LogWarning(customException, $"{customException.Description}. {json}");
             }
             else
             {
-                customError.StatusCode = (int)HttpStatusCode.InternalServerError;
-                customError.Message = "Ha surgido un error";
-                customError.Description = "Intente de nuevo, si el problema persiste contacte con soporte";
-                customError.Id = new Random().Next(100000, 999999);
-                customError.Detail = $"Código error: '{customError.Id}'";
-
-                //_logger.LogError(exception, "customErrorId {@customErrorId}. UserId {@userId}. Path {@path}. Method {@method}. RemoteIp {@remoteIp}", customError.Id, context.User.Identity.Name
-                //    , context.Request.Path.Value, context.Request.Method, context.Connection.RemoteIpAddress);
-                //_logger.LogError(exception, $"{customError.Id} - {customError.Message}. {json}");
-                //_logger.LogError(exception, "CustomErrorId: {@CustomErrorId}. Message: {@Message}. Description: {@description}. Path: {@Path}. UserId: {@UserId}. Method: {@Method}. RemoteIpAddress: {@RemoteIpAddress}", customError.Id, customError.Message, customError.Description, context.Request.Path.Value, context.User.Identity.Name, context.Request.Method, context.Connection.RemoteIpAddress.ToString());
-                _logger.LogError(exception, "CustomErrorId: {@CustomErrorId}. Message: {@Message}. Description: {@description}. Host: {@Host}. Path: {@Path}. UserId: {@UserId}. Method: {@Method}. RemoteIpAddress: {@RemoteIpAddress}",
-                    customError.Id, exception.Message, exception.InnerException?.Message, context.Request.Host.Value, context.Request.Path.Value, context.User.Identity.Name, context.Request.Method, context.Connection.RemoteIpAddress.ToString());
+                customError.Id = idError;
+                _logger.LogError(exception, "CustomErrorId: {@CustomErrorId}. Message: {@Message}. Description: {@description}. Host: {@Host}. Path: {@Path}. UserId: {@UserId}. Method: {@Method}. RemoteIpAddress: {@RemoteIpAddress}", customError.Id, customError.Message, $"{(string.IsNullOrEmpty(customError.Description) ? "" : customError.Description + ", ") }{exception.InnerException?.Message}" , context.Request.Host.Value, context.Request.Path.Value, context.User.Identity.Name, context.Request.Method, context.Connection.RemoteIpAddress.ToString());
             }
-
-            response.ContentType = "application/json";
-            //response.StatusCode = customError.StatusCode;
-            await response.WriteAsync(JsonConvert.SerializeObject(customError));
         }
+        else if (exception is ValidationException validationException)
+        {
+            customError.StatusCode = (int)HttpStatusCode.NotAcceptable;
+            customError.Message = "Validación";
+            customError.Description = validationException.Message;
+            customError.IsWarning = true;
+
+            _logger.LogWarning(exception, "CustomErrorId: {@CustomErrorId}. Message: {@Message}. Description: {@description}. Host: {@Host}. Path: {@Path}. UserId: {@UserId}. Method: {@Method}. RemoteIpAddress: {@RemoteIpAddress}", idError, customError.Message, customError.Description, context.Request.Host.Value, context.Request.Path.Value, context.User.Identity.Name, context.Request.Method, context.Connection.RemoteIpAddress.ToString());
+        }
+        else if (exception is NotFoundException)
+        {
+            customError.StatusCode = (int)HttpStatusCode.BadRequest;
+            customError.Message = "Error";
+            customError.Description = exception.Message;
+            customError.Id = idError;
+
+            _logger.LogError(exception, "CustomErrorId: {@CustomErrorId}. Message: {@Message}. Description: {@description}. Host: {@Host}. Path: {@Path}. UserId: {@UserId}. Method: {@Method}. RemoteIpAddress: {@RemoteIpAddress}", customError.Id, customError.Message, customError.Description, context.Request.Host.Value, context.Request.Path.Value, context.User.Identity.Name, context.Request.Method, context.Connection.RemoteIpAddress.ToString());
+        }
+        else
+        {
+            customError.StatusCode = (int)HttpStatusCode.InternalServerError;
+            customError.Message = "Ha surgido un error";
+            customError.Description = "Intente de nuevo, si el problema persiste contacte con soporte";
+            customError.Id = idError;
+
+            _logger.LogError(exception, "CustomErrorId: {@CustomErrorId}. Message: {@Message}. Description: {@description}. Host: {@Host}. Path: {@Path}. UserId: {@UserId}. Method: {@Method}. RemoteIpAddress: {@RemoteIpAddress}", customError.Id, exception.Message, exception.InnerException?.Message, context.Request.Host.Value, context.Request.Path.Value, context.User.Identity.Name, context.Request.Method, context.Connection.RemoteIpAddress.ToString());
+        }
+
+        response.ContentType = "application/json";
+        response.StatusCode = customError.StatusCode;
+
+        await response.WriteAsync(JsonConvert.SerializeObject(customError, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() }));
     }
+
+    private static class TypeException 
+    {
+        public const string Error = "Error";
+        public const string Warning = "Validación";        
+    }
+
 }

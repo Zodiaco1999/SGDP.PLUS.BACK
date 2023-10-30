@@ -1,6 +1,6 @@
-using Ardalis.GuardClauses;
 using LinqKit;
 using SGDP.PLUS.Comun.ContextAccesor;
+using SGDP.PLUS.Comun.Excepcion;
 using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Repositorio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.ActivarInactivar;

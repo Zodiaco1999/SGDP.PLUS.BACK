@@ -1,4 +1,3 @@
-using Ardalis.GuardClauses;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Consultar;
@@ -9,7 +8,7 @@ using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Especificacion;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Repositorio;
 using SGDP.PLUS.SEG.Dominio.Entidades;
 using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
-using System;
+using SGDP.PLUS.Comun.Excepcion;
 
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.LogicaNegocio;
 

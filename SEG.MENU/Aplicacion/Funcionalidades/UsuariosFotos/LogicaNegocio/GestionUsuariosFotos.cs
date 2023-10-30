@@ -1,4 +1,4 @@
-﻿using Ardalis.GuardClauses;
+﻿using SGDP.PLUS.Comun.Excepcion;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Crear;

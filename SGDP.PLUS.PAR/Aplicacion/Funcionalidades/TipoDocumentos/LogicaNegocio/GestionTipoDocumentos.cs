@@ -1,4 +1,4 @@
-using Ardalis.GuardClauses;
+using SGDP.PLUS.Comun.Excepcion;
 using Microsoft.EntityFrameworkCore;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.General;

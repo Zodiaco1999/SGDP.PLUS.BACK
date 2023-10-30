@@ -1,4 +1,4 @@
-﻿using Ardalis.GuardClauses;
+﻿using SGDP.PLUS.Comun.Excepcion;
 using NetTopologySuite.Index.HPRtree;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.General;
