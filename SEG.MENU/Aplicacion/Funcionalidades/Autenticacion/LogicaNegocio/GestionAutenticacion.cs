@@ -1,6 +1,4 @@
-﻿using Ardalis.GuardClauses;
-using RTools_NTS.Util;
-using SGDP.PLUS.Comun.ContextAccesor;
+﻿using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Autenticacion.CambiarContrasena;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Autenticacion.CambiarContraseña;
@@ -18,6 +16,7 @@ using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using SGDP.PLUS.Comun.Excepcion;
 
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Autenticacion.LogicaNegocio;
 
@@ -285,7 +284,7 @@ public class GestionAutenticacion : BaseAppService, IGestionAutenticacion
 
         var correo = new Correo()
         {
-            MailBox = _configuration.GetSection("MailData:mailBox").Value!,
+            MailBox = _configuration.GetValue<string>("MailData:mailBox")!,
             Addressee = registroDto.Email
         };
 

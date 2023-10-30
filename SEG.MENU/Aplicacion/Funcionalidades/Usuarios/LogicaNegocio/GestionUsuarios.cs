@@ -1,8 +1,5 @@
-using Ardalis.GuardClauses;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration.UserSecrets;
-using Microsoft.Win32;
 using SGDP.PLUS.Comun.ContextAccesor;
+using SGDP.PLUS.Comun.Excepcion;
 using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.LogicaNegocio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.ActivarInactivar;
@@ -11,7 +8,6 @@ using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.ConsultarPorId;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Crear;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Editar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Especificacion;
-using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Lista;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Repositorio;
 using SGDP.PLUS.SEG.Dominio.Entidades;
 using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
@@ -22,7 +18,7 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
 {
     private readonly IUsuarioRepositorioLectura _usuarioRepositorioLectura;
     private readonly IUsuarioRepositorioEscritura _usuarioRepositorioEscritura;
-    private readonly IUnitOfWorkSegEscritura  _unitOfWork;
+    private readonly IUnitOfWorkSegEscritura _unitOfWork;
     private readonly IContextAccessor _contextAccessor;
     private readonly IGestionUsuarioPerfil _gestionUsuarioPerfil;
 
@@ -141,7 +137,7 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
 
         _usuarioRepositorioEscritura.Insert(registro);
         await _unitOfWork.SaveChangesAsync();
-        
+
         return new CrearUsuarioResponse(
             registro.UsuarioId,
             registro.UsuarioDominio,
@@ -278,7 +274,7 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
             .Query(x => x.UsuarioId == usuarioId)
             .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "No se encontró el registro a actualizar");
 
-            regActualizar.Activo = !regActualizar.Activo;
+        regActualizar.Activo = !regActualizar.Activo;
 
         _usuarioRepositorioEscritura.Update(regActualizar);
         await _unitOfWork.SaveChangesAsync();

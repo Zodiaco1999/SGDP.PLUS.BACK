@@ -1,6 +1,5 @@
-﻿using Ardalis.GuardClauses;
-using NetTopologySuite.Index.HPRtree;
-using SGDP.PLUS.Comun.ContextAccesor;
+﻿using SGDP.PLUS.Comun.ContextAccesor;
+using SGDP.PLUS.Comun.Excepcion;
 using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.ActivarInactivar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.Consultar;
@@ -139,7 +138,7 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
 
         Guid aplicacionId = new();
         string nombreAplicacion = "N/A";
-   
+
         var perfilmenu = result.PerfilMenus.FirstOrDefault();
 
         if (perfilmenu != null)
@@ -186,7 +185,7 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
             regActualizado.Activo,
             regActualizado.CreaUsuario,
             regActualizado.CreaFecha,
-            regActualizado.ModificaUsuario, 
+            regActualizado.ModificaUsuario,
             regActualizado.ModificaFecha);
     }
 }

@@ -1,7 +1,6 @@
-﻿using Ardalis.GuardClauses;
-using SGDP.PLUS.Comun.ContextAccesor;
+﻿using SGDP.PLUS.Comun.ContextAccesor;
+using SGDP.PLUS.Comun.Excepcion;
 using SGDP.PLUS.Comun.General;
-using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Apis.Crear;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.ActivarInactivar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Consultar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.ConsultarPorId;
@@ -10,9 +9,9 @@ using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Editar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Especificacion;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Lista;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Repositorio;
-using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Modulos.Crear;
 using SGDP.PLUS.SEG.Dominio.Entidades;
 using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
+
 
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.LogicaNegocio;
 
@@ -70,7 +69,7 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
         }
         catch (Exception ex)
         {
-            throw new NotFoundException(nameof(Aplication), ex.Message);
+            throw new BadRequestCustomException("Error consultando aplicaciones", ex);
         }
     }
 
@@ -93,7 +92,7 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
     {
         var regActualizar = await _aplicacionRepositorioEscritura
             .Query(x => x.AplicacionId == registro.AplicacionId)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), "No se encontró el registro a actualizar");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), registro.AplicacionId);
 
         regActualizar.NombreAplicacion = registro.NombreAplicacion;
         regActualizar.DescAplicacion = registro.DescAplicacion;
@@ -104,7 +103,7 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
 
         var regActualizado = await _aplicacionRepositorioEscritura
             .Query(x => x.AplicacionId == registro.AplicacionId)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), "No se encontró el registro a actualzado");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), registro.AplicacionId);
 
         return new EditarAplicacionResponse(
             regActualizado.AplicacionId,
@@ -122,7 +121,7 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
     {
         var result = await _aplicacionRepositorioLectura
                 .Query(t => t.AplicacionId == aplicacionId)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), aplicacionId);
 
         return new ConsultarAplicacionPorIdResponse(
             result.AplicacionId,
@@ -140,7 +139,7 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
     {
         var regActualizar = await _aplicacionRepositorioEscritura
             .Query(x => x.AplicacionId == aplicacionId)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), "No se encontró el registro a actualizar");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), aplicacionId);
 
         regActualizar.Activo = !regActualizar.Activo;
 
@@ -149,7 +148,7 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
 
         var regActualizado = await _aplicacionRepositorioEscritura
             .Query(x => x.AplicacionId == aplicacionId)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), "No se encontró el registro actualizado");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), aplicacionId);
 
         return new ActivarInactivarAplicacionResponse(
             regActualizado.AplicacionId,
@@ -165,18 +164,14 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
 
     public async Task<IEnumerable<ListaAplicacionesResponse>> ListaAplicaciones()
     {
-        var aplicaciones = await _aplicacionRepositorioLectura
+        return await _aplicacionRepositorioLectura
             .Query(a => a.Activo)
             .OrderBy(o => o.OrderBy(a => a.NombreAplicacion))
-            .SelectAsync();
-
-        IEnumerable<ListaAplicacionesResponse> result = aplicaciones.Select(a => new ListaAplicacionesResponse(
-            a.AplicacionId,
-            a.NombreAplicacion,
-            a.DescAplicacion,
-            a.RutaUrl,
-            a.Activo));
-
-        return result;
+            .SelectAsync(a => new ListaAplicacionesResponse(
+                a.AplicacionId,
+                a.NombreAplicacion,
+                a.DescAplicacion,
+                a.RutaUrl,
+                a.Activo));
     }
 }

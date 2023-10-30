@@ -1,5 +1,5 @@
-using Ardalis.GuardClauses;
 using SGDP.PLUS.Comun.ContextAccesor;
+using SGDP.PLUS.Comun.Excepcion;
 using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoPersonas.ActivarInactivar;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoPersonas.Consultar;
@@ -10,7 +10,6 @@ using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoPersonas.Especificacion;
 using SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoPersonas.Repositorio;
 using SGDP.PLUS.MAESTROS.Dominio.Entidades;
 using SGDP.PLUS.MAESTROS.Infraestructura.UnidadTrabajo;
-using System;
 
 namespace SGDP.PLUS.MAESTROS.Aplicacion.Funcionalidades.TipoPersonas.LogicaNegocio;
 
@@ -18,7 +17,7 @@ public class GestionTipoPersonas : BaseAppService, IGestionTipoPersonas
 {
     private readonly ITipoPersonaRepositorioLectura _tipopersonaRepositorioLectura;
     private readonly ITipoPersonaRepositorioEscritura _tipopersonaRepositorioEscritura;
-    private readonly IUnitOfWorkSegEscritura  _unitOfWork;
+    private readonly IUnitOfWorkSegEscritura _unitOfWork;
     private readonly IContextAccessor _contextAccessor;
 
     public GestionTipoPersonas(
@@ -79,7 +78,7 @@ public class GestionTipoPersonas : BaseAppService, IGestionTipoPersonas
             result.ModificaFecha,
             result.Activo
             );
-    
+
     }
 
     public async Task<DataViewModel<ConsultarTipoPersonasResponse>> ConsultarTipoPersonas(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
@@ -161,6 +160,6 @@ public class GestionTipoPersonas : BaseAppService, IGestionTipoPersonas
             regActualizado.ModificaFecha,
             regActualizado.Activo
             );
-    
+
     }
 }
