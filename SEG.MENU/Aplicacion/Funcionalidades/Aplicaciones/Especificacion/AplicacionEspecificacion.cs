@@ -23,8 +23,9 @@ public class AplicacionEspecificacion : SpecificationBase<Aplication>
             {
                 var eEspecificacion1 = new SpecificationCriteriaDirect<Aplication>(c => c.NombreAplicacion.Contains(s));
                 var eEspecificacion2 = new SpecificationCriteriaDirect<Aplication>(c => c.DescAplicacion.Contains(s));
+                var eEspecificacion3 = new SpecificationCriteriaDirect<Aplication>(c => c.RutaUrl.Contains(s));
 
-                especificacion &= eEspecificacion1 || eEspecificacion2;
+                especificacion &= eEspecificacion1 || eEspecificacion2 || eEspecificacion3;
             }
         }
 

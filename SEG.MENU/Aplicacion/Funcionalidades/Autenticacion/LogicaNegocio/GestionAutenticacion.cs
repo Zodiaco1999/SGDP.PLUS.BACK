@@ -280,7 +280,7 @@ public class GestionAutenticacion : BaseAppService, IGestionAutenticacion
     {
         var user = await _usuarioRepositorioEscritura
                        .Query(q => q.Email == registroDto.Email)
-                       .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "No se encontró el usuario");
+                       .FirstOrDefaultAsync() ?? throw new ValidationException("Correo electrónico invalido, verifique los datos.");
 
         var correo = new Correo()
         {
@@ -300,7 +300,7 @@ public class GestionAutenticacion : BaseAppService, IGestionAutenticacion
         }
         catch (Exception ex)
         {
-            throw new Exception($"Correo no enviado: {ex.Message}");
+            throw new BadRequestCustomException($"No se logro enviar el correo.", ex);
         }
 
         user.Token = token;
@@ -315,10 +315,10 @@ public class GestionAutenticacion : BaseAppService, IGestionAutenticacion
     {
         var user = await _usuarioRepositorioLectura
                         .Query(q => q.Email == registroDto.Email)
-                        .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "No se encontró el usuario, email invalido");
+                        .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), registroDto.Email);
 
         if (user.Token != registroDto.Token || user.FechaExpiracionToken < DateTime.Now)
-            throw new Exception("El tiempo para restablecer la contraseña caducó, por favor realice el proceso nuevamente.");
+            throw new ValidationException("El tiempo para restablecer la contraseña caducó, por favor realice el proceso nuevamente.");
 
         if (!registroDto.PasswordNueva.Equals(registroDto.PasswordConfirmacion))
             throw new ValidationException("Las contraseñas no coinciden");
