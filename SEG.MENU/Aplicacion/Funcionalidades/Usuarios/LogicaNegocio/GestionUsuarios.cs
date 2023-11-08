@@ -86,8 +86,51 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
         }
         catch (Exception ex)
         {
-            throw new NotFoundException(nameof(Usuario), ex.Message);
+            throw new BadRequestCustomException("Error consultando usuarios", ex);
         }
+    }
+
+    public async Task<ConsultarUsuarioPorIdResponse> ConsultarUsuarioPorId(string usuarioId)
+    {
+        var result = await _usuarioRepositorioLectura
+              .Query(p => p.UsuarioId == usuarioId)
+              .Include(p => p.UsuarioFoto!)
+              .Include(t => t.TipoDocumento)
+              .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), usuarioId); ;
+
+        string foto = string.Empty;
+
+        if (result.UsuarioFoto is not null)
+        {
+            foto = $"{result.UsuarioFoto.Formato},{result.UsuarioFoto.Foto}";
+        }
+
+        return new ConsultarUsuarioPorIdResponse(
+            result.UsuarioId,
+            result.UsuarioDominio,
+            result.TipoDocumentoId,
+            result.TipoDocumento.Nombre,
+            result.NumeroIdentificacion,
+            result.PrimerNombre,
+            result.SegundoNombre,
+            result.PrimerApellido,
+            result.SegundoApellido,
+            result.Email,
+            foto,
+            result.FechaNacimiento,
+            result.Genero,
+            result.Contrasena,
+            result.FechaActualizacionContrasena,
+            result.AccesosFallidos,
+            result.FechaBloqueo,
+            result.CodigoAsignacion,
+            result.VenceCodigoAsignacion,
+            result.LogearLdap,
+            result.Activo,
+            result.CreaUsuario,
+            result.CreaFecha,
+            result.ModificaUsuario,
+            result.ModificaFecha);
     }
 
     public async Task<CrearUsuarioResponse> CrearUsuario(CrearUsuarioCommand registroDto)
@@ -154,55 +197,12 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
             registro.FechaActualizacionContrasena);
     }
 
-    public async Task<ConsultarUsuarioPorIdResponse> ConsultarUsuarioPorId(string usuarioId)
-    {
-        var result = await _usuarioRepositorioLectura
-              .Query(p => p.UsuarioId == usuarioId)
-              .Include(p => p.UsuarioFoto!)
-              .Include(t => t.TipoDocumento)
-              .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "No se encontro el registro"); ;
-
-        string foto = string.Empty;
-
-        if (result.UsuarioFoto is not null)
-        {
-            foto = $"{result.UsuarioFoto.Formato},{result.UsuarioFoto.Foto}";
-        }
-
-        return new ConsultarUsuarioPorIdResponse(
-            result.UsuarioId,
-            result.UsuarioDominio,
-            result.TipoDocumentoId,
-            result.TipoDocumento.Nombre,
-            result.NumeroIdentificacion,
-            result.PrimerNombre,
-            result.SegundoNombre,
-            result.PrimerApellido,
-            result.SegundoApellido,
-            result.Email,
-            foto,
-            result.FechaNacimiento,
-            result.Genero,
-            result.Contrasena,
-            result.FechaActualizacionContrasena,
-            result.AccesosFallidos,
-            result.FechaBloqueo,
-            result.CodigoAsignacion,
-            result.VenceCodigoAsignacion,
-            result.LogearLdap,
-            result.Activo,
-            result.CreaUsuario,
-            result.CreaFecha,
-            result.ModificaUsuario,
-            result.ModificaFecha);
-    }
-
     public async Task<EditarUsuarioResponse> EditarUsuario(EditarUsuarioCommand registroDto)
     {
         var regActualizar = await _usuarioRepositorioEscritura
             .Query(x => x.UsuarioId == registroDto.UsuarioId)
             .Include(us => us.UsuarioFoto)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "No se encontro el registro");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), registroDto.UsuarioId);
 
         regActualizar.UsuarioDominio = registroDto.UsuarioDominio;
         regActualizar.UsuarioDominio = registroDto.UsuarioDominio;
@@ -221,7 +221,6 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
         {
             try
             {
-
                 regActualizar.UsuarioFoto = new UsuarioFoto()
                 {
                     Foto = registroDto.Foto.Substring(registroDto.Foto.IndexOf(',') + 1),
@@ -241,7 +240,7 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
 
         var regActualizado = await _usuarioRepositorioEscritura
             .Query(x => x.UsuarioId == registroDto.UsuarioId)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "No se encontró el registro a actualizado");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), registroDto.UsuarioId);
 
         return new EditarUsuarioResponse(
             regActualizado.UsuarioId,
@@ -272,7 +271,7 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
     {
         var regActualizar = await _usuarioRepositorioEscritura
             .Query(x => x.UsuarioId == usuarioId)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "No se encontró el registro a actualizar");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), usuarioId);
 
         regActualizar.Activo = !regActualizar.Activo;
 
@@ -281,7 +280,7 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
 
         var regActualizado = await _usuarioRepositorioEscritura
             .Query(x => x.UsuarioId == usuarioId)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "No se encontró el registro actualizado");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), usuarioId);
 
         return new ActivarInactivarUsuarioResponse(
             regActualizado.UsuarioId,

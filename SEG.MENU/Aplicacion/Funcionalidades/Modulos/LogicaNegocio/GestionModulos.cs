@@ -33,16 +33,21 @@ public class GestionModulos : BaseAppService, IGestionModulos
         _contextAccessor = contextAccessor;
     }
 
-    public async Task ActivarInactivarModulo(Guid moduloId)
+    public async Task<IEnumerable<ConsultarModulosResponse>> ConsultarModulos(Guid aplicacionId, bool? activo)
     {
-        var regActualizar = await _moduloRepositorioLectura
-            .Query(x => x.ModuloId == moduloId)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Modulo), "No se encontró el registro a actualizar");
+        var filtroEspecificacion = new ModuloEspecificacion(aplicacionId, activo);
 
-        regActualizar.Activo = !regActualizar.Activo;
-
-        _moduloRepositorioEscritura.Update(regActualizar);
-        await _unitOfWork.SaveChangesAsync();
+        return await _moduloRepositorioLectura
+            .Query(filtroEspecificacion.Criteria)
+            .SelectAsync(m => new ConsultarModulosResponse(
+                m.AplicacionId,
+                m.ModuloId,
+                m.NombreModulo,
+                m.DescModulo,
+                m.IconoPrefijo,
+                m.IconoNombre,
+                m.Orden,
+                m.Activo));
     }
 
     public async Task<ConsultarModuloPorIdResponse> ConsultarModuloPorId(Guid moduloId)
@@ -61,24 +66,7 @@ public class GestionModulos : BaseAppService, IGestionModulos
             result.Orden,
             result.Activo);
     }
-
-    public async Task<IEnumerable<ConsultarModulosResponse>> ConsultarModulos(Guid aplicacionId, bool? activo)
-    {
-        var filtroEspecificacion = new ModuloEspecificacion(aplicacionId, activo);
-
-        return await _moduloRepositorioLectura
-            .Query(filtroEspecificacion.Criteria)
-            .SelectAsync(m => new ConsultarModulosResponse(
-                m.AplicacionId,
-                m.ModuloId,
-                m.NombreModulo,
-                m.DescModulo,
-                m.IconoPrefijo,
-                m.IconoNombre,
-                m.Orden,
-                m.Activo));
-    }
-
+  
     public async Task<CrearModuloResponse> CrearModulo(CrearModuloCommand registroDto)
     {
         var registro = new Modulo
@@ -117,6 +105,18 @@ public class GestionModulos : BaseAppService, IGestionModulos
         regActualizar.IconoPrefijo = registroDto.IconoPrefijo;
         regActualizar.IconoNombre = registroDto.IconoNombre;
         regActualizar.Orden = registroDto.Orden;
+
+        _moduloRepositorioEscritura.Update(regActualizar);
+        await _unitOfWork.SaveChangesAsync();
+    }
+
+    public async Task ActivarInactivarModulo(Guid moduloId)
+    {
+        var regActualizar = await _moduloRepositorioLectura
+            .Query(x => x.ModuloId == moduloId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Modulo), "No se encontró el registro a actualizar");
+
+        regActualizar.Activo = !regActualizar.Activo;
 
         _moduloRepositorioEscritura.Update(regActualizar);
         await _unitOfWork.SaveChangesAsync();
