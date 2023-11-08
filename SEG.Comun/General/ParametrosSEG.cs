@@ -12,6 +12,6 @@ public class ParametrosSEG
     public int AccesosFallidos { get; set; }
     // Solo para pruebas
     public bool ValidarContrasena { get; set; }
-    public string? PatronContrasena { get; set; } 
-    public string? MensajeValidacionContrasena { get; set; }
+    public string PatronContrasena { get; set; } = string.Empty;
+    public string MensajeValidacionContrasena { get; set; } = string.Empty;
 }

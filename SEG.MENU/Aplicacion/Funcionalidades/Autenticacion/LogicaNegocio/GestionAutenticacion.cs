@@ -17,6 +17,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using SGDP.PLUS.Comun.Excepcion;
+using System.Text.RegularExpressions;
 
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Autenticacion.LogicaNegocio;
 
@@ -262,7 +263,9 @@ public class GestionAutenticacion : BaseAppService, IGestionAutenticacion
             .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "El usuario no existe");
 
         if (!HashCustom.CheckHash(registroDto.PasswordActual, user.Contrasena, user.Salt))
-            throw new Exception("Contraseña actual invalida");
+            throw new ValidationException("Contraseña actual invalida");
+        else if (!new Regex(_parametrosSEG.PatronContrasena).IsMatch(registroDto.PasswordNueva))
+            throw new ValidationException(_parametrosSEG.MensajeValidacionContrasena);
         else
         {
             var hash = HashCustom.Hash(registroDto.PasswordNueva);
@@ -280,7 +283,7 @@ public class GestionAutenticacion : BaseAppService, IGestionAutenticacion
     {
         var user = await _usuarioRepositorioEscritura
                        .Query(q => q.Email == registroDto.Email)
-                       .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "No se encontró el usuario");
+                       .FirstOrDefaultAsync() ?? throw new ValidationException("Correo electrónico invalido, verifique los datos.");
 
         var correo = new Correo()
         {
@@ -300,7 +303,7 @@ public class GestionAutenticacion : BaseAppService, IGestionAutenticacion
         }
         catch (Exception ex)
         {
-            throw new Exception($"Correo no enviado: {ex.Message}");
+            throw new BadRequestCustomException($"No se logro enviar el correo. Si el error persiste contacte a soporte", ex);
         }
 
         user.Token = token;
@@ -315,13 +318,16 @@ public class GestionAutenticacion : BaseAppService, IGestionAutenticacion
     {
         var user = await _usuarioRepositorioLectura
                         .Query(q => q.Email == registroDto.Email)
-                        .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), "No se encontró el usuario, email invalido");
+                        .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), registroDto.Email);
 
         if (user.Token != registroDto.Token || user.FechaExpiracionToken < DateTime.Now)
-            throw new Exception("El tiempo para restablecer la contraseña caducó, por favor realice el proceso nuevamente.");
+            throw new ValidationException("El tiempo para restablecer la contraseña caducó, por favor realice el proceso nuevamente.");
 
         if (!registroDto.PasswordNueva.Equals(registroDto.PasswordConfirmacion))
             throw new ValidationException("Las contraseñas no coinciden");
+
+        else if (!new Regex(_parametrosSEG.PatronContrasena).IsMatch(registroDto.PasswordNueva))
+            throw new ValidationException(_parametrosSEG.MensajeValidacionContrasena);
 
         var hash = HashCustom.Hash(registroDto.PasswordNueva);
         user.Contrasena = hash.Password;
