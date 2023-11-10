@@ -86,8 +86,22 @@ public class GestionUsuarioPerfil : BaseAppService, IGestionUsuarioPerfil
         }
         catch (Exception ex)
         {
-            throw new NotFoundException(nameof(UsuarioPerfil), ex.Message);
+            throw new BadRequestCustomException("Error consultando UsuarioPerfil", ex);
         }
+    }
+
+    public async Task<IEnumerable<ConsultarUsuarioPerfilPorIdResponse>> ConsultarUsuarioPerfilPorId(string usuarioId)
+    {
+        return await _usuarioPerfilRepositorioLectura
+             .Query(u => u.UsuarioId == usuarioId)
+             .SelectAsync(up => new ConsultarUsuarioPerfilPorIdResponse(
+                up.PerfilId,
+                up.Perfil.NombrePerfil,
+                up.Perfil.PerfilMenus.FirstOrDefault(p => p.PerfilId == up.PerfilId)!.Menu.Modulo.Apliation.NombreAplicacion ?? "NA",
+                up.Perfil.DescPerfil,
+                up.FechaInicia,
+                up.FechaTermina,
+                up.Perfil.Activo));
     }
 
     public async Task<CrearUsuarioPerfilResponse> CrearUsuarioPerfil(CrearUsuarioPerfilCommand registroDto)
@@ -109,20 +123,6 @@ public class GestionUsuarioPerfil : BaseAppService, IGestionUsuarioPerfil
             registro.FechaTermina);
     }
 
-    public async Task<IEnumerable<ConsultarUsuarioPerfilPorIdResponse>> ConsultarUsuarioPerfilPorId(string usuarioId)
-    {
-        return await _usuarioPerfilRepositorioLectura
-             .Query(u => u.UsuarioId == usuarioId)
-             .SelectAsync(up => new ConsultarUsuarioPerfilPorIdResponse(
-                up.PerfilId,
-                up.Perfil.NombrePerfil,
-                up.Perfil.PerfilMenus.FirstOrDefault(p => p.PerfilId == up.PerfilId)!.Menu.Modulo.Apliation.NombreAplicacion ?? "NA",
-                up.Perfil.DescPerfil,
-                up.FechaInicia,
-                up.FechaTermina,
-                up.Perfil.Activo));
-    }
-
     public async Task EditarUsuarioPerfil(List<EditarUsuarioPerfilCommand> usuarioPerfilDto, string usuarioId)
     {
         var usuarioPerfilActualizar = await _usuarioPerfilRepositorioEscritura
@@ -131,7 +131,7 @@ public class GestionUsuarioPerfil : BaseAppService, IGestionUsuarioPerfil
 
         if (usuarioPerfilActualizar is null)
         {
-            throw new NotFoundException(nameof(UsuarioPerfil), "No se encontro el registro");
+            throw new NotFoundException(nameof(UsuarioPerfil), usuarioId);
         }
 
         var usuarioPerfilesActuales = usuarioPerfilDto

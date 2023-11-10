@@ -90,7 +90,7 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
         }
         catch (Exception ex)
         {
-            throw new NotFoundException(nameof(PerfilMenu), ex.Message);
+            throw new BadRequestCustomException("Error consultando PerfilesMenus", ex);
         }
     }
 

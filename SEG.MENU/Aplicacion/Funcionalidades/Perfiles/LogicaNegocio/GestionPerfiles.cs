@@ -73,60 +73,8 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
         }
         catch (Exception ex)
         {
-            throw new NotFoundException(nameof(Perfil), ex.Message);
+            throw new BadRequestCustomException("Error consultando perfiles", ex);
         }
-    }
-
-    public async Task<CrearPerfilResponse> CrearPerfil(CrearPerfilCommand registroDto)
-    {
-        var registro = new Perfil { NombrePerfil = registroDto.NombrePerfil, DescPerfil = registroDto.DescPerfil };
-        registro.PerfilMenus = registroDto.PerfilMenus.Select(pm => new PerfilMenu
-        {
-            AplicacionId = pm.AplicacionId,
-            ModuloId = pm.ModuloId,
-            MenuId = pm.MenuId,
-            Consulta = pm.Consulta,
-            Inserta = pm.Inserta,
-            Actualiza = pm.Actualiza,
-            Elimina = pm.Elimina,
-            Activa = pm.Activa,
-            Ejecuta = pm.Ejecuta
-        }).ToList();
-
-        _perfilRepositorioEscritura.Insert(registro);
-        await _unitOfWork.SaveChangesAsync();
-
-        return new CrearPerfilResponse(registro.PerfilId, registro.NombrePerfil, registro.DescPerfil, registro.Activo);
-    }
-
-    public async Task<ActivarInactivarPerfilResponse> ActivarInactivarPerfil(Guid perfilId)
-    {
-        var regActualizar = await _perfilRepositorioEscritura.Query(x => x.PerfilId == perfilId).FirstOrDefaultAsync();
-
-        if (regActualizar is null)
-        {
-            throw new NotFoundException(nameof(Perfil), "No se encontró el registro a actualizar");
-        }
-        regActualizar.Activo = !regActualizar.Activo;
-
-        _perfilRepositorioEscritura.Update(regActualizar);
-        await _unitOfWork.SaveChangesAsync();
-
-        var regActualizado = await _perfilRepositorioEscritura.Query(x => x.PerfilId == perfilId).FirstOrDefaultAsync();
-        if (regActualizado is null)
-        {
-            throw new NotFoundException(nameof(Perfil), "No se encontró el registro actualizado");
-        }
-
-        return new ActivarInactivarPerfilResponse(
-            regActualizado.PerfilId,
-            regActualizado.NombrePerfil,
-            regActualizado.DescPerfil,
-            regActualizado.Activo,
-            regActualizado.CreaUsuario,
-            regActualizado.CreaFecha,
-            regActualizado.ModificaUsuario,
-            regActualizado.ModificaFecha);
     }
 
     public async Task<ConsultarPerfilPorIdResponse> ConsultarPerfilPorId(Guid perfilId)
@@ -134,7 +82,7 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
         var result = await _perfilRepositorioLectura
             .Query(p => p.PerfilId == perfilId)
             .Include("PerfilMenus.Menu.Modulo.Apliation")
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Perfil), "No se encontró el registro");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Perfil), perfilId);
 
         Guid aplicacionId = new();
         string nombreAplicacion = "N/A";
@@ -160,11 +108,33 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
             result.ModificaFecha);
     }
 
+    public async Task<CrearPerfilResponse> CrearPerfil(CrearPerfilCommand registroDto)
+    {
+        var registro = new Perfil { NombrePerfil = registroDto.NombrePerfil, DescPerfil = registroDto.DescPerfil };
+        registro.PerfilMenus = registroDto.PerfilMenus.Select(pm => new PerfilMenu
+        {
+            AplicacionId = pm.AplicacionId,
+            ModuloId = pm.ModuloId,
+            MenuId = pm.MenuId,
+            Consulta = pm.Consulta,
+            Inserta = pm.Inserta,
+            Actualiza = pm.Actualiza,
+            Elimina = pm.Elimina,
+            Activa = pm.Activa,
+            Ejecuta = pm.Ejecuta
+        }).ToList();
+
+        _perfilRepositorioEscritura.Insert(registro);
+        await _unitOfWork.SaveChangesAsync();
+
+        return new CrearPerfilResponse(registro.PerfilId, registro.NombrePerfil, registro.DescPerfil, registro.Activo);
+    }
+
     public async Task<EditarPerfilResponse> EditarPerfil(EditarPerfilCommand registroDto)
     {
         var regActualizar = await _perfilRepositorioEscritura
             .Query(x => x.PerfilId == registroDto.PerfilId)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Perfil), "No se encontró el registro a actualizar");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Perfil), registroDto.PerfilId);
 
         regActualizar.NombrePerfil = registroDto.NombrePerfil;
         regActualizar.DescPerfil = registroDto.DescPerfil;
@@ -176,9 +146,35 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
 
         var regActualizado = await _perfilRepositorioEscritura
             .Query(x => x.PerfilId == registroDto.PerfilId)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Perfil), "No se encontró el registro actualizado");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Perfil), registroDto.PerfilId);
 
         return new EditarPerfilResponse(
+            regActualizado.PerfilId,
+            regActualizado.NombrePerfil,
+            regActualizado.DescPerfil,
+            regActualizado.Activo,
+            regActualizado.CreaUsuario,
+            regActualizado.CreaFecha,
+            regActualizado.ModificaUsuario,
+            regActualizado.ModificaFecha);
+    }
+
+    public async Task<ActivarInactivarPerfilResponse> ActivarInactivarPerfil(Guid perfilId)
+    {
+        var regActualizar = await _perfilRepositorioEscritura
+            .Query(x => x.PerfilId == perfilId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Perfil), perfilId);
+       
+        regActualizar.Activo = !regActualizar.Activo;
+
+        _perfilRepositorioEscritura.Update(regActualizar);
+        await _unitOfWork.SaveChangesAsync();
+
+        var regActualizado = await _perfilRepositorioEscritura
+            .Query(x => x.PerfilId == perfilId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Perfil), perfilId);
+       
+        return new ActivarInactivarPerfilResponse(
             regActualizado.PerfilId,
             regActualizado.NombrePerfil,
             regActualizado.DescPerfil,

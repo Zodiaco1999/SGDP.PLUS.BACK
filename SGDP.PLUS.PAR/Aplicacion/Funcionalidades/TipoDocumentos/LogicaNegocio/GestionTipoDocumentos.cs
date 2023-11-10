@@ -125,6 +125,7 @@ public class GestionTipoDocumentos : BaseAppService, IGestionTipoDocumentos
     {
         var registro = new TipoDocumento
         {
+            TipoDocumentoId =  _tipodocumentoRepositorioLectura.Query().Select().Count()+1, 
             Nombre = registroDto.Nombre,
             Abreviatura = registroDto.Abreviatura
         };

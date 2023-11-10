@@ -1,8 +1,7 @@
-﻿using SGDP.PLUS.Comun.Excepcion;
+﻿
 using SGDP.PLUS.Comun.ContextAccesor;
+using SGDP.PLUS.Comun.Excepcion;
 using SGDP.PLUS.Comun.General;
-using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Crear;
-using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Editar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Especificacion;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.Consultar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.ConsultarPorId;
@@ -67,8 +66,16 @@ public class GestionUsuariosFotos : BaseAppService, IGestionUsuariosFotos
         }
         catch (Exception ex)
         {
-            throw new NotFoundException(nameof(UsuarioFoto), ex.Message);
+            throw new BadRequestCustomException("Error consultando UsuariosFotos", ex);
         }
+    }
+
+    public async Task<ConsultarUsuarioFotoPorIdResponse> ConsultarUsuarioFotoPorId()
+    {
+        var result = await _usuarioFotoRepositorioLectura
+            .FindAsync(ContextAccessor.UserId) ?? throw new NotFoundException(nameof(UsuarioFoto), "No se encontró la foto del usuario");
+
+        return new ConsultarUsuarioFotoPorIdResponse($"{result.Formato},{result.Foto}");
     }
 
     public async Task<CrearUsuarioFotoResponse> CrearUsuarioFoto(CrearUsuarioFotoCommand registroDto)
@@ -89,23 +96,12 @@ public class GestionUsuariosFotos : BaseAppService, IGestionUsuariosFotos
             registro.Formato);
     }
 
-    public async Task<ConsultarUsuarioFotoPorIdResponse> ConsultarUsuarioFotoPorId()
-    {
-        var result = await _usuarioFotoRepositorioLectura
-            .FindAsync(ContextAccessor.UserId) ?? throw new NotFoundException(nameof(UsuarioFoto), "No se encontró la foto del usuario");
-
-        return new ConsultarUsuarioFotoPorIdResponse($"{result.Formato},{result.Foto}");
-    }
-
     public async Task<EditarUsuarioFotoResponse> EditarUsuarioFoto(EditarUsuarioFotoCommand registroDto)
     {
-        var regActualizar = await _usuarioFotoRepositorioEscritura.Query(x => x.UsuarioId == registroDto.UsuarioId).FirstOrDefaultAsync();
-
-        if (regActualizar is null)
-        {
-            throw new NotFoundException(nameof(UsuarioFoto), "No se encontro el registro");
-        }
-
+        var regActualizar = await _usuarioFotoRepositorioEscritura
+            .Query(x => x.UsuarioId == registroDto.UsuarioId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(UsuarioFoto), registroDto.UsuarioId);
+       
         regActualizar.UsuarioId = registroDto.UsuarioId;
         regActualizar.Foto = registroDto.Foto;
         regActualizar.Formato = registroDto.Formato;
@@ -113,12 +109,10 @@ public class GestionUsuariosFotos : BaseAppService, IGestionUsuariosFotos
         _usuarioFotoRepositorioEscritura.Update(regActualizar);
         await _unitOfWork.SaveChangesAsync();
 
-        var regActualizado = await _usuarioFotoRepositorioEscritura.Query(x => x.UsuarioId == registroDto.UsuarioId).FirstOrDefaultAsync();
-        if (regActualizado is null)
-        {
-            throw new NotFoundException(nameof(UsuarioFoto), "No se encontró el registro a actualizado");
-        }
-
+        var regActualizado = await _usuarioFotoRepositorioEscritura
+            .Query(x => x.UsuarioId == registroDto.UsuarioId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(UsuarioFoto), registroDto.UsuarioId);
+        
         return new EditarUsuarioFotoResponse(
             regActualizado.UsuarioId,
             regActualizado.Foto,

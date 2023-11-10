@@ -73,6 +73,24 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
         }
     }
 
+    public async Task<ConsultarAplicacionPorIdResponse> ConsultarAplicacionPorId(Guid aplicacionId)
+    {
+        var result = await _aplicacionRepositorioLectura
+                .Query(t => t.AplicacionId == aplicacionId)
+                .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), aplicacionId);
+
+        return new ConsultarAplicacionPorIdResponse(
+            result.AplicacionId,
+            result.NombreAplicacion,
+            result.DescAplicacion,
+            result.RutaUrl,
+            result.Activo,
+            result.CreaUsuario,
+            result.CreaFecha,
+            result.ModificaUsuario,
+            result.ModificaFecha);
+    }
+
     public async Task<CrearAplicacionResponse> CrearAplicacion(CrearAplicacionCommand registroDto)
     {
         var registro = new Aplication()
@@ -115,24 +133,6 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
             regActualizado.CreaFecha,
             regActualizado.ModificaUsuario,
             regActualizado.ModificaFecha);
-    }
-
-    public async Task<ConsultarAplicacionPorIdResponse> ConsultarAplicacionPorId(Guid aplicacionId)
-    {
-        var result = await _aplicacionRepositorioLectura
-                .Query(t => t.AplicacionId == aplicacionId)
-                .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), aplicacionId);
-
-        return new ConsultarAplicacionPorIdResponse(
-            result.AplicacionId,
-            result.NombreAplicacion,
-            result.DescAplicacion,
-            result.RutaUrl,
-            result.Activo,
-            result.CreaUsuario,
-            result.CreaFecha,
-            result.ModificaUsuario,
-            result.ModificaFecha);
     }
 
     public async Task<ActivarInactivarAplicacionResponse> ActivarInactivarAplicacion(Guid aplicacionId)
