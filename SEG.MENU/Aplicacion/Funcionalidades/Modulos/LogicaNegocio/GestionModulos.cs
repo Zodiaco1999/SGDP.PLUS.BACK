@@ -54,7 +54,7 @@ public class GestionModulos : BaseAppService, IGestionModulos
     {
         var result = await _moduloRepositorioLectura
             .Query(m => m.ModuloId == moduloId)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Modulo), "No se encontró el registro");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Modulo), moduloId);
 
         return new ConsultarModuloPorIdResponse(
             result.AplicacionId,
@@ -98,7 +98,7 @@ public class GestionModulos : BaseAppService, IGestionModulos
     {
         var regActualizar = await _moduloRepositorioLectura
             .Query(x => x.ModuloId == registroDto.ModuloId)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Modulo), "No se encontró el registro a actualizar");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Modulo), registroDto.ModuloId);
 
         regActualizar.NombreModulo = registroDto.NombreModulo;
         regActualizar.DescModulo = registroDto.DescModulo;
@@ -114,7 +114,7 @@ public class GestionModulos : BaseAppService, IGestionModulos
     {
         var regActualizar = await _moduloRepositorioLectura
             .Query(x => x.ModuloId == moduloId)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Modulo), "No se encontró el registro a actualizar");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Modulo), moduloId);
 
         regActualizar.Activo = !regActualizar.Activo;
 

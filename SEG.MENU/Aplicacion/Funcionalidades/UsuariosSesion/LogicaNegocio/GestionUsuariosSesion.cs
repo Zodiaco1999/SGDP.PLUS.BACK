@@ -70,10 +70,27 @@ public class GestionUsuariosSesion : BaseAppService, IGestionUsuariosSesion
         }
         catch (Exception ex)
         {
-            throw new NotFoundException(nameof(UsuarioSesion), ex.Message);
+            throw new BadRequestCustomException("Error consultando UsuarioSesion", ex);
         }
     }
 
+    public async Task<ConsultarUsuarioSesionPorIdResponse> ConsultarUsuarioSesionPorId(string usuarioId)
+    {
+        var result = await _usuariosesionLectura
+               .Query(p => p.UsuarioId == usuarioId)
+               .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(UsuarioSesion), usuarioId);
+
+        return new ConsultarUsuarioSesionPorIdResponse(
+            result.UsuarioId,
+            result.SesionId,
+            result.InicioSesion,
+            result.IpCliente,
+            result.TokenActualizacion,
+            result.CreaUsuario,
+            result.CreaFecha,
+            result.ModificaUsuario,
+            result.ModificaFecha);
+    }
     public async Task<CrearUsuarioSesionResponse> CrearUsuarioSesion(CrearUsuarioSesionCommand registroDto)
     {
         var registro = new UsuarioSesion()
@@ -96,33 +113,12 @@ public class GestionUsuariosSesion : BaseAppService, IGestionUsuariosSesion
             registro.TokenActualizacion);
     }
 
-    public async Task<ConsultarUsuarioSesionPorIdResponse> ConsultarUsuarioSesionPorId(string usuarioId)
-    {
-        var result = await _usuariosesionLectura
-               .Query(p => p.UsuarioId == usuarioId)
-               .FirstOrDefaultAsync();
-
-        return new ConsultarUsuarioSesionPorIdResponse(
-            result.UsuarioId,
-            result.SesionId,
-            result.InicioSesion,
-            result.IpCliente,
-            result.TokenActualizacion,
-            result.CreaUsuario,
-            result.CreaFecha,
-            result.ModificaUsuario,
-            result.ModificaFecha);
-    }
-
     public async Task<EditarUsuarioSesionResponse> EditarUsuarioSesion(EditarUsuarioSesionCommand registroDto)
     {
-        var regActualizar = await _usuariosesionEscritura.Query(x => x.UsuarioId == registroDto.UsuarioId).FirstOrDefaultAsync();
-
-        if (regActualizar is null)
-        {
-            throw new NotFoundException(nameof(UsuarioSesion), "No se encontro el registro");
-        }
-
+        var regActualizar = await _usuariosesionEscritura
+            .Query(x => x.UsuarioId == registroDto.UsuarioId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(UsuarioSesion), registroDto.UsuarioId);
+        
         regActualizar.UsuarioId = registroDto.UsuarioId;
         regActualizar.SesionId = registroDto.SesionId;
         regActualizar.InicioSesion = registroDto.InicioSesion;
@@ -132,11 +128,9 @@ public class GestionUsuariosSesion : BaseAppService, IGestionUsuariosSesion
         _usuariosesionEscritura.Update(regActualizar);
         await _unitOfWork.SaveChangesAsync();
 
-        var regActualizado = await _usuariosesionEscritura.Query(x => x.UsuarioId == registroDto.UsuarioId && x.SesionId == registroDto.SesionId).FirstOrDefaultAsync();
-        if (regActualizado is null)
-        {
-            throw new NotFoundException(nameof(UsuarioSesion), "No se encontró el registro a actualizado");
-        }
+        var regActualizado = await _usuariosesionEscritura
+            .Query(x => x.UsuarioId == registroDto.UsuarioId && x.SesionId == registroDto.SesionId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(UsuarioSesion), registroDto.UsuarioId);
 
         return new EditarUsuarioSesionResponse(
             regActualizado.UsuarioId,

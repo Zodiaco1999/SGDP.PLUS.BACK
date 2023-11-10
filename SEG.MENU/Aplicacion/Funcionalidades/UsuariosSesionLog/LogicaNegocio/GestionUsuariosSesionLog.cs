@@ -11,6 +11,7 @@ using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesionLog.Especificacion;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesionLog.Repositorio;
 using SGDP.PLUS.SEG.Dominio.Entidades;
 using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
+using System;
 
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesionLog.LogicaNegocio;
 
@@ -67,8 +68,26 @@ public class GestionUsuariosSesionLog : BaseAppService, IGestionUsuariosSesionLo
         }
         catch (Exception ex)
         {
-            throw new NotFoundException(nameof(UsuarioSesionLog), ex.Message);
+            throw new BadRequestCustomException("Error consultando UsuarioSesionLog", ex);
         }
+    }
+
+    public async Task<ConsultarUsuarioSesionLogPorIdResponse> ConsultarUsuarioSesionLogPorId(Guid logId)
+    {
+        var result = await _usuariosesionlogLectura
+              .Query(p => p.LogId == logId)
+              .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(UsuarioSesionLog), logId);
+
+        return new ConsultarUsuarioSesionLogPorIdResponse(
+            result.LogId,
+            result.UsuarioId,
+            result.SesionId,
+            result.Fecha,
+            result.IpCliente,
+            result.DataSesion,
+            result.Accion,
+            result.MsgValidacion);
+
     }
 
     public async Task<CrearUsuarioSesionLogResponse> CrearUsuarioSesionLog(CrearUsuarioSesionLogCommand registroDto)
@@ -99,59 +118,37 @@ public class GestionUsuariosSesionLog : BaseAppService, IGestionUsuariosSesionLo
             registro.MsgValidacion);
     }
 
-    public async Task<ConsultarUsuarioSesionLogPorIdResponse> ConsultarUsuarioSesionLogPorId(Guid logId)
+    public async Task<EditarUsuarioSesionLogResponse> EditarUsuarioSesionLog(EditarUsuarioSesionLogCommand registroDto)
     {
-        var result = await _usuariosesionlogLectura
-              .Query(p => p.LogId == logId)
-              .FirstOrDefaultAsync();
+        var regActualizar = await _usuariosesionlogEscritura
+            .Query(x => x.LogId == registroDto.LogId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(UsuarioSesionLog), registroDto.LogId);
+        
 
-        return new ConsultarUsuarioSesionLogPorIdResponse(
-            result.LogId,
-            result.UsuarioId,
-            result.SesionId,
-            result.Fecha,
-            result.IpCliente,
-            result.DataSesion,
-            result.Accion,
-            result.MsgValidacion);
+        regActualizar.LogId = registroDto.LogId;
+        regActualizar.UsuarioId = registroDto.UsuarioId;
+        regActualizar.SesionId = registroDto.SesionId;
+        regActualizar.Fecha = registroDto.Fecha;
+        regActualizar.IpCliente = registroDto.IpCliente;
+        regActualizar.DataSesion = registroDto.DataSesion;
+        regActualizar.Accion = registroDto.Accion;
+        regActualizar.MsgValidacion = registroDto.MsgValidacion;
 
+        _usuariosesionlogEscritura.Update(regActualizar);
+        await _unitOfWork.SaveChangesAsync();
+
+        var regActualizado = await _usuariosesionlogEscritura
+            .Query(x => x.LogId == registroDto.LogId)
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(UsuarioSesionLog), registroDto.LogId);
+
+        return new EditarUsuarioSesionLogResponse(
+            regActualizado.LogId,
+            regActualizado.UsuarioId,
+            regActualizado.SesionId,
+            regActualizado.Fecha,
+            regActualizado.IpCliente,
+            regActualizado.DataSesion,
+            regActualizado.Accion,
+            regActualizado.MsgValidacion);
     }
-
-        public async Task<EditarUsuarioSesionLogResponse> EditarUsuarioSesionLog(EditarUsuarioSesionLogCommand registroDto)
-        {
-            var regActualizar = await _usuariosesionlogEscritura.Query(x => x.LogId == registroDto.LogId).FirstOrDefaultAsync();
-
-            if (regActualizar is null)
-            {
-                throw new NotFoundException(nameof(UsuarioSesionLog), "No se encontro el registro");
-            }
-
-            regActualizar.LogId = registroDto.LogId;
-            regActualizar.UsuarioId = registroDto.UsuarioId;
-            regActualizar.SesionId = registroDto.SesionId;
-            regActualizar.Fecha = registroDto.Fecha;
-            regActualizar.IpCliente = registroDto.IpCliente;
-            regActualizar.DataSesion = registroDto.DataSesion;
-            regActualizar.Accion = registroDto.Accion;
-            regActualizar.MsgValidacion = registroDto.MsgValidacion;
-
-            _usuariosesionlogEscritura.Update(regActualizar);
-            await _unitOfWork.SaveChangesAsync();
-
-            var regActualizado = await _usuariosesionlogEscritura.Query(x => x.LogId == registroDto.LogId).FirstOrDefaultAsync();
-            if (regActualizado is null)
-            {
-                throw new NotFoundException(nameof(UsuarioSesionLog), "No se encontró el registro a actualizado");
-            }
-
-            return new EditarUsuarioSesionLogResponse(
-                regActualizado.LogId,
-                regActualizado.UsuarioId,
-                regActualizado.SesionId,
-                regActualizado.Fecha,
-                regActualizado.IpCliente,
-                regActualizado.DataSesion,
-                regActualizado.Accion,
-                regActualizado.MsgValidacion);
-        }
 }
