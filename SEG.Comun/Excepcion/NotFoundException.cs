@@ -8,5 +8,10 @@ namespace SGDP.PLUS.Comun.Excepcion
             : base($"No se encontro el registro asociado a \"{name}\" por el parametro ({key}).", "", (int)HttpStatusCode.NotFound)
         {
         }
+
+        public NotFoundException(string message)
+         : base(message, "", (int)HttpStatusCode.NotFound)
+        {
+        }
     }
 }

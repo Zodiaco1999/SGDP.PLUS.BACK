@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.OpenApi.Models;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.Middleware;
-using SGDP.PLUS.SEG;
+using SGDP.PLUS.INFOTERCERO;
 
 var builder = WebApplication.CreateBuilder(args);
 string SpecificOrigins = "specificOrigins";
@@ -24,31 +23,7 @@ builder.Services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>(
 builder.Services.AddSingleton<IContextAccessor, ContextAccessor>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        In = ParameterLocation.Header,
-        Description = "Por favor inserte el jwt despues de la palabra bearer de esta forma \"<strong>bearer {JWT}</strong>\"",
-        Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey
-    });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            new string[] { }
-        }
-    });
-});
-
+builder.Services.AddSwaggerGen();
 builder.Services.AddAplicacionesServices(builder.Configuration);
 
 var app = builder.Build();
@@ -87,3 +62,4 @@ app.UseMiddleware<CustomExceptionMiddleware>();
 app.UseRequestLocalization();
 
 app.Run();
+

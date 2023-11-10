@@ -18,6 +18,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using SGDP.PLUS.Comun.Excepcion;
 using System.Text.RegularExpressions;
+using SGDP.PLUS.Comun.Seguridad.Entidades;
 
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Autenticacion.LogicaNegocio;
 

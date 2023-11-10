@@ -49,7 +49,7 @@ public class GestionMenus : BaseAppService, IGestionMenus
     {
         var regActualizar = await _menuRepositorioLectura
             .Query(m => m.MenuId == menuId)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Menu), "No se encontró el registro a actualizar");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Menu), menuId);
 
         regActualizar.Activo = !regActualizar.Activo;
 
@@ -58,7 +58,7 @@ public class GestionMenus : BaseAppService, IGestionMenus
 
         var regActualizado = await _menuRepositorioLectura
             .Query(m => m.MenuId == menuId)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Menu), "No se encontró el registro actualizado");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException("No se encontró el registro actualizado de menu");
 
         return new ActivarInactivarMenuResponse(
             regActualizado.AplicacionId,
@@ -86,7 +86,7 @@ public class GestionMenus : BaseAppService, IGestionMenus
     {
         var result = await _menuRepositorioLectura
             .Query(m => m.MenuId == menuId)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Menu), "No se encontró el registro");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Menu), menuId);
 
         return new ConsultarMenuPorIdResponse(
             result.AplicacionId,
@@ -153,7 +153,7 @@ public class GestionMenus : BaseAppService, IGestionMenus
         }
         catch (Exception ex)
         {
-            throw new NotFoundException(nameof(Menu), ex.Message);
+            throw new BadRequestCustomException("No se logro cosultar los menús", ex);
         }
     }
 
@@ -191,7 +191,7 @@ public class GestionMenus : BaseAppService, IGestionMenus
 
         var aplicacion = await _aplicacionRepositorioLectura
             .Query(q => q.AplicacionId == aplicacionId && !q.Eliminado)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), "Aplicación no valida");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), aplicacionId);
 
         if (!aplicacion.Activo)
         {
@@ -297,7 +297,7 @@ public class GestionMenus : BaseAppService, IGestionMenus
     {
         var regActualizar = await _menuRepositorioLectura
             .Query(m => m.MenuId == registroDto.MenuId)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Menu), "No se encontró el registro");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Menu), registroDto.MenuId);
 
         regActualizar.NombreMenu = registroDto.NombreMenu;
         regActualizar.EtiquetaMenu = registroDto.EtiquetaMenu;
@@ -316,7 +316,7 @@ public class GestionMenus : BaseAppService, IGestionMenus
 
         var regActualizado = await _menuRepositorioLectura
             .Query(m => m.MenuId == registroDto.MenuId)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Menu), "No se encontró el registro actualizado");
+            .FirstOrDefaultAsync() ?? throw new NotFoundException("No se encontró el registro actualizado de menu");
 
         return new EditarMenuResponse(
             regActualizado.AplicacionId,
