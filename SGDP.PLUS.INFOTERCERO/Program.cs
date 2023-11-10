@@ -23,16 +23,11 @@ builder.Services.TryAddSingleton<IActionContextAccessor, ActionContextAccessor>(
 builder.Services.AddSingleton<IContextAccessor, ContextAccessor>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddAplicacionesServices(builder.Configuration);
 
 var app = builder.Build();
 
 app.UseCors(SpecificOrigins);
-//app.UseEndpoints(endpoints =>
-//{
-//    endpoints.MapControllers();
-//});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

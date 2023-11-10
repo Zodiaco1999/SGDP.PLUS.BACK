@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Aplicacion\Funcionalidades\Terceros\ConsultaLaft\" />
     <Folder Include="Dominio\" />
   </ItemGroup>
 

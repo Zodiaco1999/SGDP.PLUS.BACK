@@ -73,7 +73,7 @@ public class GestionUsuariosFotos : BaseAppService, IGestionUsuariosFotos
     public async Task<ConsultarUsuarioFotoPorIdResponse> ConsultarUsuarioFotoPorId()
     {
         var result = await _usuarioFotoRepositorioLectura
-            .FindAsync(ContextAccessor.UserId) ?? throw new NotFoundException(nameof(UsuarioFoto), "No se encontró la foto del usuario");
+            .FindAsync(ContextAccessor.UserId) ?? throw new NotFoundException(nameof(UsuarioFoto), ContextAccessor.UserId);
 
         return new ConsultarUsuarioFotoPorIdResponse($"{result.Formato},{result.Foto}");
     }
