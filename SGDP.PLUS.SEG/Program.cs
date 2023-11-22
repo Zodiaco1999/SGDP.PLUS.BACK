@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.OpenApi.Models;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.Middleware;
 using SGDP.PLUS.SEG;

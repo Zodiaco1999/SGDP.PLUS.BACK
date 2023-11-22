@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.LogicaNegocio;
 using SGDP.PLUS.INFOTERCERO.Infraestructura.UnidadTrabajo;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Autenticacion.Seguridad.JWT;
 using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
@@ -93,6 +94,11 @@ public static class ContenedorDependencias
         });
 
         #endregion
+
+        services.AddScoped(sp => new HttpClient());
+
+        // Terceros
+        services.AddScoped<IGestionTerceros, GestionTerceros>();
 
         return services;
     }

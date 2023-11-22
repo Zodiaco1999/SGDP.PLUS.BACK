@@ -7,7 +7,11 @@ namespace SGDP.PLUS.INFOTERCERO.Infraestructura.UnidadTrabajo;
 
 public class UnitOfWorkInfoTerceroEscritura : UnitOfWorkBase, IUnitOfWorkInfoTerceroEscritura
 {
-    public UnitOfWorkInfoTerceroEscritura(DbContextOptions opcionesDBContext, IContextAccessor contextAccessor = null) : base(opcionesDBContext, contextAccessor)
+    public UnitOfWorkInfoTerceroEscritura(DbContextOptions<UnitOfWorkInfoTerceroEscritura> opcionesDBContext, IContextAccessor contextAccessor = null) : base(opcionesDBContext, contextAccessor)
+    {
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
     }
 }

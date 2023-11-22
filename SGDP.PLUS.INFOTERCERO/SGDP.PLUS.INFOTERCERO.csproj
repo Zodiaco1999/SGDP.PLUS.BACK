@@ -14,11 +14,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SEG.Comun\SGDP.PLUS.Comun.csproj" />
+    <Folder Include="Dominio\Entidades\" />
+    <Folder Include="Infraestructura\Configuracion\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dominio\" />
+    <ProjectReference Include="..\SGDP.PLUS.Comun\SGDP.PLUS.Comun.csproj" />
   </ItemGroup>
 
 </Project>
