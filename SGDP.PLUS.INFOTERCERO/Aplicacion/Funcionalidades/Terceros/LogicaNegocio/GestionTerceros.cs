@@ -4,9 +4,9 @@ using SGDP.PLUS.Comun.Excepcion;
 using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.BuscadorTercero;
 using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.ObtenerInforme;
-using SGDP.PLUS.INFOTERCERO.Dominio.EntidadesDTO;
+using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.ObtenerInforme.DTO;
+using SGDP.PLUS.INFOTERCERO.Dominio.DTO;
 using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
-using System.Net.Http.Headers;
 
 namespace SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.LogicaNegocio;
 
@@ -41,11 +41,11 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
 
         if (!response.IsSuccessStatusCode)
         {
-            var readBadRequest = await response.Content.ReadAsStringAsync();
-            throw new ValidationException(readBadRequest);
+            var readBadRequest = await response.Content.ReadFromJsonAsync<BadResponseIfcCol>();
+            throw new BadRequestCustomException(readBadRequest.MessageText, readBadRequest.ToString());
         }
 
-        var buscadorResponse = await response.Content.ReadFromJsonAsync<List<BuscadorTerceroResponse>>() ?? new(); 
+        var buscadorResponse = await response.Content.ReadFromJsonAsync<List<BuscadorTerceroResponse>>() ?? new();
 
         return buscadorResponse;
     }
@@ -73,8 +73,32 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
             throw new ValidationException(readBadRequest);
         }
 
-        var informe = await response.Content.ReadAsStringAsync();
+        var responseAsString = await response.Content.ReadAsStringAsync();
+        var informe = JsonConvert.DeserializeObject<InformeAbreviado>(responseAsString) ?? new InformeAbreviado();
 
-        return new ObtenerInformeResponse { reponse = informe };
+        var listaAdministradores = new List<Administrador>();
+        var admins = informe.InformeJson.AdministradoresPrincipalesInternacional.ListaAdministradores;
+
+        if (admins != null)
+        {
+            var adminConsejo = admins.AdminConsejo;
+            var adminFirma = admins.AdminFirma;
+            var adminAuditores = admins.AdminAuditor;
+            var adminFuncion = admins.AdminFuncion;
+
+            if (adminConsejo != null && adminConsejo.Administradores.Count > 0)
+                listaAdministradores.AddRange(adminConsejo.Administradores);
+
+            if (adminFirma != null && adminFirma.Administradores.Count > 0)
+                listaAdministradores.AddRange(adminFirma.Administradores);
+
+            if (adminAuditores != null && adminAuditores.Administradores.Count > 0)
+                listaAdministradores.AddRange(adminAuditores.Administradores);
+
+            if (adminFuncion != null && adminFuncion.Administradores.Count > 0)
+                listaAdministradores.AddRange(adminFuncion.Administradores);
+        }
+
+        return new ObtenerInformeResponse(informe.InformeJson.EmpresaSintesisInternacional, listaAdministradores);
     }
 }

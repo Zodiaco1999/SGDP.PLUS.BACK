@@ -7,6 +7,12 @@ public class BaseCustomException : Exception
     public bool IsWarning { get; }
     public Exception? Excepcion { get; set; }
 
+    public BaseCustomException(string message, int code, bool isWarning = false) : base(message)
+    {
+        Code = code;
+        IsWarning = isWarning;
+    }
+
     public BaseCustomException(string message, string description, int code, bool isWarning = false) : base(message)
     {
         Code = code;
