@@ -1,16 +1,15 @@
-﻿using Newtonsoft.Json;
-using System.Text.Json.Serialization;
+﻿using System.Xml.Serialization;
 
 namespace SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.ObtenerInforme.DTO;
 
 public class AdministradoresPrincipalesInternacional
 {
-    [JsonProperty("LINK_LISTA_COMPLETA")]
+    [XmlElement("LINK_LISTA_COMPLETA")]
     public string LinkListaCompleta { get; set; } = string.Empty;
 
-    [JsonProperty("NUM_ADMINISTRADORES")]
+    [XmlElement("NUM_ADMINISTRADORES")]
     public int NumAdministradores { get; set; }
 
-    [JsonProperty("LISTA_ADMINISTRADORES")]
+    [XmlElement("LISTA_ADMINISTRADORES")]
     public ListaAdministradores ListaAdministradores { get; set; } = new();
 }

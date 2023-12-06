@@ -4,5 +4,6 @@ namespace SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.ObtenerInfor
 
 public record struct ObtenerInformeResponse(
     EmpresaSintesisInternacional TerceroInfoBasica,
+    int numAdministradores,
     List<Administrador> Administradores);
 

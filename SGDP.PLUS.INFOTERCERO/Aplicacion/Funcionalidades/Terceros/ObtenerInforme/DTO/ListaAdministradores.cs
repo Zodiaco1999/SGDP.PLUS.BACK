@@ -1,18 +1,18 @@
-﻿using Newtonsoft.Json;
+﻿using System.Xml.Serialization;
 
 namespace SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.ObtenerInforme.DTO;
 
 public class ListaAdministradores
 {
-    [JsonProperty("ADMIN_CONSEJO")]
+    [XmlElement("ADMIN_CONSEJO")]
     public Admin AdminConsejo { get; set; } = new Admin();
 
-    [JsonProperty("ADMIN_AUDITOR")]
+    [XmlElement("ADMIN_AUDITOR")]
     public Admin AdminAuditor { get; set; } = new Admin();
 
-    [JsonProperty("ADMIN_FUNCION")]
+    [XmlElement("ADMIN_FUNCION")]
     public Admin AdminFuncion { get; set; } = new Admin();
 
-    [JsonProperty("ADMIN_FIRMA")]
+    [XmlElement("ADMIN_FIRMA")]
     public Admin AdminFirma { get; set; } = new Admin();
 }

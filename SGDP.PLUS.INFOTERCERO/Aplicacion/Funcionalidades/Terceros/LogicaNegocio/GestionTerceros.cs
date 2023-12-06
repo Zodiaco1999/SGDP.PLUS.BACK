@@ -1,12 +1,17 @@
-﻿using Newtonsoft.Json;
+﻿using Azure;
+using Newtonsoft.Json;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.Excepcion;
 using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.BuscadorTercero;
+using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.ConsultaLaft;
+using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.ConsultaLaft.DTO;
 using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.ObtenerInforme;
 using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.ObtenerInforme.DTO;
 using SGDP.PLUS.INFOTERCERO.Dominio.DTO;
-using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
+using SGDP.PLUS.INFOTERCERO.Infraestructura.UnidadTrabajo;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.LogicaNegocio;
 
@@ -16,7 +21,7 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
     private readonly IContextAccessor _contextAccessor;
     private readonly IConfiguration _configuration;
     private readonly HttpClient _http;
-    private readonly string _sectionApi = "ApiSeiyaInforma";
+    private readonly string _sectionApi = "ApiSeiyaInformaProduccion";
 
     public GestionTerceros(
         IUnitOfWorkInfoTerceroEscritura unitOfWorkInfoTerceroEscritura,
@@ -39,11 +44,7 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
         string urlBuscador = _configuration.GetValue<string>($"{_sectionApi}:serviceBuscador")!;
         var response = await _http.PostAsJsonAsync(urlBuscador, command);
 
-        if (!response.IsSuccessStatusCode)
-        {
-            var readBadRequest = await response.Content.ReadFromJsonAsync<BadResponseIfcCol>();
-            throw new BadRequestCustomException(readBadRequest.MessageText, readBadRequest.ToString());
-        }
+        await HandlerResponse(response);
 
         var buscadorResponse = await response.Content.ReadFromJsonAsync<List<BuscadorTerceroResponse>>() ?? new();
 
@@ -60,45 +61,54 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
             tercero.Ici,
             command.Nit,
             "IA-01",
-            new Informe(true),
             new Informe(),
-            new Informe());
+            new Informe(),
+            new Informe(true));
 
         string urlObtenerProducto = _configuration.GetValue<string>($"{_sectionApi}:serviceObtenerProducto")!;
         var response = await _http.PostAsJsonAsync(urlObtenerProducto, request);
 
-        if (!response.IsSuccessStatusCode)
-        {
-            var readBadRequest = await response.Content.ReadAsStringAsync();
-            throw new ValidationException(readBadRequest);
-        }
+        await HandlerResponse(response);
 
-        var responseAsString = await response.Content.ReadAsStringAsync();
-        var informe = JsonConvert.DeserializeObject<InformeAbreviado>(responseAsString) ?? new InformeAbreviado();
+        var producto = await response.Content.ReadFromJsonAsync<ObtenerProducto>() ?? new();
+
+        var serializer = new XmlSerializer(typeof(InformeAbreviadoInternacional));
+        var informe = (InformeAbreviadoInternacional)serializer.Deserialize(new XmlTextReader(new StringReader(producto.InformeXml)))! ?? new();
 
         var listaAdministradores = new List<Administrador>();
-        var admins = informe.InformeJson.AdministradoresPrincipalesInternacional.ListaAdministradores;
+        var admins = informe.AdministradoresPrincipalesInternacional.ListaAdministradores;
 
-        if (admins != null)
+        var arrAdmins = new List<Admin> { admins.AdminConsejo, admins.AdminFirma, admins.AdminAuditor, admins.AdminFuncion };
+
+        foreach (var admin in arrAdmins)
         {
-            var adminConsejo = admins.AdminConsejo;
-            var adminFirma = admins.AdminFirma;
-            var adminAuditores = admins.AdminAuditor;
-            var adminFuncion = admins.AdminFuncion;
-
-            if (adminConsejo != null && adminConsejo.Administradores.Count > 0)
-                listaAdministradores.AddRange(adminConsejo.Administradores);
-
-            if (adminFirma != null && adminFirma.Administradores.Count > 0)
-                listaAdministradores.AddRange(adminFirma.Administradores);
-
-            if (adminAuditores != null && adminAuditores.Administradores.Count > 0)
-                listaAdministradores.AddRange(adminAuditores.Administradores);
-
-            if (adminFuncion != null && adminFuncion.Administradores.Count > 0)
-                listaAdministradores.AddRange(adminFuncion.Administradores);
+            if (admin != null && admin.Administradores.Count > 0)
+                listaAdministradores.AddRange(admin.Administradores);
         }
-
-        return new ObtenerInformeResponse(informe.InformeJson.EmpresaSintesisInternacional, listaAdministradores);
+        
+        return new ObtenerInformeResponse(informe.EmpresaSintesisInternacional, listaAdministradores.Count, listaAdministradores);
     }
+
+    public async Task<ConsultaLaftResponse> ConsultaLaft(ConsultaLaftCommand command)
+    {
+        string urlConsultaLaft = _configuration.GetValue<string>($"{_sectionApi}:serviceConsultaLaft")!;
+        var response = await _http.PostAsJsonAsync(urlConsultaLaft, command);
+
+        await HandlerResponse(response);
+
+        var responseAsString = await response.Content.ReadAsStringAsync();
+        var laftResponse = JsonConvert.DeserializeObject<RepuestaLaft>(responseAsString) ?? new();
+
+        return laftResponse.LaftResponse;
+    }
+
+    private async Task HandlerResponse(HttpResponseMessage response) 
+    {
+        if (!response.IsSuccessStatusCode)
+        {
+            var readBadRequest = await response.Content.ReadFromJsonAsync<BadResponseIfcCol>();
+            throw new BadRequestCustomException(readBadRequest.MessageText, readBadRequest.ToString());
+        }
+    }
+
 }

@@ -1,36 +1,35 @@
-﻿using Newtonsoft.Json;
-
+﻿using System.Xml.Serialization;
 namespace SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.ObtenerInforme.DTO;
 
 public class EmpresaSintesisInternacional
 { 
-    [JsonProperty("ID_FISCAL")]
+    [XmlElement("ID_FISCAL")]
     public string IdFiscal { get; set; } = string.Empty;
 
-    [JsonProperty("FECHA_CONSTITUCION")]
+    [XmlElement("FECHA_CONSTITUCION")]
     public string FechaConstitucion { get; set; } = string.Empty;
 
-    [JsonProperty("EMAIL")]
+    [XmlElement("EMAIL")]
     public string Email { get; set; } = string.Empty;
 
-    [JsonProperty("LIT_ICI")]
+    [XmlElement("LIT_ICI")]
     public string Ici { get; set; } = string.Empty;
 
-    [JsonProperty("FORM_JURIDICA_COD")]
+    [XmlElement("FORMA_JURIDICA_COD")]
     public string FormaJuridicaCod { get; set; } = string.Empty;
 
-    [JsonProperty("ACTIVIDAD")]
+    [XmlElement("ACTIVIDAD")]
     public string Actividad { get; set; } = string.Empty;
 
-    [JsonProperty("DENOMINACION")]
+    [XmlElement("DENOMINACION")]
     public string Denominacion { get; set; } = string.Empty;
 
-    [JsonProperty("CIUDAD")]
+    [XmlElement("CIUDAD")]
     public string Ciudad { get; set; } = string.Empty;
 
-    [JsonProperty("DOMICILIO_SOCIAL")]
+    [XmlElement("DOMICILIO_SOCIAL")]
     public string DomicilioSocial { get; set; } = string.Empty;
 
-    [JsonProperty("TELEFONO")]
+    [XmlElement("TELEFONO")]
     public string Telefono { get; set; } = string.Empty;
 }

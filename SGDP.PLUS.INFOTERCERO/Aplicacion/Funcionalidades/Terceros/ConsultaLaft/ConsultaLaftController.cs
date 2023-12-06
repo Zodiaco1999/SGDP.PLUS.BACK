@@ -1,18 +1,20 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.ConsultaLaft
+namespace SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.ConsultaLaft;
+
+[Route("api/[controller]")]
+[ApiController]
+//[Authorize]
+public class ConsultaLaftController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    [Authorize]
-    public class ConsultaLaftController : ControllerBase
-    {
-        [HttpGet]
-        public async Task<IActionResult> ConsultaLaft()
-        {
-            return Ok("Autorizado");
-        }
-    }
+
+    private readonly IMediator _mediator;
+    public ConsultaLaftController(IMediator mediator) => _mediator = mediator;
+
+    [HttpPost]
+    public async Task<IActionResult> ConsultaLaft(ConsultaLaftCommand command)
+        => Ok(await _mediator.Send(command));
 }

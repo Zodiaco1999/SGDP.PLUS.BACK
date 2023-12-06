@@ -1,6 +1,9 @@
-﻿namespace SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.ObtenerInforme.DTO;
+﻿using System.Xml.Serialization;
+
+namespace SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.ObtenerInforme.DTO;
 
 public class InformeAbreviado
 {
-    public InformeJson InformeJson { get; set; } = new InformeJson();
+    [XmlElement("INFORME_ABREVIADO_INTERNACIONAL")]
+    public InformeAbreviadoInternacional InformeAbreviadoInternacional { get; set; } = new InformeAbreviadoInternacional();
 }

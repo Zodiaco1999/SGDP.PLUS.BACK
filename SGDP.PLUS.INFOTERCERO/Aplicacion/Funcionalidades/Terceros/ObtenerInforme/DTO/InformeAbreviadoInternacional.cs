@@ -1,13 +1,15 @@
-﻿using Newtonsoft.Json;
+﻿using System.Xml.Serialization;
 
 namespace SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.ObtenerInforme.DTO
 {
-    public class InformeJson
+    [Serializable]
+    [XmlRoot("INFORME_ABREVIADO_INTERNACIONAL")]
+    public class InformeAbreviadoInternacional
     {
-        [JsonProperty("ETIQUETA_EMPRESA_SINTESIS_INTERNACIONAL")]
+        [XmlElement("ETIQUETA_EMPRESA_SINTESIS_INTERNACIONAL")]
         public EmpresaSintesisInternacional EmpresaSintesisInternacional { get; set; } = new();
 
-        [JsonProperty("ADMINISTRADORES_PRINCIPALES_INTERNACIONAL")]
+        [XmlElement("ADMINISTRADORES_PRINCIPALES_INTERNACIONAL")]
         public AdministradoresPrincipalesInternacional AdministradoresPrincipalesInternacional { get; set; } = new();
     }
 }
