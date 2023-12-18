@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SGDP.PLUS.SEG.Dominio.Entidades;
-using SGDP.PLUS.Comun.General;
 
 namespace SGDP.PLUS.SEG.Infraestructura.Configuracion;
 

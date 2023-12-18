@@ -14,8 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dominio\Entidades\" />
-    <Folder Include="Infraestructura\Configuracion\" />
+    <Folder Include="Aplicacion\Funcionalidades\Terceros\ConsultaLaftTercero\DTO\" />
   </ItemGroup>
 
   <ItemGroup>
