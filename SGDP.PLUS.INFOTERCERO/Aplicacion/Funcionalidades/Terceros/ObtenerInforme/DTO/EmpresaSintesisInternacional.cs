@@ -32,4 +32,6 @@ public class EmpresaSintesisInternacional
 
     [XmlElement("TELEFONO")]
     public string Telefono { get; set; } = string.Empty;
+
+    public string Resumen_Str { get; set; } = string.Empty;
 }

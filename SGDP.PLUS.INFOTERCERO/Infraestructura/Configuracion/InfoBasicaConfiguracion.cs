@@ -22,7 +22,7 @@ public class InfoBasicaConfiguracion : IEntityTypeConfiguration<InfoBasica>
         builder.Property(e => e.FechaConstitucion).HasColumnType("datetime");
         builder.Property(e => e.FormaJuridicaCod).HasMaxLength(50);
         builder.Property(e => e.IdFiscal).HasMaxLength(200);
-        builder.Property(e => e.Telefono).HasMaxLength(100);
+        builder.Property(e => e.Telefono).HasMaxLength(200);
     }
 
 }

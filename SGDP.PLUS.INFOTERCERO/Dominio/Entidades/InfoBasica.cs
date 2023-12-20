@@ -25,4 +25,6 @@ public class InfoBasica : CamposLog
     public string DomicilioSocial { get; set; } = null!;
 
     public string Telefono { get; set; } = null!;
+
+    public string Informe_Str { get; set; } = null!;
 }

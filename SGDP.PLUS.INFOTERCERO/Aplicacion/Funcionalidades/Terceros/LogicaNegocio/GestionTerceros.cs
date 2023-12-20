@@ -15,11 +15,13 @@ using SGDP.PLUS.INFOTERCERO.Dominio.Entidades;
 using SGDP.PLUS.INFOTERCERO.Infraestructura.UnidadTrabajo;
 using System.Xml;
 using System.Xml.Serialization;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.LogicaNegocio;
 
 public class GestionTerceros : BaseAppService, IGestionTerceros
 {
+    private readonly IInfoBasicaRepositorioLectura _infoBasicaLectura;
     private readonly IInfoBasicaRepositorioEscritura _infoBasicaEscritura;
     private readonly IUnitOfWorkInfoTerceroEscritura _unitOfWork;
     private readonly IContextAccessor _contextAccessor;
@@ -28,6 +30,7 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
     private readonly string _sectionApi = "ApiSeiyaInformaDesarrollo";
 
     public GestionTerceros(
+        IInfoBasicaRepositorioLectura infoBasicaLectura,
         IInfoBasicaRepositorioEscritura infoBasicaEscritura,
         IUnitOfWorkInfoTerceroEscritura unitOfWorkInfoTerceroEscritura,
         IContextAccessor contextAccessor,
@@ -36,6 +39,7 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
         HttpClient http
         ) : base(contextAccessor, loggerFactory)
     {
+        _infoBasicaLectura = infoBasicaLectura;
         _infoBasicaEscritura = infoBasicaEscritura;
         _unitOfWork = unitOfWorkInfoTerceroEscritura;
         _contextAccessor = contextAccessor;
@@ -81,6 +85,8 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
         var serializer = new XmlSerializer(typeof(InformeAbreviadoInternacional));
         var informe = (InformeAbreviadoInternacional)serializer.Deserialize(new XmlTextReader(new StringReader(producto.InformeXml)))! ?? new();
 
+        informe.EmpresaSintesisInternacional.Resumen_Str = producto.InformeXml;
+
         var listaAdministradores = new List<Administrador>();
         var admins = informe.AdministradoresPrincipalesInternacional.ListaAdministradores;
 
@@ -91,7 +97,7 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
             if (admin != null && admin.Administradores.Count > 0)
                 listaAdministradores.AddRange(admin.Administradores);
         }
-        
+
         return new ObtenerInformeResponse(informe.EmpresaSintesisInternacional, listaAdministradores.Count, listaAdministradores);
     }
 
@@ -112,25 +118,7 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
     {
         var informe = await ObtenerInforme(new ObtenerInformeCommand(command.Nit));
 
-        var iBasica = informe.TerceroInfoBasica;
-
-        var tercero = new InfoBasica
-        {
-            Nit = command.Nit,
-            Ici = iBasica.Ici,
-            IdFiscal = iBasica.IdFiscal,
-            FechaConstitucion = Convert.ToDateTime(iBasica.FechaConstitucion),
-            Email = iBasica.Email,
-            FormaJuridicaCod = iBasica.FormaJuridicaCod,
-            Actividad = iBasica.Actividad,
-            Denominacion = iBasica.Denominacion,
-            Ciudad = iBasica.Ciudad,
-            DomicilioSocial = iBasica.DomicilioSocial,
-            Telefono = iBasica.Telefono
-        };
-
-        _infoBasicaEscritura.Insert(tercero);
-        await _unitOfWork.SaveChangesAsync();
+        TerceroSaveOrUpdate(command.Nit, informe.TerceroInfoBasica);
 
         var numerosIndentificacion = new List<string> { command.Nit };
         numerosIndentificacion.AddRange(informe.Administradores.Select(a => a.Cedula).Where(a => !string.IsNullOrEmpty(a)));
@@ -141,12 +129,12 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
         var ilicitos = new List<ListaIlicitos>();
         int numeroOcurrencias = 0;
 
-        foreach (var identificacion in identificaciones) 
+        foreach (var identificacion in identificaciones)
         {
             var consultaLaft = await ConsultaLaft(new ConsultaLaftCommand(identificacion));
             resumenRespuesta = consultaLaft.ResumenRespuesta;
 
-            if (consultaLaft.ListaIlicitos.Count > 0) 
+            if (consultaLaft.ListaIlicitos.Count > 0)
             {
                 ilicitos.AddRange(consultaLaft.ListaIlicitos);
                 int ocurrencias = int.Parse(resumenRespuesta.NumeroOcurrencias);
@@ -159,6 +147,46 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
 
         return new ConsultaLaftTerceroResponse() { ResumenRespuesta = resumenRespuesta, ListaIlicitos = ilicitos };
     }
+
+    private async Task TerceroSaveOrUpdate(string nit ,EmpresaSintesisInternacional iBasica) 
+    {
+        var terceroActualizar = await _infoBasicaLectura.FindAsync(nit, iBasica.Ici);
+
+        if (terceroActualizar == null)
+        {
+            var tercero = new InfoBasica
+            {
+                Nit = nit,
+                Ici = iBasica.Ici,
+                IdFiscal = iBasica.IdFiscal,
+                FechaConstitucion = Convert.ToDateTime(iBasica.FechaConstitucion),
+                Email = iBasica.Email,
+                FormaJuridicaCod = iBasica.FormaJuridicaCod,
+                Actividad = iBasica.Actividad,
+                Denominacion = iBasica.Denominacion,
+                Ciudad = iBasica.Ciudad,
+                DomicilioSocial = iBasica.DomicilioSocial,
+                Telefono = iBasica.Telefono,
+                Informe_Str = iBasica.Resumen_Str
+            };
+            _infoBasicaEscritura.Insert(tercero);
+        }
+        else 
+        {
+            terceroActualizar.IdFiscal = iBasica.IdFiscal;
+            terceroActualizar.Email = iBasica.Email;
+            terceroActualizar.FormaJuridicaCod = iBasica.FormaJuridicaCod;
+            terceroActualizar.Actividad = iBasica.Actividad;
+            terceroActualizar.Denominacion = iBasica.Denominacion;
+            terceroActualizar.Ciudad = iBasica.Ciudad;
+            terceroActualizar.DomicilioSocial = iBasica.DomicilioSocial;
+            terceroActualizar.Telefono = iBasica.Telefono;
+            terceroActualizar.Informe_Str = iBasica.Resumen_Str;
+
+            _infoBasicaEscritura.Update(terceroActualizar);
+        }
+        await _unitOfWork.SaveChangesAsync();
+    } 
 
     private async Task HandlerResponse(HttpResponseMessage response)
     {
