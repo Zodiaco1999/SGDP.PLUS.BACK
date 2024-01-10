@@ -6,4 +6,5 @@ public class ConsultaLaftResponse
 {
     public ResumenRespuesta ResumenRespuesta { get; set; } = new();
     public List<ListaIlicitos> ListaIlicitos { get; set; } = new();
+    public string RespuestaJson { get; set; } = string.Empty;
 }

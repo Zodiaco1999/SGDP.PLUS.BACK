@@ -1,4 +1,4 @@
-﻿using Azure;
+﻿using LinqKit;
 using Newtonsoft.Json;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.Excepcion;
@@ -9,13 +9,14 @@ using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.ConsultaLaft.DTO
 using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.ConsultaLaftTercero;
 using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.ObtenerInforme;
 using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.ObtenerInforme.DTO;
-using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.Repositorio;
+using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.Repositorio.IlicitosRespuestas;
+using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.Repositorio.InfoBasicas;
+using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.Repositorio.RespuestaLafts;
 using SGDP.PLUS.INFOTERCERO.Dominio.DTO;
 using SGDP.PLUS.INFOTERCERO.Dominio.Entidades;
 using SGDP.PLUS.INFOTERCERO.Infraestructura.UnidadTrabajo;
 using System.Xml;
 using System.Xml.Serialization;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.LogicaNegocio;
 
@@ -23,6 +24,8 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
 {
     private readonly IInfoBasicaRepositorioLectura _infoBasicaLectura;
     private readonly IInfoBasicaRepositorioEscritura _infoBasicaEscritura;
+    private readonly IRespuestaLaftRepositorioEscritura _respuestaLaftEscritura;
+    private readonly IIlicitosRespuestaEscritura _ilicitosRespuestaEscritura;
     private readonly IUnitOfWorkInfoTerceroEscritura _unitOfWork;
     private readonly IContextAccessor _contextAccessor;
     private readonly IConfiguration _configuration;
@@ -32,6 +35,8 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
     public GestionTerceros(
         IInfoBasicaRepositorioLectura infoBasicaLectura,
         IInfoBasicaRepositorioEscritura infoBasicaEscritura,
+        IRespuestaLaftRepositorioEscritura respuestaLaftEscritura,
+        IIlicitosRespuestaEscritura ilicitosRespuestaEscritura,
         IUnitOfWorkInfoTerceroEscritura unitOfWorkInfoTerceroEscritura,
         IContextAccessor contextAccessor,
         ILoggerFactory loggerFactory,
@@ -41,6 +46,8 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
     {
         _infoBasicaLectura = infoBasicaLectura;
         _infoBasicaEscritura = infoBasicaEscritura;
+        _respuestaLaftEscritura = respuestaLaftEscritura;
+        _ilicitosRespuestaEscritura = ilicitosRespuestaEscritura;
         _unitOfWork = unitOfWorkInfoTerceroEscritura;
         _contextAccessor = contextAccessor;
         _configuration = configuration;
@@ -111,6 +118,8 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
         var responseAsString = await response.Content.ReadAsStringAsync();
         var laftResponse = JsonConvert.DeserializeObject<RepuestaLaft>(responseAsString) ?? new();
 
+        laftResponse.LaftResponse.RespuestaJson = responseAsString;
+
         return laftResponse.LaftResponse;
     }
 
@@ -124,33 +133,28 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
         numerosIndentificacion.AddRange(informe.Administradores.Select(a => a.Cedula).Where(a => !string.IsNullOrEmpty(a)));
 
         var identificaciones = numerosIndentificacion.Distinct();
-
         var resumenRespuesta = new ResumenRespuesta();
         var ilicitos = new List<ListaIlicitos>();
-        int numeroOcurrencias = 0;
+        var fechaSolicitud = DateTime.Now;
 
-        foreach (var identificacion in identificaciones)
+        await Parallel.ForEachAsync(identificaciones, async (identificacion, _) =>
         {
             var consultaLaft = await ConsultaLaft(new ConsultaLaftCommand(identificacion));
-            resumenRespuesta = consultaLaft.ResumenRespuesta;
+            SaveRespuestaLaft(consultaLaft, identificacion, fechaSolicitud, command.Nit);
 
-            if (consultaLaft.ListaIlicitos.Count > 0)
-            {
-                ilicitos.AddRange(consultaLaft.ListaIlicitos);
-                int ocurrencias = int.Parse(resumenRespuesta.NumeroOcurrencias);
-                numeroOcurrencias += ocurrencias;
-            }
-        }
+            ilicitos.AddRange(consultaLaft.ListaIlicitos);
+        });
 
+        int numeroOcurrencias = ilicitos.Count;
         resumenRespuesta.NumeroOcurrencias = numeroOcurrencias.ToString();
-        resumenRespuesta.Alerta = numeroOcurrencias > 0 ? "SI" : resumenRespuesta.Alerta;
-
+        resumenRespuesta.Alerta = numeroOcurrencias > 0 ? "SI" : "NO";
+        
         return new ConsultaLaftTerceroResponse() { ResumenRespuesta = resumenRespuesta, ListaIlicitos = ilicitos };
     }
 
-    private async Task TerceroSaveOrUpdate(string nit ,EmpresaSintesisInternacional iBasica) 
+    private void TerceroSaveOrUpdate(string nit, EmpresaSintesisInternacional iBasica)
     {
-        var terceroActualizar = await _infoBasicaLectura.FindAsync(nit, iBasica.Ici);
+        var terceroActualizar = _infoBasicaLectura.Find(nit);
 
         if (terceroActualizar == null)
         {
@@ -171,7 +175,7 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
             };
             _infoBasicaEscritura.Insert(tercero);
         }
-        else 
+        else
         {
             terceroActualizar.IdFiscal = iBasica.IdFiscal;
             terceroActualizar.Email = iBasica.Email;
@@ -185,8 +189,51 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
 
             _infoBasicaEscritura.Update(terceroActualizar);
         }
-        await _unitOfWork.SaveChangesAsync();
-    } 
+        _unitOfWork.SaveChanges();
+    }
+
+    public void SaveRespuestaLaft(ConsultaLaftResponse laftResponse, string identificacionConsultada, DateTime fechaSolicitud, string nit)
+    {
+        var respuestaLaft = new RespuestaLaft
+        {
+            RespuestaLaftId = Guid.NewGuid(),
+            CodigoInforma = laftResponse.ResumenRespuesta.CodigoInforma,
+            IdentificacionConsultada = identificacionConsultada,
+            FechaSolicitud = fechaSolicitud,
+            NitTerceroAplica = nit,
+            Alertado = laftResponse.ResumenRespuesta.Alerta.Trim() == "SI",
+            IdUsuarioSolicitud = _contextAccessor.UserId ?? "N/A",
+            RespuestaJson = laftResponse.RespuestaJson
+        };
+
+        _respuestaLaftEscritura.Insert(respuestaLaft);
+        _unitOfWork.SaveChanges();
+
+        laftResponse.ListaIlicitos.ForEach(i =>
+        {
+            var ilicto = new IlicitosRespuesta
+            {
+                RespuestaLaftId = respuestaLaft.RespuestaLaftId,
+                NumReg = i.NumReg,
+                PorcentajeCoincidencia = i.PorcentajeDeCoincidencia,
+                Coincidencia = i.Coincidencia,
+                ConsultaRealizada = i.ConsultaRealizada,
+                Lista = i.Lista,
+                NombreEncontrado = i.NombreEncontrado,
+                IdentificacionEncontrada = i.IdentificacionEncontrada,
+                DelitoOcausa = i.DelitoOCausa,
+                Alias = string.IsNullOrEmpty(i.Alias) ? null : i.Alias,
+                Fuente = i.Fuente,
+                FechaCarga = string.IsNullOrEmpty(i.FechaCarga) ? null : i.FechaCarga,
+                Ciudad = i.Ciudad,
+                FechaPublicacion = string.IsNullOrEmpty(i.FechaPublicacion) ? null : i.FechaPublicacion,
+                Demandante = i.Demandante,
+                Detalle = i.Detalle
+            };
+            _ilicitosRespuestaEscritura.Insert(ilicto);
+            _unitOfWork.SaveChanges();
+        });
+    }
 
     private async Task HandlerResponse(HttpResponseMessage response)
     {

@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.LogicaNegocio;
-using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.Repositorio;
+using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.Repositorio.IlicitosRespuestas;
+using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.Repositorio.InfoBasicas;
+using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.Repositorio.RespuestaLafts;
 using SGDP.PLUS.INFOTERCERO.Infraestructura.UnidadTrabajo;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Autenticacion.Seguridad.JWT;
 using System.Text;
@@ -101,6 +103,12 @@ public static class ContenedorDependencias
         // InfoBasica
         services.AddScoped<IInfoBasicaRepositorioEscritura, InfoBasicaRepositorioEscritura>();
         services.AddScoped<IInfoBasicaRepositorioLectura, InfoBasicaRepositorioLectura>();
+        // RespuestaLaft
+        services.AddScoped<IRespuestaLaftRepositorioEscritura, RespuestaLaftRepositorioEscritura>();
+        services.AddScoped<IRespuestaLaftRepositorioLectura, RespuestaLaftRepositorioLectura>();
+        // IlicitosRespuesta
+        services.AddScoped<IIlicitosRespuestaEscritura, IlicitosRespuestaEscritura>();
+        services.AddScoped<IIlicitosRespuestaLectura, IlicitosRespuestaLectura>();
 
         return services;
     }

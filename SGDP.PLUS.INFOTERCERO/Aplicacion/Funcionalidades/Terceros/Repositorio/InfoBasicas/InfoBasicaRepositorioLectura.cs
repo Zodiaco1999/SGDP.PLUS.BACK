@@ -2,11 +2,11 @@
 using SGDP.PLUS.INFOTERCERO.Dominio.Entidades;
 using SGDP.PLUS.INFOTERCERO.Infraestructura.UnidadTrabajo;
 
-namespace SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.Repositorio;
+namespace SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.Repositorio.InfoBasicas;
 
 public class InfoBasicaRepositorioLectura : Repository<InfoBasica>, IInfoBasicaRepositorioLectura
 {
     public InfoBasicaRepositorioLectura(IUnitOfWorkInfoTerceroLectura unitOfWork) : base(unitOfWork)
-    { 
+    {
     }
 }

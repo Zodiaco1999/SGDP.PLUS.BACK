@@ -27,4 +27,6 @@ public class InfoBasica : CamposLog
     public string Telefono { get; set; } = null!;
 
     public string Informe_Str { get; set; } = null!;
+
+    public virtual ICollection<RespuestaLaft> RespuestaLafts { get; set; } = new List<RespuestaLaft>();
 }

@@ -17,5 +17,7 @@ public class UnitOfWorkInfoTerceroEscritura : UnitOfWorkBase, IUnitOfWorkInfoTer
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new InfoBasicaConfiguracion());
+        modelBuilder.ApplyConfiguration(new RespuestaLaftConfiguracion());
+        modelBuilder.ApplyConfiguration(new IlicitosRespuestaConfiguracion());
     }
 }
