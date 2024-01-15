@@ -203,19 +203,6 @@ public class Repository<TEntity> : IRepositoryAsync<TEntity> where TEntity : Ent
         //return await Select(filter, orderBy, propertyOrderBy, sortDirection, includes, page, pageSize).ToListAsync();
     }
 
-    internal async Task<IEnumerable<TResult>> SelectAsync<TResult>(
-        Expression<Func<TEntity, TResult>> selector,
-        Expression<Func<TEntity, bool>> filter = null,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-        string propertyOrderBy = "",
-        string sortDirection = "asc",
-        List<Expression<Func<TEntity, object>>> includes = null,
-        List<string> includesString = null,
-        bool ignoreQueryFilters = false)
-    {
-        return await Task.FromResult(Select(filter, orderBy, propertyOrderBy, sortDirection, includes, includesString, ignoreQueryFilters).Select(selector));
-    }
-
     internal async Task<TEntity> FirtsOrDefaultAsync(
        Expression<Func<TEntity, bool>> filter = null,
        List<Expression<Func<TEntity, object>>> includes = null,

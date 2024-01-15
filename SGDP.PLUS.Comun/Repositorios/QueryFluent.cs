@@ -1,4 +1,5 @@
 ﻿using SGDP.PLUS.Comun.General;
+using System.Data.Entity;
 using System.Linq.Expressions;
 
 namespace SGDP.PLUS.Comun.Repositorios
@@ -82,7 +83,7 @@ namespace SGDP.PLUS.Comun.Repositorios
 
         public async Task<IEnumerable<TResult>> SelectAsync<TResult>(Expression<Func<TEntity, TResult>> selector)
         {
-            return await _repository.SelectAsync(selector, _expression, _orderBy, _propertyOrderBy, _sortDirection, _includes, _includesString, _ignoreQueryFilters);
+            return await Task.FromResult(_repository.Select(_expression, _orderBy, _propertyOrderBy, _sortDirection, _includes, _includesString, _ignoreQueryFilters).Select(selector));
         }
 
         public IQueryable<TEntity> SqlQuery(string query, params object[] parameters)

@@ -186,7 +186,6 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
             terceroActualizar.DomicilioSocial = iBasica.DomicilioSocial;
             terceroActualizar.Telefono = iBasica.Telefono;
             terceroActualizar.Informe_Str = iBasica.Resumen_Str;
-
             _infoBasicaEscritura.Update(terceroActualizar);
         }
         _unitOfWork.SaveChanges();

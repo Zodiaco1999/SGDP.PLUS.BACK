@@ -166,7 +166,7 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
     {
         return await _aplicacionRepositorioLectura
             .Query(a => a.Activo)
-            .OrderBy(o => o.OrderBy(a => a.NombreAplicacion))
+            .OrderBy("NombreAplicacion")
             .SelectAsync(a => new ListaAplicacionesResponse(
                 a.AplicacionId,
                 a.NombreAplicacion,

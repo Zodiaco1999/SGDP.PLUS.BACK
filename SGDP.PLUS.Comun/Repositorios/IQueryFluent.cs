@@ -21,9 +21,9 @@ namespace SGDP.PLUS.Comun.Repositorios
 
         Task<ListEntityPage<TEntity>> SelectPageAsync(int page, int pageSize);
 
-        IEnumerable<TResult> Select<TResult>(Expression<Func<TEntity, TResult>> selector = null);
-
         IEnumerable<TEntity> Select();
+
+        IEnumerable<TResult> Select<TResult>(Expression<Func<TEntity, TResult>> selector = null);
 
         Task<IEnumerable<TEntity>> SelectAsync();
 
