@@ -104,11 +104,11 @@ public static class ContenedorDependencias
         services.AddScoped<IInfoBasicaRepositorioEscritura, InfoBasicaRepositorioEscritura>();
         services.AddScoped<IInfoBasicaRepositorioLectura, InfoBasicaRepositorioLectura>();
         // RespuestaLaft
-        services.AddScoped<IRespuestaLaftRepositorioEscritura, RespuestaLaftRepositorioEscritura>();
-        services.AddScoped<IRespuestaLaftRepositorioLectura, RespuestaLaftRepositorioLectura>();
+        services.AddTransient<IRespuestaLaftRepositorioEscritura, RespuestaLaftRepositorioEscritura>();
+        services.AddTransient<IRespuestaLaftRepositorioLectura, RespuestaLaftRepositorioLectura>();
         // IlicitosRespuesta
-        services.AddScoped<IIlicitosRespuestaEscritura, IlicitosRespuestaEscritura>();
-        services.AddScoped<IIlicitosRespuestaLectura, IlicitosRespuestaLectura>();
+        services.AddTransient<IIlicitosRespuestaEscritura, IlicitosRespuestaEscritura>();
+        services.AddTransient<IIlicitosRespuestaLectura, IlicitosRespuestaLectura>();
 
         return services;
     }

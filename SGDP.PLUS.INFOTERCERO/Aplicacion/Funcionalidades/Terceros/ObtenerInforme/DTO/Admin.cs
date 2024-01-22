@@ -5,5 +5,5 @@ namespace SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.ObtenerInfor
 public class Admin
 {
     [XmlElement("ADMINISTRADOR")]
-    public List<Administrador> Administradores { get; set; } = new List<Administrador>();
+    public List<AdministradorDto> Administradores { get; set; } = new List<AdministradorDto>();
 }

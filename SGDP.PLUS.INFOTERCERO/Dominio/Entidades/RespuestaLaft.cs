@@ -6,13 +6,13 @@ public class RespuestaLaft : Entity
 {
     public Guid RespuestaLaftId { get; set; }
 
-    public string CodigoInforma { get; set; } = null!;
-
-    public string IdentificacionConsultada { get; set; } = null!;
+    public string NitTerceroAplica { get; set; } = null!;
 
     public DateTime FechaSolicitud { get; set; }
 
-    public string NitTerceroAplica { get; set; } = null!;
+    public string CodigoInforma { get; set; } = null!;
+
+    public string IdentificacionConsultada { get; set; } = null!;
 
     public bool Alertado { get; set; }
 
@@ -22,5 +22,5 @@ public class RespuestaLaft : Entity
 
     public virtual ICollection<IlicitosRespuesta> IlicitosRespuesta { get; set; } = new List<IlicitosRespuesta>();
 
-    public virtual InfoBasica NitTerceroAplicaNavigation { get; set; } = null!;
+    public virtual InfoBasica InfoBasica { get; set; } = null!;
 }

@@ -2,7 +2,7 @@
 
 namespace SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.ObtenerInforme.DTO
 {
-    public class Administrador
+    public class AdministradorDto
     {
         [XmlElement("CARGO")]
         public string Cargo { get; set; } = string.Empty;

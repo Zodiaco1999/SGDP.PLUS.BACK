@@ -12,11 +12,10 @@ public class UnitOfWorkInfoTerceroEscritura : UnitOfWorkBase, IUnitOfWorkInfoTer
     {
     }
 
-    public virtual DbSet<InfoBasica> InfoBasica { get; set; }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new InfoBasicaConfiguracion());
+        modelBuilder.ApplyConfiguration(new AdministradorConfiguracion());
         modelBuilder.ApplyConfiguration(new RespuestaLaftConfiguracion());
         modelBuilder.ApplyConfiguration(new IlicitosRespuestaConfiguracion());
     }

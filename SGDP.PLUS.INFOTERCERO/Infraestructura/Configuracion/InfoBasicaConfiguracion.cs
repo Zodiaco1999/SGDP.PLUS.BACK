@@ -8,13 +8,12 @@ public class InfoBasicaConfiguracion : IEntityTypeConfiguration<InfoBasica>
 {
     public void Configure(EntityTypeBuilder<InfoBasica> builder)
     {
+        builder.HasKey(e => new { e.Nit, e.FechaSolicitud }).HasName("PK_InfoBasica_1");
+
         builder.ToTable("InfoBasica", "infotercero");
 
-        builder.HasKey(e => e.Nit).HasName("PK_InfoBasica_1");
-
-        builder.HasIndex(e => e.Ici, "UQ__InfoBasi__C496184D8FE39203").IsUnique();
-
         builder.Property(e => e.Nit).HasMaxLength(50);
+        builder.Property(e => e.FechaSolicitud).HasColumnType("datetime");
         builder.Property(e => e.Actividad).HasMaxLength(500);
         builder.Property(e => e.Ciudad).HasMaxLength(200);
         builder.Property(e => e.Denominacion).HasMaxLength(400);

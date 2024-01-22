@@ -71,6 +71,18 @@ public class CustomExceptionMiddleware
 
         var json = JsonConvert.SerializeObject(new { path = context.Request.Path.Value, userid = context.User.Identity?.Name, method = context.Request.Method, remoteIp = $"{context.Connection.RemoteIpAddress}:{context.Connection.RemotePort}" });
 
+        string path = @"D:\Downloads\sgdp plus error.json";
+
+        if (File.Exists(path))
+        {
+           File.Delete(path);
+        }
+
+        using (StreamWriter sw = File.CreateText(path))
+        {
+            sw.Write(JsonConvert.SerializeObject(exception));
+        }
+
         CustomErrorResponse customError = new CustomErrorResponse();
 
         if (exception is DbUpdateException dbUpdateException && dbUpdateException.InnerException is SqlException sqlException && sqlException.Number == 547)

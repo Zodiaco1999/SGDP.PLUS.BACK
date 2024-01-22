@@ -94,7 +94,7 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
 
         informe.EmpresaSintesisInternacional.Resumen_Str = producto.InformeXml;
 
-        var listaAdministradores = new List<Administrador>();
+        var listaAdministradores = new List<AdministradorDto>();
         var admins = informe.AdministradoresPrincipalesInternacional.ListaAdministradores;
 
         var arrAdmins = new List<Admin> { admins.AdminConsejo, admins.AdminFirma, admins.AdminAuditor, admins.AdminFuncion };
@@ -116,18 +116,19 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
         await HandlerResponse(response);
 
         var responseAsString = await response.Content.ReadAsStringAsync();
-        var laftResponse = JsonConvert.DeserializeObject<RepuestaLaft>(responseAsString) ?? new();
+        var repuestaLaft = JsonConvert.DeserializeObject<RepuestaLaft>(responseAsString) ?? new();
 
-        laftResponse.LaftResponse.RespuestaJson = responseAsString;
+        repuestaLaft.LaftResponse.RespuestaJson = responseAsString;
 
-        return laftResponse.LaftResponse;
+        return repuestaLaft.LaftResponse;
     }
 
     public async Task<ConsultaLaftTerceroResponse> ConsultaLaftTercero(ConsultaLaftTerceroCommand command)
     {
         var informe = await ObtenerInforme(new ObtenerInformeCommand(command.Nit));
+        var fechaSolicitud = DateTime.Now;
 
-        TerceroSaveOrUpdate(command.Nit, informe.TerceroInfoBasica);
+        TerceroSave(command.Nit, fechaSolicitud, informe);
 
         var numerosIndentificacion = new List<string> { command.Nit };
         numerosIndentificacion.AddRange(informe.Administradores.Select(a => a.Cedula).Where(a => !string.IsNullOrEmpty(a)));
@@ -135,8 +136,7 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
         var identificaciones = numerosIndentificacion.Distinct();
         var resumenRespuesta = new ResumenRespuesta();
         var ilicitos = new List<ListaIlicitos>();
-        var fechaSolicitud = DateTime.Now;
-
+        
         await Parallel.ForEachAsync(identificaciones, async (identificacion, _) =>
         {
             var consultaLaft = await ConsultaLaft(new ConsultaLaftCommand(identificacion));
@@ -148,50 +148,50 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
         int numeroOcurrencias = ilicitos.Count;
         resumenRespuesta.NumeroOcurrencias = numeroOcurrencias.ToString();
         resumenRespuesta.Alerta = numeroOcurrencias > 0 ? "SI" : "NO";
-        
+
         return new ConsultaLaftTerceroResponse() { ResumenRespuesta = resumenRespuesta, ListaIlicitos = ilicitos };
     }
 
-    private void TerceroSaveOrUpdate(string nit, EmpresaSintesisInternacional iBasica)
+    private void TerceroSave(string nit, DateTime fechaSolicitud, ObtenerInformeResponse informe)
     {
-        var terceroActualizar = _infoBasicaLectura.Find(nit);
+        var iBasica = informe.TerceroInfoBasica;
 
-        if (terceroActualizar == null)
+        var tercero = new InfoBasica
         {
-            var tercero = new InfoBasica
+            Nit = nit,
+            FechaSolicitud = fechaSolicitud,
+            Ici = iBasica.Ici,
+            IdFiscal = iBasica.IdFiscal,
+            FechaConstitucion = Convert.ToDateTime(iBasica.FechaConstitucion),
+            Email = iBasica.Email,
+            FormaJuridicaCod = iBasica.FormaJuridicaCod,
+            Actividad = iBasica.Actividad,
+            Denominacion = iBasica.Denominacion,
+            Ciudad = iBasica.Ciudad,
+            DomicilioSocial = iBasica.DomicilioSocial,
+            Telefono = iBasica.Telefono,
+            Informe_Str = iBasica.Resumen_Str,
+            Administradors = informe.Administradores.Select(a => new Administrador
             {
-                Nit = nit,
-                Ici = iBasica.Ici,
-                IdFiscal = iBasica.IdFiscal,
-                FechaConstitucion = Convert.ToDateTime(iBasica.FechaConstitucion),
-                Email = iBasica.Email,
-                FormaJuridicaCod = iBasica.FormaJuridicaCod,
-                Actividad = iBasica.Actividad,
-                Denominacion = iBasica.Denominacion,
-                Ciudad = iBasica.Ciudad,
-                DomicilioSocial = iBasica.DomicilioSocial,
-                Telefono = iBasica.Telefono,
-                Informe_Str = iBasica.Resumen_Str
-            };
-            _infoBasicaEscritura.Insert(tercero);
-        }
-        else
-        {
-            terceroActualizar.IdFiscal = iBasica.IdFiscal;
-            terceroActualizar.Email = iBasica.Email;
-            terceroActualizar.FormaJuridicaCod = iBasica.FormaJuridicaCod;
-            terceroActualizar.Actividad = iBasica.Actividad;
-            terceroActualizar.Denominacion = iBasica.Denominacion;
-            terceroActualizar.Ciudad = iBasica.Ciudad;
-            terceroActualizar.DomicilioSocial = iBasica.DomicilioSocial;
-            terceroActualizar.Telefono = iBasica.Telefono;
-            terceroActualizar.Informe_Str = iBasica.Resumen_Str;
-            _infoBasicaEscritura.Update(terceroActualizar);
-        }
+                AdministradorId = Guid.NewGuid(),
+                Cedula = a.Cedula,
+                Nombre = a.Nombre,
+                Cargo = a.Cargo,
+                CodigoCargo = a.CodigoCargo,
+                ConsultaVinculaciones = a.ConsultaVinculaciones,
+                ConsultarVinculo = a.ConsultarVinculo,
+                ConsultarNoDisponible = a.ConsultarNoDisponible,
+                ConsultaLaft = a.ConsultaLaft,
+                FechaNombramiento = a.FechaNombramiento,
+                FechaCambioAdmin = a.FechaCambioAdm
+            }).ToList()
+        };
+
+        _infoBasicaEscritura.Insert(tercero);
         _unitOfWork.SaveChanges();
     }
 
-    public void SaveRespuestaLaft(ConsultaLaftResponse laftResponse, string identificacionConsultada, DateTime fechaSolicitud, string nit)
+    private void SaveRespuestaLaft(ConsultaLaftResponse laftResponse, string identificacionConsultada, DateTime fechaSolicitud, string nit)
     {
         var respuestaLaft = new RespuestaLaft
         {

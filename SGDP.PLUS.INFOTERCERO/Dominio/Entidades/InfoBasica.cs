@@ -6,6 +6,8 @@ public class InfoBasica : CamposLog
 {
     public string Nit { get; set; } = null!;
 
+    public DateTime FechaSolicitud { get; set; }
+
     public string Ici { get; set; } = null!;
 
     public string IdFiscal { get; set; } = null!;
@@ -27,6 +29,8 @@ public class InfoBasica : CamposLog
     public string Telefono { get; set; } = null!;
 
     public string Informe_Str { get; set; } = null!;
+
+    public virtual ICollection<Administrador> Administradors { get; set; } = new List<Administrador>();
 
     public virtual ICollection<RespuestaLaft> RespuestaLafts { get; set; } = new List<RespuestaLaft>();
 }
