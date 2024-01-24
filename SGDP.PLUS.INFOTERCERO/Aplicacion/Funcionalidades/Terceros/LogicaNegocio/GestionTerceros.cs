@@ -17,6 +17,7 @@ using SGDP.PLUS.INFOTERCERO.Dominio.Entidades;
 using SGDP.PLUS.INFOTERCERO.Infraestructura.UnidadTrabajo;
 using System.Xml;
 using System.Xml.Serialization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.LogicaNegocio;
 
@@ -118,8 +119,9 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
         var responseAsString = await response.Content.ReadAsStringAsync();
         var repuestaLaft = JsonConvert.DeserializeObject<RepuestaLaft>(responseAsString) ?? new();
 
+        repuestaLaft.LaftResponse.IdentificacionConsultada = command.Identificacion;
         repuestaLaft.LaftResponse.RespuestaJson = responseAsString;
-
+        
         return repuestaLaft.LaftResponse;
     }
 
@@ -136,15 +138,16 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
         var identificaciones = numerosIndentificacion.Distinct();
         var resumenRespuesta = new ResumenRespuesta();
         var ilicitos = new List<ListaIlicitos>();
+        var listaConsultasLaft = new List<ConsultaLaftResponse>();
         
         await Parallel.ForEachAsync(identificaciones, async (identificacion, _) =>
         {
             var consultaLaft = await ConsultaLaft(new ConsultaLaftCommand(identificacion));
-            SaveRespuestaLaft(consultaLaft, identificacion, fechaSolicitud, command.Nit);
-
+            listaConsultasLaft.Add(consultaLaft);
             ilicitos.AddRange(consultaLaft.ListaIlicitos);
         });
 
+        SaveRespuestaLaft(listaConsultasLaft, fechaSolicitud, command.Nit);
         int numeroOcurrencias = ilicitos.Count;
         resumenRespuesta.NumeroOcurrencias = numeroOcurrencias.ToString();
         resumenRespuesta.Alerta = numeroOcurrencias > 0 ? "SI" : "NO";
@@ -178,10 +181,6 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
                 Nombre = a.Nombre,
                 Cargo = a.Cargo,
                 CodigoCargo = a.CodigoCargo,
-                ConsultaVinculaciones = a.ConsultaVinculaciones,
-                ConsultarVinculo = a.ConsultarVinculo,
-                ConsultarNoDisponible = a.ConsultarNoDisponible,
-                ConsultaLaft = a.ConsultaLaft,
                 FechaNombramiento = a.FechaNombramiento,
                 FechaCambioAdmin = a.FechaCambioAdm
             }).ToList()
@@ -191,47 +190,43 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
         _unitOfWork.SaveChanges();
     }
 
-    private void SaveRespuestaLaft(ConsultaLaftResponse laftResponse, string identificacionConsultada, DateTime fechaSolicitud, string nit)
+    private void SaveRespuestaLaft(IEnumerable<ConsultaLaftResponse> listaConsultasLaft, DateTime fechaSolicitud, string nit)
     {
-        var respuestaLaft = new RespuestaLaft
+        foreach (var laftResponse in listaConsultasLaft)
         {
-            RespuestaLaftId = Guid.NewGuid(),
-            CodigoInforma = laftResponse.ResumenRespuesta.CodigoInforma,
-            IdentificacionConsultada = identificacionConsultada,
-            FechaSolicitud = fechaSolicitud,
-            NitTerceroAplica = nit,
-            Alertado = laftResponse.ResumenRespuesta.Alerta.Trim() == "SI",
-            IdUsuarioSolicitud = _contextAccessor.UserId ?? "N/A",
-            RespuestaJson = laftResponse.RespuestaJson
-        };
-
-        _respuestaLaftEscritura.Insert(respuestaLaft);
-        _unitOfWork.SaveChanges();
-
-        laftResponse.ListaIlicitos.ForEach(i =>
-        {
-            var ilicto = new IlicitosRespuesta
+            var respuestaLaft = new RespuestaLaft
             {
-                RespuestaLaftId = respuestaLaft.RespuestaLaftId,
-                NumReg = i.NumReg,
-                PorcentajeCoincidencia = i.PorcentajeDeCoincidencia,
-                Coincidencia = i.Coincidencia,
-                ConsultaRealizada = i.ConsultaRealizada,
-                Lista = i.Lista,
-                NombreEncontrado = i.NombreEncontrado,
-                IdentificacionEncontrada = i.IdentificacionEncontrada,
-                DelitoOcausa = i.DelitoOCausa,
-                Alias = string.IsNullOrEmpty(i.Alias) ? null : i.Alias,
-                Fuente = i.Fuente,
-                FechaCarga = string.IsNullOrEmpty(i.FechaCarga) ? null : i.FechaCarga,
-                Ciudad = i.Ciudad,
-                FechaPublicacion = string.IsNullOrEmpty(i.FechaPublicacion) ? null : i.FechaPublicacion,
-                Demandante = i.Demandante,
-                Detalle = i.Detalle
+                RespuestaLaftId = Guid.NewGuid(),
+                CodigoInforma = laftResponse.ResumenRespuesta.CodigoInforma,
+                IdentificacionConsultada = laftResponse.IdentificacionConsultada,
+                FechaSolicitud = fechaSolicitud,
+                NitTerceroAplica = nit,
+                Alertado = laftResponse.ResumenRespuesta.Alerta.Trim() == "SI",
+                IdUsuarioSolicitud = _contextAccessor.UserId ?? "N/A",
+                RespuestaJson = laftResponse.RespuestaJson,
+                IlicitosRespuesta = laftResponse.ListaIlicitos.Select(i => new IlicitosRespuesta
+                {
+                    NumReg = i.NumReg,
+                    PorcentajeCoincidencia = i.PorcentajeDeCoincidencia,
+                    Coincidencia = i.Coincidencia,
+                    ConsultaRealizada = i.ConsultaRealizada,
+                    Lista = i.Lista,
+                    NombreEncontrado = i.NombreEncontrado,
+                    IdentificacionEncontrada = i.IdentificacionEncontrada,
+                    DelitoOcausa = i.DelitoOCausa,
+                    Alias = string.IsNullOrEmpty(i.Alias) ? null : i.Alias,
+                    Fuente = i.Fuente,
+                    FechaCarga = string.IsNullOrEmpty(i.FechaCarga) ? null : i.FechaCarga,
+                    Ciudad = i.Ciudad,
+                    FechaPublicacion = string.IsNullOrEmpty(i.FechaPublicacion) ? null : i.FechaPublicacion,
+                    Demandante = i.Demandante,
+                    Detalle = i.Detalle
+                }).ToList()
             };
-            _ilicitosRespuestaEscritura.Insert(ilicto);
+
+            _respuestaLaftEscritura.Insert(respuestaLaft);
             _unitOfWork.SaveChanges();
-        });
+        }
     }
 
     private async Task HandlerResponse(HttpResponseMessage response)

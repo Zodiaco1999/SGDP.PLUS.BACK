@@ -20,11 +20,8 @@ public static class ContenedorDependencias
 
         #region Configuración unidades de trabajo
 
-        services.AddDbContext<UnitOfWorkInfoTerceroEscritura>(options => options.UseSqlServer(configuration.GetConnectionString("Escritura")));
-        services.AddScoped<IUnitOfWorkInfoTerceroEscritura>(provider => provider.GetRequiredService<UnitOfWorkInfoTerceroEscritura>());
-
-        services.AddDbContext<UnitOfWorkInfoTerceroLectura>(options => options.UseSqlServer(configuration.GetConnectionString("Lectura")));
-        services.AddScoped<IUnitOfWorkInfoTerceroLectura>(provider => provider.GetRequiredService<UnitOfWorkInfoTerceroLectura>());
+        services.AddDbContext<IUnitOfWorkInfoTerceroEscritura, UnitOfWorkInfoTerceroEscritura>(options => options.UseSqlServer(configuration.GetConnectionString("Escritura")));
+        services.AddDbContext<IUnitOfWorkInfoTerceroLectura, UnitOfWorkInfoTerceroLectura>(options => options.UseSqlServer(configuration.GetConnectionString("Lectura")));
 
         #endregion
 
@@ -104,11 +101,11 @@ public static class ContenedorDependencias
         services.AddScoped<IInfoBasicaRepositorioEscritura, InfoBasicaRepositorioEscritura>();
         services.AddScoped<IInfoBasicaRepositorioLectura, InfoBasicaRepositorioLectura>();
         // RespuestaLaft
-        services.AddTransient<IRespuestaLaftRepositorioEscritura, RespuestaLaftRepositorioEscritura>();
-        services.AddTransient<IRespuestaLaftRepositorioLectura, RespuestaLaftRepositorioLectura>();
+        services.AddScoped<IRespuestaLaftRepositorioEscritura, RespuestaLaftRepositorioEscritura>();
+        services.AddScoped<IRespuestaLaftRepositorioLectura, RespuestaLaftRepositorioLectura>();
         // IlicitosRespuesta
-        services.AddTransient<IIlicitosRespuestaEscritura, IlicitosRespuestaEscritura>();
-        services.AddTransient<IIlicitosRespuestaLectura, IlicitosRespuestaLectura>();
+        services.AddScoped<IIlicitosRespuestaEscritura, IlicitosRespuestaEscritura>();
+        services.AddScoped<IIlicitosRespuestaLectura, IlicitosRespuestaLectura>();
 
         return services;
     }

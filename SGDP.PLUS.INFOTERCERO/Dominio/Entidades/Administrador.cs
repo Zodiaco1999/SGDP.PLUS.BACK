@@ -18,14 +18,6 @@ public partial class Administrador : Entity
 
     public string? CodigoCargo { get; set; }
 
-    public string? ConsultarVinculo { get; set; }
-
-    public string? ConsultaVinculaciones { get; set; }
-
-    public string? ConsultarNoDisponible { get; set; }
-
-    public string? ConsultaLaft { get; set; }
-
     public string? FechaNombramiento { get; set; }
 
     public string? FechaCambioAdmin { get; set; }

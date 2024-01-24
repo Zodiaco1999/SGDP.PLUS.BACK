@@ -16,10 +16,6 @@ public class AdministradorConfiguracion : IEntityTypeConfiguration<Administrador
         builder.Property(e => e.Cargo).HasMaxLength(300);
         builder.Property(e => e.Cedula).HasMaxLength(200);
         builder.Property(e => e.CodigoCargo).HasMaxLength(100);
-        builder.Property(e => e.ConsultaLaft).HasMaxLength(500);
-        builder.Property(e => e.ConsultaVinculaciones).HasMaxLength(500);
-        builder.Property(e => e.ConsultarNoDisponible).HasMaxLength(500);
-        builder.Property(e => e.ConsultarVinculo).HasMaxLength(500);
         builder.Property(e => e.FechaCambioAdmin).HasMaxLength(100);
         builder.Property(e => e.FechaNombramiento).HasMaxLength(100);
         builder.Property(e => e.FechaSolicitud).HasColumnType("datetime");
