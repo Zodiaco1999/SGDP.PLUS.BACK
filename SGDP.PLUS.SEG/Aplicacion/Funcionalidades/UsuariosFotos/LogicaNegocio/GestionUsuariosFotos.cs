@@ -49,7 +49,7 @@ public class GestionUsuariosFotos : BaseAppService, IGestionUsuariosFotos
 
             consulta.Data = new List<ConsultarUsuariosFotosResponse>();
 
-            foreach (var item in result.Items!)
+            foreach (var item in result.Items)
             {
                 var det = new ConsultarUsuariosFotosResponse(
                     item.UsuarioId,

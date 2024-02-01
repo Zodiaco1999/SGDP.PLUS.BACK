@@ -54,7 +54,7 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
 
             consulta.Data = new List<ConsultarPerfilesResponse>();
 
-            foreach (var item in result.Items!)
+            foreach (var item in result.Items)
             {
                 consulta.Data.Add(new ConsultarPerfilesResponse(
                                 item.PerfilId,

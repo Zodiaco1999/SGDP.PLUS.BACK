@@ -102,7 +102,6 @@ namespace SGDP.PLUS.Comun.Repositorios
         {
             ListEntityPage<TEntity> result = new ListEntityPage<TEntity>()
             {
-                //TotalItems = items.Count(),
                 TotalItems = await _repository.CountAsync(_expression, _includes, _includesString),
                 Items = await _repository.SelectAsync(_expression, _orderBy, _propertyOrderBy, _sortDirection, _includes, _includesString, _ignoreQueryFilters, page, pageSize)
             };

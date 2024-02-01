@@ -54,7 +54,7 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
 
             consulta.Data = new List<ConsultarUsuariosResponse>();
 
-            foreach (var item in result.Items!)
+            foreach (var item in result.Items)
             {
                 var det = new ConsultarUsuariosResponse(
                                 item.UsuarioId,

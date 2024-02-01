@@ -1,4 +1,5 @@
 using LinqKit;
+using NetTopologySuite.Index.HPRtree;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.Excepcion;
 using SGDP.PLUS.Comun.General;
@@ -15,6 +16,7 @@ using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Repositorio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Repositorio;
 using SGDP.PLUS.SEG.Dominio.Entidades;
 using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
+using System.Linq;
 
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.LogicaNegocio;
 
@@ -125,7 +127,7 @@ public class GestionMenus : BaseAppService, IGestionMenus
 
             consulta.Data = new List<ConsultarMenusResponse>();
 
-            foreach (var item in result.Items!)
+            foreach (var item in result.Items)
             {
                 consulta.Data.Add(new ConsultarMenusResponse(
                                  item.AplicacionId,
@@ -185,72 +187,51 @@ public class GestionMenus : BaseAppService, IGestionMenus
         return result;
     }
 
-    public async Task<ConsultarMenuUsuarioResponse> ConsultarMenuUsuario()
+    public async Task<IEnumerable<ConsultarMenuUsuarioResponse>> ConsultarMenuUsuario()
     {
-        var aplicacionId = ContextAccessor.AppId;
-
-        var aplicacion = await _aplicacionRepositorioLectura
-            .Query(q => q.AplicacionId == aplicacionId && !q.Eliminado)
-            .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Aplication), aplicacionId);
-
-        if (!aplicacion.Activo)
-        {
-            throw new ValidationException("Aplicación inactiva");
-        }
-
-        var response = new ConsultarMenuUsuarioResponse(
-            aplicacion.AplicacionId,
-            aplicacion.NombreAplicacion,
-            aplicacion.DescAplicacion,
-            new List<Module>());
-
-        var usuarioPerfil = _perfilMenuRepositorioLectura
-            .Query(q => q.AplicacionId == aplicacionId && q.Perfil.Activo && q.Menu.Activo && q.Menu.Modulo.Activo &&
+        var perfilMenus = await _perfilMenuRepositorioLectura
+            .Query(q => q.Perfil.Activo && q.Menu.Modulo.Apliation.Activo && q.Menu.Modulo.Activo && q.Menu.Activo &&
                    q.Perfil.UsuarioPerfiles.FirstOrDefault(f => f.UsuarioId == ContextAccessor.UserId) != null)
-            .Include(i => i.Menu.Modulo)
-            .Select().OrderBy(o => o.Menu.Orden).ThenBy(o => o.Menu.Modulo.Orden).ToList();
+            .Include(p => p.Menu.Modulo.Apliation)
+            .SelectAsync();
 
-        foreach (var modulo in usuarioPerfil.GroupBy(g => g.Menu.Modulo).OrderBy(o => o.Key.Orden).ToList())
-        {
-            Module moduloDTO = new Module()
-            {
-                Id = modulo.Key.ModuloId,
-                Name = modulo.Key.NombreModulo,
-                SubName = modulo.Key.DescModulo,
-                IconPrefix = modulo.Key.IconoPrefijo,
-                IconName = modulo.Key.IconoNombre,
-                Active = modulo.Key.Activo,
-                Options = new List<ModuleOption>()
-            };
-            response.Modules.Add(moduloDTO);
+        var permisosAplicaciones = perfilMenus
+            .GroupBy(u => u.Menu.Modulo.Apliation)
+            .OrderBy(o => o.Key.NombreAplicacion)
+            .Select(aplication => new ConsultarMenuUsuarioResponse(
+                aplication.Key.AplicacionId,
+                aplication.Key.NombreAplicacion,
+                aplication.Key.DescAplicacion,
+                aplication.GroupBy(u => u.Menu.Modulo)
+                .OrderBy(o => o.Key.Orden)
+                .Select(modulo => new Module(
+                    modulo.Key.ModuloId,
+                    modulo.Key.NombreModulo,
+                    modulo.Key.DescModulo,
+                    modulo.Key.IconoPrefijo,
+                    modulo.Key.IconoNombre,
+                    modulo.GroupBy(g => g.Menu)
+                    .OrderBy(o => o.Key.Orden)
+                    .Select(menu => new ModuleOption(
+                        menu.Key.MenuId,
+                        menu.Key.NombreMenu,
+                        menu.Key.EtiquetaMenu,
+                        menu.Key.Url,
+                        menu.Key.Orden,
+                        menu.Max(m => m.Inserta) && menu.Key.Inserta,
+                        menu.Max(m => m.Consulta) && menu.Key.Consulta,
+                        menu.Max(m => m.Actualiza) && menu.Key.Actualiza,
+                        menu.Max(m => m.Activa) && menu.Key.Activa,
+                        menu.Max(m => m.Elimina) && menu.Key.Elimina,
+                        menu.Max(m => m.Ejecuta) && menu.Key.Ejecuta,
+                        menu.Key.Inserta,
+                        menu.Key.Consulta,
+                        menu.Key.Actualiza,
+                        menu.Key.Activa,
+                        menu.Key.Elimina,
+                        menu.Key.Ejecuta))))));
 
-            foreach (var perfilMenu in modulo.GroupBy(g => g.Menu).OrderBy(o => o.Key.Orden).ToList())
-            {
-                ModuleOption menuDTO = new ModuleOption()
-                {
-                    Id = perfilMenu.Key.MenuId,
-                    Name = perfilMenu.Key.NombreMenu,
-                    SubName = perfilMenu.Key.EtiquetaMenu,
-                    Url = perfilMenu.Key.Url,
-                    Order = perfilMenu.Key.Orden,
-                    Create = perfilMenu.Max(m => m.Inserta) && perfilMenu.Key.Inserta,
-                    Read = perfilMenu.Max(m => m.Consulta) && perfilMenu.Key.Consulta,
-                    Update = perfilMenu.Max(m => m.Actualiza) && perfilMenu.Key.Actualiza,
-                    Activate = perfilMenu.Max(m => m.Activa) && perfilMenu.Key.Activa,
-                    Delete = perfilMenu.Max(m => m.Elimina) && perfilMenu.Key.Elimina,
-                    Execute = perfilMenu.Max(m => m.Ejecuta) && perfilMenu.Key.Ejecuta,
-                    MenuCreate = perfilMenu.Key.Inserta,
-                    MenuRead = perfilMenu.Key.Consulta,
-                    MenuUpdate = perfilMenu.Key.Actualiza,
-                    MenuDelete = perfilMenu.Key.Elimina,
-                    MenuActivate = perfilMenu.Key.Activa,
-                    MenuExecute = perfilMenu.Key.Ejecuta
-                };
-                moduloDTO.Options.Add(menuDTO);
-            }
-        }
-
-        return response;
+        return permisosAplicaciones;
     }
 
     public async Task<CrearMenuResponse> CrearMenu(CrearMenuCommand registroDto)

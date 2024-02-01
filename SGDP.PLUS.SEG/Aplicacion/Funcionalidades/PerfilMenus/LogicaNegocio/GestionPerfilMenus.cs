@@ -64,7 +64,7 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
 
             consulta.Data = new List<ConsultarPerfilMenusResponse>();
 
-            foreach (var item in result.Items!)
+            foreach (var item in result.Items)
             {
                 consulta.Data.Add(new ConsultarPerfilMenusResponse(
                                 item.PerfilId,

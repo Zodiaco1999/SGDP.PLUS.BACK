@@ -59,7 +59,7 @@ public class GestionUsuarioPerfil : BaseAppService, IGestionUsuarioPerfil
 
             consulta.Data = new List<ConsultarUsuariosPerfilResponse>();
 
-            foreach (var item in result.Items!)
+            foreach (var item in result.Items)
             {
                 string nombreAplicacion = "N/A";
 

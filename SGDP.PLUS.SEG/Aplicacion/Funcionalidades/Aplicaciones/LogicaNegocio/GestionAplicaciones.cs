@@ -49,11 +49,7 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
 
             DataViewModel<ConsultarAplicacionesResponse> consulta = new DataViewModel<ConsultarAplicacionesResponse>(pagina, registrosPorPagina, result.TotalItems);
 
-            consulta.Data = new List<ConsultarAplicacionesResponse>();
-
-            foreach (var item in result.Items!)
-            {
-                consulta.Data.Add(new ConsultarAplicacionesResponse(
+            consulta.Data = result.Items.Select(item => new ConsultarAplicacionesResponse(
                                 item.AplicacionId,
                                 item.NombreAplicacion,
                                 item.DescAplicacion,
@@ -62,8 +58,7 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
                                 item.CreaUsuario,
                                 item.CreaFecha,
                                 item.ModificaUsuario,
-                                item.ModificaFecha));
-            }
+                                item.ModificaFecha)).ToList();
 
             return consulta;
         }

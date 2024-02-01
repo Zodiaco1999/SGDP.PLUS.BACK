@@ -15,7 +15,7 @@ public interface IGestionMenus
         int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null);
     Task<IEnumerable<ConsultarMenusPorParametrosResponse>> ConsultarMenusPorParametros(Guid aplicacionId, Guid? moduloId, string filtro);
     Task<ConsultarMenuPorIdResponse> ConsultarMenuPorId(Guid menuId);
-    Task<ConsultarMenuUsuarioResponse> ConsultarMenuUsuario();
+    Task<IEnumerable<ConsultarMenuUsuarioResponse>> ConsultarMenuUsuario();
     Task<CrearMenuResponse> CrearMenu(CrearMenuCommand registroDto);
     Task<EditarMenuResponse> EditarMenu(EditarMenuCommand registroDto);
     Task<ActivarInactivarMenuResponse> ActivarInactivarMenu(Guid menuId);

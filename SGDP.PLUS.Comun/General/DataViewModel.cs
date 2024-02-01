@@ -13,7 +13,7 @@ public class DataViewModel<T>
         TotalRecords = totalRecords;
     }
 
-    public List<T> Data { get; set; }
+    public List<T> Data { get; set; } = new();
 
     public int Page { get; set; }
 
