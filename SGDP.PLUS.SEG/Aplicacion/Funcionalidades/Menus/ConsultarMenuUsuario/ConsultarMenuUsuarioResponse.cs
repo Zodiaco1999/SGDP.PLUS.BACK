@@ -2,8 +2,8 @@
 
 public record struct ConsultarMenuUsuarioResponse(
     Guid Id,
-    string NameAplication,
-    string DescAplication,
+    string Name,
+    string Desc,
     IEnumerable<Module> Modules);
 
 public record struct Module(
