@@ -57,4 +57,3 @@ app.UseMiddleware<CustomExceptionMiddleware>();
 app.UseRequestLocalization();
 
 app.Run();
-

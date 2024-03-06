@@ -1,5 +1,4 @@
-﻿using LinqKit;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.Excepcion;
 using SGDP.PLUS.Comun.General;
@@ -17,7 +16,6 @@ using SGDP.PLUS.INFOTERCERO.Dominio.Entidades;
 using SGDP.PLUS.INFOTERCERO.Infraestructura.UnidadTrabajo;
 using System.Xml;
 using System.Xml.Serialization;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.LogicaNegocio;
 
@@ -121,7 +119,7 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
 
         repuestaLaft.LaftResponse.IdentificacionConsultada = command.Identificacion;
         repuestaLaft.LaftResponse.RespuestaJson = responseAsString;
-        
+
         return repuestaLaft.LaftResponse;
     }
 
@@ -130,7 +128,7 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
         var informe = await ObtenerInforme(new ObtenerInformeCommand(command.Nit));
         var fechaSolicitud = DateTime.Now;
 
-        TerceroSave(command.Nit, fechaSolicitud, informe);
+        await TerceroSave(command.Nit, fechaSolicitud, informe);
 
         var numerosIndentificacion = new List<string> { command.Nit };
         numerosIndentificacion.AddRange(informe.Administradores.Select(a => a.Cedula).Where(a => !string.IsNullOrEmpty(a)));
@@ -139,7 +137,7 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
         var resumenRespuesta = new ResumenRespuesta();
         var ilicitos = new List<ListaIlicitos>();
         var listaConsultasLaft = new List<ConsultaLaftResponse>();
-        
+
         await Parallel.ForEachAsync(identificaciones, async (identificacion, _) =>
         {
             var consultaLaft = await ConsultaLaft(new ConsultaLaftCommand(identificacion));
@@ -147,7 +145,7 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
             ilicitos.AddRange(consultaLaft.ListaIlicitos);
         });
 
-        SaveRespuestaLaft(listaConsultasLaft, fechaSolicitud, command.Nit);
+        await SaveRespuestaLaft(listaConsultasLaft, fechaSolicitud, command.Nit);
         int numeroOcurrencias = ilicitos.Count;
         resumenRespuesta.NumeroOcurrencias = numeroOcurrencias.ToString();
         resumenRespuesta.Alerta = numeroOcurrencias > 0 ? "SI" : "NO";
@@ -155,7 +153,7 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
         return new ConsultaLaftTerceroResponse() { ResumenRespuesta = resumenRespuesta, ListaIlicitos = ilicitos };
     }
 
-    private void TerceroSave(string nit, DateTime fechaSolicitud, ObtenerInformeResponse informe)
+    private async Task TerceroSave(string nit, DateTime fechaSolicitud, ObtenerInformeResponse informe)
     {
         var iBasica = informe.TerceroInfoBasica;
 
@@ -187,10 +185,10 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
         };
 
         _infoBasicaEscritura.Insert(tercero);
-        _unitOfWork.SaveChanges();
+        await _unitOfWork.SaveChangesAsync();
     }
 
-    private void SaveRespuestaLaft(IEnumerable<ConsultaLaftResponse> listaConsultasLaft, DateTime fechaSolicitud, string nit)
+    private async Task SaveRespuestaLaft(IEnumerable<ConsultaLaftResponse> listaConsultasLaft, DateTime fechaSolicitud, string nit)
     {
         foreach (var laftResponse in listaConsultasLaft)
         {
@@ -225,7 +223,7 @@ public class GestionTerceros : BaseAppService, IGestionTerceros
             };
 
             _respuestaLaftEscritura.Insert(respuestaLaft);
-            _unitOfWork.SaveChanges();
+            await _unitOfWork.SaveChangesAsync();
         }
     }
 

@@ -7,7 +7,7 @@ namespace SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.Terceros.ConsultaLaft
 
 [Route("api/[controller]")]
 [ApiController]
-//[Authorize]
+[Authorize]
 public class ConsultaLaftTerceroController : ControllerBase
 {
 

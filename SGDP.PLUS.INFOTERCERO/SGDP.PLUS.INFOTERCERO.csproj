@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Aplicacion\Funcionalidades\RespuestaLafts\" />
     <Folder Include="Aplicacion\Funcionalidades\Terceros\ConsultaLaftTercero\DTO\" />
   </ItemGroup>
 
