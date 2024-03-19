@@ -9,32 +9,31 @@ using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.RespuestaLafts.ConsultarP
 using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.RespuestaLafts.Crear;
 using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.RespuestaLafts.Editar;
 using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.RespuestaLafts.Repositorio;
+using SGDP.PLUS.INFOTERCERO.Dominio.Entidades;
 using SGDP.PLUS.INFOTERCERO.Infraestructura.UnidadTrabajo;
+using SGDP.PLUS.INFOTERCERO.Servicios.InformaApi.ConsultaLaftTercero;
+using SGDP.PLUS.INFOTERCERO.Servicios.InformaApi.LogicaNegocio;
+using System.Linq.Expressions;
 
 namespace SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.RespuestaLafts.LogicaNegocio;
 
 public class GestionRespuestaLafts : BaseAppService, IGestionRespuestaLafts
 {
     private readonly IRespuestaLaftRepositorioLectura _respuestaLaftLectura;
-    private readonly IRespuestaLaftRepositorioEscritura _respuestaLaftEscritura;
     private readonly IInfoBasicaRepositorioLectura _infoBasicaLectura;
-    private readonly IUnitOfWorkInfoTerceroEscritura _unitOfWork;
-    private readonly IContextAccessor _contextAccessor;
+    private readonly IGestionInformaApi _gestionInformaApi;
 
     public GestionRespuestaLafts(
         IRespuestaLaftRepositorioLectura respuestaLaftLectura,
-        IRespuestaLaftRepositorioEscritura respuestaLaftEscritura,
         IInfoBasicaRepositorioLectura infoBasicaLectura,
-        IUnitOfWorkInfoTerceroEscritura unitOfWork,
+        IGestionInformaApi gestionInformaApi,
         IContextAccessor contextAccessor,
         ILoggerFactory loggerFactory
         ) : base(contextAccessor, loggerFactory)
     {
         _respuestaLaftLectura = respuestaLaftLectura;
-        _respuestaLaftEscritura = respuestaLaftEscritura;
         _infoBasicaLectura = infoBasicaLectura;
-        _unitOfWork = unitOfWork;
-        _contextAccessor = contextAccessor;
+        _gestionInformaApi = gestionInformaApi;
     }
 
     public async Task<IEnumerable<ConsultarDetalleLaftResponse>> ConsultarDetalleLaft(ConsultarDetalleLaftQuery query)
@@ -47,16 +46,18 @@ public class GestionRespuestaLafts : BaseAppService, IGestionRespuestaLafts
 
         var response = new List<ConsultarDetalleLaftResponse>();
 
-        foreach (var respuesta in result.RespuestaLafts)
+        var respuestasLaft = result.RespuestaLafts.Where(r => r.Alertado);
+
+        foreach (var respuesta in respuestasLaft)
         {
             var administrador = result.Administradors.FirstOrDefault(a => a.Cedula == respuesta.IdentificacionConsultada);
 
             response.Add(new ConsultarDetalleLaftResponse(
+                respuesta.RespuestaLaftId,
                 respuesta.IdentificacionConsultada,
-                administrador?.Nombre ?? "",
+                respuesta.InfoBasica.Nit == respuesta.IdentificacionConsultada ? respuesta.InfoBasica.Denominacion : administrador?.Nombre ?? "",
                 administrador?.CodigoCargo ?? "",
                 administrador?.Cargo ?? "",
-                respuesta.Alertado,
                 !string.IsNullOrEmpty(administrador?.FechaNombramiento) ? Convert.ToDateTime(administrador.FechaNombramiento) : null,
                 !string.IsNullOrEmpty(administrador?.FechaCambioAdmin) ? Convert.ToDateTime(administrador.FechaCambioAdmin) : null));
         }
@@ -64,20 +65,23 @@ public class GestionRespuestaLafts : BaseAppService, IGestionRespuestaLafts
         return response;
     }
 
-    public async Task<DataViewModel<ConsultarRespuestaLaftPorNitResponse>> ConsultarRespuestaLaftPorNit(string nit, int pagina, int registrosPorPagina)
+    public async Task<DataViewModel<ConsultarRespuestaLaftPorNitResponse>> ConsultarRespuestaLaftPorNit(ConsultarRespuestaLaftPorNitQuery query)
     {
-        var result = await _respuestaLaftLectura
-            .Query(r => r.NitTerceroAplica == nit && r.IdentificacionConsultada == nit)
-            .OrderBy("FechaSolicitud", false)
-            .Include(r => r.InfoBasica)
-            .SelectPageAsync(pagina, registrosPorPagina);
+        Expression<Func<RespuestaLaft, bool>> filter = r => r.NitTerceroAplica == query.Nit && r.IdentificacionConsultada == query.Nit;
 
-        if (result.TotalItems == 0)
+        var respuestaLaft = await _respuestaLaftLectura.Query(filter).FirstOrDefaultAsync();
+        if (respuestaLaft == null || query.Actualiza)
         {
-
+            await _gestionInformaApi.ConsultaLaftTercero(new ConsultaLaftTerceroCommand(query.Nit));
         }
 
-        var dataViemModel = new DataViewModel<ConsultarRespuestaLaftPorNitResponse>(pagina, registrosPorPagina, result.TotalItems);
+        var result = await _respuestaLaftLectura
+            .Query(filter)
+            .OrderBy("FechaSolicitud", false)
+            .Include(r => r.InfoBasica)
+            .SelectPageAsync(query.Pagina, query.RegistrosPorPagina);
+
+        var dataViemModel = new DataViewModel<ConsultarRespuestaLaftPorNitResponse>(query.Pagina, query.RegistrosPorPagina, result.TotalItems);
 
         dataViemModel.Data = result.Items.Select(item => new ConsultarRespuestaLaftPorNitResponse(
             item.CodigoInforma,
@@ -85,10 +89,6 @@ public class GestionRespuestaLafts : BaseAppService, IGestionRespuestaLafts
             item.InfoBasica.Denominacion,
             item.FechaSolicitud,
             item.Alertado)).ToList();
-
-        var item = result.Items.FirstOrDefault();
-
-        await ConsultarDetalleLaft(new ConsultarDetalleLaftQuery(item.NitTerceroAplica, item.FechaSolicitud));
 
         return dataViemModel;
     }

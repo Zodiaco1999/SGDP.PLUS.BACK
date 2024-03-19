@@ -18,7 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Servicios\InformaApi\Terceros\ConsultaLaftTercero\DTO\" />
+    <Folder Include="Servicios\InformaApi\ConsultaLaftTercero\DTO\" />
+    <Folder Include="Servicios\InformaApi\Terceros\" />
   </ItemGroup>
 
   <ItemGroup>

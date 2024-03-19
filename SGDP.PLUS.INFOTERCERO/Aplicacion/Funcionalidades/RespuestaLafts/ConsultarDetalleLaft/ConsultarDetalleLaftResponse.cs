@@ -1,10 +1,10 @@
 ﻿namespace SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.RespuestaLafts.ConsultarDetalleLaft;
 public record struct ConsultarDetalleLaftResponse(
+    Guid RespuestaLaftId,
     string NumeroIdentificacion,
     string Nombre,
     string CodigoCargo,
     string Cargo,
-    bool Alertado,
     DateTime? FechaNombramiento,
     DateTime? FechaCambioAdmin);
 
