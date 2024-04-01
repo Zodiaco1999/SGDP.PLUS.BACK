@@ -113,6 +113,7 @@ namespace SGDP.PLUS.Comun.Repositorios
         {
             return await _repository.FirtsOrDefaultAsync(_expression, _includes, _includesString, _ignoreQueryFilters);
         }
+
         public TEntity FirstOrDefault()
         {
             return _repository.FirtsOrDefault(_expression, _includes, _includesString, _ignoreQueryFilters).FirstOrDefault();

@@ -1,5 +1,6 @@
 using Azure;
 using MediatR;
+using NetTopologySuite.Index.HPRtree;
 using SGDP.PLUS.Comun.ContextAccesor;
 using SGDP.PLUS.Comun.General;
 using SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.InfoBasicas.Repositorio;
@@ -69,8 +70,8 @@ public class GestionRespuestaLafts : BaseAppService, IGestionRespuestaLafts
     {
         Expression<Func<RespuestaLaft, bool>> filter = r => r.NitTerceroAplica == query.Nit && r.IdentificacionConsultada == query.Nit;
 
-        var respuestaLaft = await _respuestaLaftLectura.Query(filter).FirstOrDefaultAsync();
-        if (respuestaLaft == null || query.Actualiza)
+        var respuestaLaft = _respuestaLaftLectura.Queryable().Any(filter);
+        if (!respuestaLaft || query.Actualiza)
         {
             await _gestionInformaApi.ConsultaLaftTercero(new ConsultaLaftTerceroCommand(query.Nit));
         }
@@ -88,7 +89,10 @@ public class GestionRespuestaLafts : BaseAppService, IGestionRespuestaLafts
             item.NitTerceroAplica,
             item.InfoBasica.Denominacion,
             item.FechaSolicitud,
-            item.Alertado)).ToList();
+            _respuestaLaftLectura
+                .Queryable()
+                .Any(r => r.NitTerceroAplica == item.NitTerceroAplica && r.FechaSolicitud == item.FechaSolicitud && r.Alertado)
+            )).ToList();
 
         return dataViemModel;
     }
