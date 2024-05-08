@@ -12,7 +12,7 @@ public class ConsultarPerfilesQueryHandler : IRequestHandler<ConsultarPerfilesQu
     
     public async Task<DataViewModel<ConsultarPerfilesResponse>> Handle(ConsultarPerfilesQuery request, CancellationToken cancellationToken)
     {
-        DataViewModel<ConsultarPerfilesResponse> res = await _gestionPerfiles.ConsultarPerfiles(request.textoBusqueda, request.pagina, request.registrosPorPagina);
+        DataViewModel<ConsultarPerfilesResponse> res = await _gestionPerfiles.ConsultarPerfiles(request.Query);
         return res;
     }
 }

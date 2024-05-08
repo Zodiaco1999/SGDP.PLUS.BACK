@@ -10,6 +10,6 @@ public class ConsultarRespuestaLaftPorNitQueryHandler : IRequestHandler<Consulta
     public ConsultarRespuestaLaftPorNitQueryHandler(IGestionRespuestaLafts gestionRespuestaLafts) => _gestionRespuestaLafts = gestionRespuestaLafts;
 
     public async Task<DataViewModel<ConsultarRespuestaLaftPorNitResponse>> Handle(ConsultarRespuestaLaftPorNitQuery request, CancellationToken cancellationToken)
-        => await _gestionRespuestaLafts.ConsultarRespuestaLaftPorNit(request);
+        => await _gestionRespuestaLafts.ConsultarRespuestaLaftPorNit(request.Query, request.Nit, request.Actualiza);
 
 }

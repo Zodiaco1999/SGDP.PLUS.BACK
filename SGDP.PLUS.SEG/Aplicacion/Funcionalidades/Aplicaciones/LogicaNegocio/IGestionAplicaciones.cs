@@ -10,7 +10,7 @@ namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.LogicaNegocio;
 
 public interface IGestionAplicaciones
 {
-    Task<DataViewModel<ConsultarAplicacionesResponse>> ConsultarAplicaciones(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null);
+    Task<DataViewModel<ConsultarAplicacionesResponse>> ConsultarAplicaciones(GetEntityQuery query);
     Task<ConsultarAplicacionPorIdResponse> ConsultarAplicacionPorId(Guid aplicacionId);
     Task<CrearAplicacionResponse> CrearAplicacion(CrearAplicacionCommand registroDto);
     Task<EditarAplicacionResponse> EditarAplicacion(EditarAplicacionCommand registroDto);

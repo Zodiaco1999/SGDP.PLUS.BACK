@@ -39,7 +39,15 @@ namespace SGDP.PLUS.Comun.Repositorios
 
         public static IOrderedQueryable<T> OrderingHelper<T>(IQueryable<T> source, string propertyName, bool descending, bool anotherLevel)
         {
-            ParameterExpression param = Expression.Parameter(typeof(T), string.Empty); // I don't care about some naming
+            ParameterExpression param = Expression.Parameter(typeof(T), string.Empty);
+
+            var propertyValid = typeof(T).GetProperties()
+                .Where(item => item.Name.ToLower() == propertyName.ToLower())
+                .FirstOrDefault();
+
+            if (propertyValid == null)
+                return (IOrderedQueryable<T>)source;
+
             MemberExpression property = Expression.PropertyOrField(param, propertyName);
             LambdaExpression sort = Expression.Lambda(property, param);
             MethodCallExpression call = Expression.Call(

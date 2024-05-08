@@ -91,6 +91,13 @@ namespace SGDP.PLUS.Comun.Repositorios
             return _repository.SelectQuery(query, parameters).AsQueryable();
         }
 
+        public IQueryFluent<TEntity> OrderBy(string orderBy, string orderAsc)
+        {
+            _propertyOrderBy = orderBy;
+            _sortDirection = orderAsc.ToLower();
+            return this;
+        }
+
         public IQueryFluent<TEntity> OrderBy(string orderBy, bool orderAsc = true)
         {
             _propertyOrderBy = orderBy;

@@ -13,6 +13,8 @@ namespace SGDP.PLUS.Comun.Repositorios
 
         IQueryFluent<TEntity> OrderBy(string orderBy, bool orderAsc = true);
 
+        IQueryFluent<TEntity> OrderBy(string orderBy, string orderAsc);
+
         IQueryFluent<TEntity> Include(Expression<Func<TEntity, object>> expression);
 
         IQueryFluent<TEntity> Include(string include);

@@ -38,19 +38,19 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
         _gestionPerfilMenus = gestionPerfilMenus;
     }
 
-    public async Task<DataViewModel<ConsultarPerfilesResponse>> ConsultarPerfiles(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
+    public async Task<DataViewModel<ConsultarPerfilesResponse>> ConsultarPerfiles(GetEntityQuery query)
     {
         try
         {
-            var filtroEspecificacion = new PerfilEspecificacion(filtro);
+            var filtroEspecificacion = new PerfilEspecificacion(query.TextoBusqueda);
 
             var result = await _perfilRepositorioLectura
                 .Query(filtroEspecificacion.Criteria)
                 .Include("PerfilMenus.Menu.Modulo.Apliation")
-                .OrderBy(ordenarPor!, direccionOrdenamientoAsc.GetValueOrDefault())
-                .SelectPageAsync(pagina, registrosPorPagina);
+                .OrderBy(query.OrdenarPor, query.OrdenamientoAsc)
+                .SelectPageAsync(query.Pagina, query.RegistrosPorPagina);
 
-            DataViewModel<ConsultarPerfilesResponse> consulta = new(pagina, registrosPorPagina, result.TotalItems);
+            DataViewModel<ConsultarPerfilesResponse> consulta = new(query.Pagina, query.RegistrosPorPagina, result.TotalItems);
 
             consulta.Data = new List<ConsultarPerfilesResponse>();
 

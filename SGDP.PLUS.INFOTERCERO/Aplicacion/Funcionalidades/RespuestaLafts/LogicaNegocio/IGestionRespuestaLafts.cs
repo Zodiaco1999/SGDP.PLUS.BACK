@@ -10,7 +10,7 @@ namespace SGDP.PLUS.INFOTERCERO.Aplicacion.Funcionalidades.RespuestaLafts.Logica
 public interface IGestionRespuestaLafts
 {
     Task<DataViewModel<ConsultarRespuestaLaftsResponse>> ConsultarRespuestaLafts(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null);
-    Task<DataViewModel<ConsultarRespuestaLaftPorNitResponse>> ConsultarRespuestaLaftPorNit(ConsultarRespuestaLaftPorNitQuery query);
+    Task<DataViewModel<ConsultarRespuestaLaftPorNitResponse>> ConsultarRespuestaLaftPorNit(GetEntityQuery query, string nit, bool actualiza);
     Task<CrearRespuestaLaftResponse> CrearRespuestaLaft(CrearRespuestaLaftCommand registroDto);
     Task<EditarRespuestaLaftResponse> EditarRespuestaLaft(EditarRespuestaLaftCommand registroDto);
     Task<IEnumerable<ConsultarDetalleLaftResponse>> ConsultarDetalleLaft(ConsultarDetalleLaftQuery query);

@@ -9,7 +9,7 @@ namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Perfiles.LogicaNegocio;
 
 public interface IGestionPerfiles
 {
-    Task<DataViewModel<ConsultarPerfilesResponse>> ConsultarPerfiles(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null);
+    Task<DataViewModel<ConsultarPerfilesResponse>> ConsultarPerfiles(GetEntityQuery query);
     Task<ConsultarPerfilPorIdResponse> ConsultarPerfilPorId(Guid perfilId);
     Task<CrearPerfilResponse> CrearPerfil(CrearPerfilCommand registroDto);
     Task<EditarPerfilResponse> EditarPerfil(EditarPerfilCommand registroDto);

@@ -66,19 +66,21 @@ public class GestionRespuestaLafts : BaseAppService, IGestionRespuestaLafts
         return response;
     }
 
-    public async Task<DataViewModel<ConsultarRespuestaLaftPorNitResponse>> ConsultarRespuestaLaftPorNit(ConsultarRespuestaLaftPorNitQuery query)
+    public async Task<DataViewModel<ConsultarRespuestaLaftPorNitResponse>> ConsultarRespuestaLaftPorNit(GetEntityQuery query, string nit, bool actualiza)
     {
-        Expression<Func<RespuestaLaft, bool>> filter = r => r.NitTerceroAplica == query.Nit && r.IdentificacionConsultada == query.Nit;
+        Expression<Func<RespuestaLaft, bool>> filter = r => r.NitTerceroAplica == nit && r.IdentificacionConsultada == nit;
 
         var respuestaLaft = _respuestaLaftLectura.Queryable().Any(filter);
-        if (!respuestaLaft || query.Actualiza)
+        if (!respuestaLaft || actualiza)
         {
-            await _gestionInformaApi.ConsultaLaftTercero(new ConsultaLaftTerceroCommand(query.Nit));
+            await _gestionInformaApi.ConsultaLaftTercero(new ConsultaLaftTerceroCommand(nit));
         }
+
+        (string, string) order = string.IsNullOrEmpty(query.OrdenarPor) ? ("FechaSolicitud", "desc") : (query.OrdenarPor, query.OrdenamientoAsc);
 
         var result = await _respuestaLaftLectura
             .Query(filter)
-            .OrderBy("FechaSolicitud", false)
+            .OrderBy(order.Item1, order.Item2)
             .Include(r => r.InfoBasica)
             .SelectPageAsync(query.Pagina, query.RegistrosPorPagina);
 

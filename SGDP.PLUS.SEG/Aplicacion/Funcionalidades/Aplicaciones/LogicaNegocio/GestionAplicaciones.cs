@@ -12,7 +12,6 @@ using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.Repositorio;
 using SGDP.PLUS.SEG.Dominio.Entidades;
 using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
 
-
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Aplicaciones.LogicaNegocio;
 
 public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
@@ -36,18 +35,18 @@ public class GestionAplicaciones : BaseAppService, IGestionAplicaciones
         _contextAccessor = contextAccessor;
     }
 
-    public async Task<DataViewModel<ConsultarAplicacionesResponse>> ConsultarAplicaciones(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = false)
+    public async Task<DataViewModel<ConsultarAplicacionesResponse>> ConsultarAplicaciones(GetEntityQuery query)
     {
         try
         {
-            var filtroEspecificacion = new AplicacionEspecificacion(filtro);
+            var filtroEspecificacion = new AplicacionEspecificacion(query.TextoBusqueda);
 
             var result = await _aplicacionRepositorioLectura
                 .Query(filtroEspecificacion.Criteria)
-                .OrderBy(ordenarPor!, direccionOrdenamientoAsc.GetValueOrDefault())
-                .SelectPageAsync(pagina, registrosPorPagina);
+                .OrderBy(query.OrdenarPor, query.OrdenamientoAsc)
+                .SelectPageAsync(query.Pagina, query.RegistrosPorPagina);
 
-            DataViewModel<ConsultarAplicacionesResponse> consulta = new DataViewModel<ConsultarAplicacionesResponse>(pagina, registrosPorPagina, result.TotalItems);
+            DataViewModel<ConsultarAplicacionesResponse> consulta = new DataViewModel<ConsultarAplicacionesResponse>(query.Pagina, query.RegistrosPorPagina, result.TotalItems);
 
             consulta.Data = result.Items.Select(item => new ConsultarAplicacionesResponse(
                                 item.AplicacionId,
