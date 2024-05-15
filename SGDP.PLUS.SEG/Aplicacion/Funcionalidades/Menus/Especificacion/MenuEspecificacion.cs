@@ -19,6 +19,12 @@ public class MenuEspecificacion : SpecificationBase<Menu>
     {
         SpecificationCriteria<Menu> especificacion = new SpecificationCriteriaTrue<Menu>();
 
+        var eEspecificacionId = ModuloId != null ?
+            new SpecificationCriteriaDirect<Menu>(c => c.AplicacionId == AplicacionId && c.ModuloId == ModuloId) :
+            new SpecificationCriteriaDirect<Menu>(c => c.AplicacionId == AplicacionId);
+
+        especificacion &= eEspecificacionId;
+
         var spl = texto.ToLower().Trim().Split(' ');
 
         foreach (var s in spl)
@@ -34,11 +40,6 @@ public class MenuEspecificacion : SpecificationBase<Menu>
                 especificacion &= eEspecificacion1 || eEspecificacion2 || eEspecificacion3 || eEspecificacion4 || eEspecificacion5;
             }
         }
-
-        var eEspecificacionId = ModuloId != null ? new SpecificationCriteriaDirect<Menu>(c => c.AplicacionId == AplicacionId && c.ModuloId == ModuloId) :
-            new SpecificationCriteriaDirect<Menu>(c => c.AplicacionId == AplicacionId);
-
-        especificacion &= eEspecificacionId;
 
         return especificacion;
     }

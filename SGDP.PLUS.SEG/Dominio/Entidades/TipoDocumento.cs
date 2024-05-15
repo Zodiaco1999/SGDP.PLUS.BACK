@@ -11,6 +11,7 @@ namespace SGDP.PLUS.SEG.Dominio.Entidades
         public string? Abreviatura { get; set; }
 
         public bool? Activo { get; set; }
+
         public virtual ICollection<Usuario> Usuarios { get; set; } = new List<Usuario>();
     }
 }

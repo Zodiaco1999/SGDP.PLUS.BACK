@@ -11,8 +11,7 @@ namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio
 {
     public interface IGestionPerfilMenus
     {
-        Task<DataViewModel<ConsultarPerfilMenusResponse>> ConsultarPerfilMenus(Guid perfilId, Guid? moduloId, string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null);
-
+        Task<DataViewModel<ConsultarPerfilMenusResponse>> ConsultarPerfilMenus(GetEntityQuery query, Guid perfilId, Guid? moduloId);
         Task<IEnumerable<ConsultarPerfilesPorAplicacionResponse>> ConsultarPerfilesPorAplicacion(Guid aplicacionId);
         Task<IEnumerable<ConsultarPerfilMenusPorIdResponse>> ConsultarPerfilMenuPorId(Guid perfilId);
         Task<CrearPerfilMenuResponse> CrearPerfilMenu(CrearPerfilMenuCommand registroDto);

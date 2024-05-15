@@ -40,22 +40,22 @@ public class GestionUsuarioPerfil : BaseAppService, IGestionUsuarioPerfil
         _contextAccessor = contextAccessor;
     }
 
-    public async Task<DataViewModel<ConsultarUsuariosPerfilResponse>> ConsultarUsuariosPerfil(string usuarioId, Guid? aplicaionId, string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
+    public async Task<DataViewModel<ConsultarUsuariosPerfilResponse>> ConsultarUsuariosPerfil(GetEntityQuery query, Guid? aplicaionId)
     {
         try
         {
-            var filtroEspecificacion = new UsuarioPerfilEspecificacion(usuarioId, aplicaionId, filtro);
+            var filtroEspecificacion = new UsuarioPerfilEspecificacion(ContextAccessor.UserId, aplicaionId, query.TextoBusqueda);
 
             var result = await _usuarioPerfilRepositorioLectura
                 .Query(filtroEspecificacion.Criteria)
                 .Include("Perfil.PerfilMenus")
-                .SelectPageAsync(pagina, registrosPorPagina);
+                .SelectPageAsync(query.Pagina, query.RegistrosPorPagina);
 
             var aplicaciones = await _aplicacionRepositorioLectura
                 .Query()
                 .SelectAsync();
 
-            var consulta = new DataViewModel<ConsultarUsuariosPerfilResponse>(pagina, registrosPorPagina, result.TotalItems);
+            var consulta = new DataViewModel<ConsultarUsuariosPerfilResponse>(query.Pagina, query.RegistrosPorPagina, result.TotalItems);
 
             consulta.Data = new List<ConsultarUsuariosPerfilResponse>();
 
@@ -78,8 +78,7 @@ public class GestionUsuarioPerfil : BaseAppService, IGestionUsuarioPerfil
                                 item.CreaUsuario,
                                 item.CreaFecha,
                                 item.ModificaUsuario,
-                                item.ModificaFecha
-                                ));
+                                item.ModificaFecha));
             }
 
             return consulta;

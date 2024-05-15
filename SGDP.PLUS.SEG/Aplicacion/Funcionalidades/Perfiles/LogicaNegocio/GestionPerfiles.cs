@@ -52,23 +52,18 @@ public class GestionPerfiles : BaseAppService, IGestionPerfiles
 
             DataViewModel<ConsultarPerfilesResponse> consulta = new(query.Pagina, query.RegistrosPorPagina, result.TotalItems);
 
-            consulta.Data = new List<ConsultarPerfilesResponse>();
-
-            foreach (var item in result.Items)
-            {
-                consulta.Data.Add(new ConsultarPerfilesResponse(
-                                item.PerfilId,
-                                item.NombrePerfil,
-                                item.DescPerfil,
-                                item.PerfilMenus.FirstOrDefault() != null ?
-                                item.PerfilMenus.FirstOrDefault()!.Menu.Modulo.Apliation.NombreAplicacion : "N/A",
-                                item.Activo,
-                                item.CreaUsuario,
-                                item.CreaFecha,
-                                item.ModificaUsuario,
-                                item.ModificaFecha));
-            }
-
+            consulta.Data = result.Items.Select(item => new ConsultarPerfilesResponse(
+                item.PerfilId,
+                item.NombrePerfil,
+                item.DescPerfil,
+                item.PerfilMenus.FirstOrDefault() != null ?
+                item.PerfilMenus.FirstOrDefault()!.Menu.Modulo.Apliation.NombreAplicacion : "N/A",
+                item.Activo,
+                item.CreaUsuario,
+                item.CreaFecha,
+                item.ModificaUsuario,
+                item.ModificaFecha)).ToList();
+            
             return consulta;
         }
         catch (Exception ex)

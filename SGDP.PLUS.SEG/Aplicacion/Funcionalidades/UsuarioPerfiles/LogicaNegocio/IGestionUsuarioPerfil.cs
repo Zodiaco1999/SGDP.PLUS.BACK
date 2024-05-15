@@ -9,7 +9,7 @@ namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.LogicaNegocio
 
     public interface IGestionUsuarioPerfil
     {
-        Task<DataViewModel<ConsultarUsuariosPerfilResponse>> ConsultarUsuariosPerfil(string usuarioId, Guid? aplicaionId, string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null);
+        Task<DataViewModel<ConsultarUsuariosPerfilResponse>> ConsultarUsuariosPerfil(GetEntityQuery query, Guid? aplicaionId);
         Task<IEnumerable<ConsultarUsuarioPerfilPorIdResponse>> ConsultarUsuarioPerfilPorId(string usuarioId);
         Task<CrearUsuarioPerfilResponse> CrearUsuarioPerfil(CrearUsuarioPerfilCommand registroDto);
         Task EditarUsuarioPerfil(List<EditarUsuarioPerfilCommand> usuarioPerfilDto, string usuarioId);

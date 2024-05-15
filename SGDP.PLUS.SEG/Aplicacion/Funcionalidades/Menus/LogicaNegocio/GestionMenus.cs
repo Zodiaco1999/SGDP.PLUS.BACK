@@ -112,44 +112,39 @@ public class GestionMenus : BaseAppService, IGestionMenus
             result.ModificaFecha);
     }
 
-    public async Task<DataViewModel<ConsultarMenusResponse>> ConsultarMenus(Guid aplicacionId, Guid? moduloId, string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
+    public async Task<DataViewModel<ConsultarMenusResponse>> ConsultarMenus(GetEntityQuery query, Guid aplicacionId, Guid? moduloId)
     {
         try
         {
-            var filtroEspecificacion = new MenuEspecificacion(aplicacionId, moduloId, filtro);
+            var filtroEspecificacion = new MenuEspecificacion(aplicacionId, moduloId, query.TextoBusqueda);
 
             var result = await _menuRepositorioLectura
                 .Query(filtroEspecificacion.Criteria)
-                .OrderBy(ordenarPor!, direccionOrdenamientoAsc.GetValueOrDefault())
-                .SelectPageAsync(pagina, registrosPorPagina);
+                .OrderBy(query.OrdenarPor, query.OrdenamientoAsc)
+                .SelectPageAsync(query.Pagina, query.RegistrosPorPagina);
 
-            DataViewModel<ConsultarMenusResponse> consulta = new(pagina, registrosPorPagina, result.TotalItems);
+            DataViewModel<ConsultarMenusResponse> consulta = new(query.Pagina, query.RegistrosPorPagina, result.TotalItems);
 
-            consulta.Data = new List<ConsultarMenusResponse>();
-
-            foreach (var item in result.Items)
-            {
-                consulta.Data.Add(new ConsultarMenusResponse(
-                                 item.AplicacionId,
-                                 item.ModuloId,
-                                 item.MenuId,
-                                 item.NombreMenu,
-                                 item.EtiquetaMenu,
-                                 item.DescMenu,
-                                 item.Url,
-                                 item.Orden,
-                                 item.Consulta,
-                                 item.Inserta,
-                                 item.Actualiza,
-                                 item.Elimina,
-                                 item.Activa,
-                                 item.Ejecuta,
-                                 item.Activo,
-                                 item.CreaUsuario,
-                                 item.CreaFecha,
-                                 item.ModificaUsuario,
-                                 item.ModificaFecha));
-            }
+            consulta.Data = result.Items.Select(item => new ConsultarMenusResponse(
+                item.AplicacionId,
+                item.ModuloId,
+                item.MenuId,
+                item.NombreMenu,
+                item.EtiquetaMenu,
+                item.DescMenu,
+                item.Url,
+                item.Orden,
+                item.Consulta,
+                item.Inserta,
+                item.Actualiza,
+                item.Elimina,
+                item.Activa,
+                item.Ejecuta,
+                item.Activo,
+                item.CreaUsuario,
+                item.CreaFecha,
+                item.ModificaUsuario,
+                item.ModificaFecha)).ToList();
 
             return consulta;
         }

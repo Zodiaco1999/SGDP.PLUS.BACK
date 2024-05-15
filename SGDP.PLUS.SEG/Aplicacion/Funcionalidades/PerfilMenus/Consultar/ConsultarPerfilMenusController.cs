@@ -11,12 +11,12 @@ public class ConsultarPerfilMenusController : ControllerBase
     private readonly IMediator _mediator;
     public ConsultarPerfilMenusController(IMediator mediator) => _mediator = mediator;
 
-    [HttpGet("{perfilId}")]
+    [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ConsultarPerfilMenus(Guid perfilId, Guid? moduloId, int pagina = 1, int registrosPorPagina = 20, string textoBusqueda = "", string ordenarPor = "", bool direccionOrdenamientoAsc = true)
+    public async Task<IActionResult> ConsultarPerfilMenus([FromQuery] GetEntityQuery query, Guid perfilId, Guid? moduloId)
     {
-        DataViewModel<ConsultarPerfilMenusResponse> resultado = await _mediator.Send(new ConsultarPerfilMenusQuery(perfilId, moduloId, textoBusqueda, pagina, registrosPorPagina));
+        DataViewModel<ConsultarPerfilMenusResponse> resultado = await _mediator.Send(new ConsultarPerfilMenusQuery(query ,perfilId, moduloId));
 
         return Ok(resultado);
     }

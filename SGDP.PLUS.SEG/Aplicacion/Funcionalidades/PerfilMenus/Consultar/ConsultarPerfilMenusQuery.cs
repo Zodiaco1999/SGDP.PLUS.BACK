@@ -4,8 +4,6 @@ using SGDP.PLUS.Comun.General;
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Consultar;
 
 public record struct ConsultarPerfilMenusQuery(
+    GetEntityQuery Query,
     Guid PerfilId,
-    Guid? ModuloId, 
-    string TextoBusqueda, 
-    int Pagina, 
-    int RegistrosPorPagina) : IRequest<DataViewModel<ConsultarPerfilMenusResponse>>;
+    Guid? ModuloId) : IRequest<DataViewModel<ConsultarPerfilMenusResponse>>;

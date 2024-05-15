@@ -10,6 +10,8 @@ using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Especificacion;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.Repositorio;
 using SGDP.PLUS.SEG.Dominio.Entidades;
 using SGDP.PLUS.SEG.Infraestructura.UnidadTrabajo;
+using System.Data.Entity;
+using System.Linq.Expressions;
 
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.PerfilMenus.LogicaNegocio;
 
@@ -48,44 +50,41 @@ public class GestionPerfilMenus : BaseAppService, IGestionPerfilMenus
         return result.DistinctBy(p => p.PerfilId);
     }
 
-    public async Task<DataViewModel<ConsultarPerfilMenusResponse>> ConsultarPerfilMenus(Guid perfilId, Guid? moduloId, string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
+    public async Task<DataViewModel<ConsultarPerfilMenusResponse>> ConsultarPerfilMenus(GetEntityQuery query, Guid perfilId, Guid? moduloId)
     {
         try
         {
-            var filtroEspecificacion = new PerfilMenuEspecificacion(perfilId, moduloId, filtro);
+            var filtroEspecificacion = new PerfilMenuEspecificacion(perfilId, moduloId, query.TextoBusqueda);
+
+            (string, string) order = string.IsNullOrEmpty(query.OrdenarPor) ? ("ModuloId", "asc") : (query.OrdenarPor, query.OrdenamientoAsc);
 
             var result = await _perfilMenuRepositorioLectura
                 .Query(filtroEspecificacion.Criteria)
                 .Include("Menu.Modulo")
-                .OrderBy(pm => pm.OrderBy(a => a.ModuloId))
-                .SelectPageAsync(pagina, registrosPorPagina);
+                .OrderBy(order.Item1, order.Item2)
+                .SelectPageAsync(query.Pagina, query.RegistrosPorPagina);
 
-            DataViewModel<ConsultarPerfilMenusResponse> consulta = new DataViewModel<ConsultarPerfilMenusResponse>(pagina, registrosPorPagina, result.TotalItems);
+            DataViewModel<ConsultarPerfilMenusResponse> consulta = new DataViewModel<ConsultarPerfilMenusResponse>(query.Pagina, query.RegistrosPorPagina, result.TotalItems);
 
-            consulta.Data = new List<ConsultarPerfilMenusResponse>();
-
-            foreach (var item in result.Items)
-            {
-                consulta.Data.Add(new ConsultarPerfilMenusResponse(
-                                item.PerfilId,
-                                item.AplicacionId,
-                                item.ModuloId,
-                                item.MenuId,
-                                item.Consulta,
-                                item.Inserta,
-                                item.Actualiza,
-                                item.Elimina,
-                                item.Activa,
-                                item.Ejecuta,
-                                item.CreaUsuario,
-                                item.CreaFecha,
-                                item.ModificaUsuario,
-                                item.ModificaFecha,
-                                item.Menu.Modulo.NombreModulo,
-                                item.Menu.NombreMenu,
-                                item.Menu.DescMenu));
-            }
-
+            consulta.Data = result.Items.Select(item => new ConsultarPerfilMenusResponse(
+                item.PerfilId,
+                item.AplicacionId,
+                item.ModuloId,
+                item.MenuId,
+                item.Consulta,
+                item.Inserta,
+                item.Actualiza,
+                item.Elimina,
+                item.Activa,
+                item.Ejecuta,
+                item.CreaUsuario,
+                item.CreaFecha,
+                item.ModificaUsuario,
+                item.ModificaFecha,
+                item.Menu.Modulo.NombreModulo,
+                item.Menu.NombreMenu,
+                item.Menu.DescMenu)).ToList();
+            
             return consulta;
         }
         catch (Exception ex)

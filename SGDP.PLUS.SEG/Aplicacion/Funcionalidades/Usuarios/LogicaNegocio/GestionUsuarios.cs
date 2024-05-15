@@ -39,49 +39,44 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
         _gestionUsuarioPerfil = gestionUsuarioPerfil;
     }
 
-    public async Task<DataViewModel<ConsultarUsuariosResponse>> ConsultarUsuarios(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
+    public async Task<DataViewModel<ConsultarUsuariosResponse>> ConsultarUsuarios(GetEntityQuery query)
     {
         try
         {
-            var filtroEspecificacion = new UsuarioEspecificacion(filtro);
+            var filtroEspecificacion = new UsuarioEspecificacion(query.TextoBusqueda);
 
             var result = await _usuarioRepositorioLectura
                 .Query(filtroEspecificacion.Criteria)
-                .OrderBy(ordenarPor!, direccionOrdenamientoAsc.GetValueOrDefault())
-                .SelectPageAsync(pagina, registrosPorPagina);
+                .OrderBy(query.OrdenarPor, query.OrdenamientoAsc)
+                .SelectPageAsync(query.Pagina, query.RegistrosPorPagina);
 
-            DataViewModel<ConsultarUsuariosResponse> consulta = new(pagina, registrosPorPagina, result.TotalItems);
+            DataViewModel<ConsultarUsuariosResponse> consulta = new(query.Pagina, query.RegistrosPorPagina, result.TotalItems);
 
-            consulta.Data = new List<ConsultarUsuariosResponse>();
+            consulta.Data = result.Items.Select(item => new ConsultarUsuariosResponse(
+                item.UsuarioId,
+                item.UsuarioDominio,
+                item.TipoDocumentoId,
+                item.NumeroIdentificacion,
+                item.PrimerNombre,
+                item.SegundoNombre,
+                item.PrimerApellido,
+                item.SegundoApellido,
+                item.Email,
+                item.FechaNacimiento,
+                item.Genero,
+                item.Contrasena,
+                item.FechaActualizacionContrasena,
+                item.AccesosFallidos,
+                item.FechaBloqueo,
+                item.CodigoAsignacion,
+                item.VenceCodigoAsignacion,
+                item.LogearLdap,
+                item.Activo,
+                item.CreaUsuario,
+                item.CreaFecha,
+                item.ModificaUsuario,
+                item.ModificaFecha)).ToList();
 
-            foreach (var item in result.Items)
-            {
-                var det = new ConsultarUsuariosResponse(
-                                item.UsuarioId,
-                                item.UsuarioDominio,
-                                item.TipoDocumentoId,
-                                item.NumeroIdentificacion,
-                                item.PrimerNombre,
-                                item.SegundoNombre,
-                                item.PrimerApellido,
-                                item.SegundoApellido,
-                                item.Email,
-                                item.FechaNacimiento,
-                                item.Genero,
-                                item.Contrasena,
-                                item.FechaActualizacionContrasena,
-                                item.AccesosFallidos,
-                                item.FechaBloqueo,
-                                item.CodigoAsignacion,
-                                item.VenceCodigoAsignacion,
-                                item.LogearLdap,
-                                item.Activo,
-                                item.CreaUsuario,
-                                item.CreaFecha,
-                                item.ModificaUsuario,
-                                item.ModificaFecha);
-                consulta.Data.Add(det);
-            }
             return consulta;
         }
         catch (Exception ex)

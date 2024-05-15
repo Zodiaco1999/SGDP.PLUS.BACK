@@ -16,9 +16,9 @@ namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Consultar;
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
-        public async Task<IActionResult> ConsultarUsuariosPerfil(string usuarioId, Guid perfilId, Guid? aplicacionId, int pagina = 1, int registrosPorPagina = 20, string textoBusqueda = "", string ordenarPor = "", bool direccionOrdenamientoAsc = true)
+        public async Task<IActionResult> ConsultarUsuariosPerfil([FromQuery] GetEntityQuery query, Guid? aplicacionId)
         {
-             DataViewModel<ConsultarUsuariosPerfilResponse> resultado = await _mediator.Send(new ConsultarUsuariosPerfilQuery(usuarioId, perfilId, aplicacionId, textoBusqueda, pagina, registrosPorPagina));
+             DataViewModel<ConsultarUsuariosPerfilResponse> resultado = await _mediator.Send(new ConsultarUsuariosPerfilQuery(query, aplicacionId));
 
              return Ok(resultado);
         }

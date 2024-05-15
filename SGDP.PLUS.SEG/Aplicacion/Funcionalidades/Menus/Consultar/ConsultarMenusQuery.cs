@@ -4,10 +4,6 @@ using SGDP.PLUS.Comun.General;
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Menus.Consultar;
 
 public record struct ConsultarMenusQuery(
+    GetEntityQuery Query,
     Guid AplicacionId, 
-    Guid? ModuloId,
-    string TextoBusqueda, 
-    int Pagina, 
-    int RegistrosPorPagina,
-    string? ordenarPor,
-    bool direccionOrdenamientoAsc) : IRequest<DataViewModel<ConsultarMenusResponse>>;
+    Guid? ModuloId) : IRequest<DataViewModel<ConsultarMenusResponse>>;

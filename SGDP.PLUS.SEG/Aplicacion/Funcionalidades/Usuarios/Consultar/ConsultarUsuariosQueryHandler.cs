@@ -10,9 +10,5 @@ public class ConsultarUsuariosQueryHandler : IRequestHandler<ConsultarUsuariosQu
     public ConsultarUsuariosQueryHandler(IGestionUsuarios gestionUsuarios) => _gestionUsuarios = gestionUsuarios;
 
     public async Task<DataViewModel<ConsultarUsuariosResponse>> Handle(ConsultarUsuariosQuery request, CancellationToken cancellationToken)
-    {
-        DataViewModel<ConsultarUsuariosResponse> result = await _gestionUsuarios.ConsultarUsuarios(request.textoBusqueda, request.pagina, request.registrosPorPagina);
-
-        return result;
-    }
+        => await _gestionUsuarios.ConsultarUsuarios(request.query);
 }
