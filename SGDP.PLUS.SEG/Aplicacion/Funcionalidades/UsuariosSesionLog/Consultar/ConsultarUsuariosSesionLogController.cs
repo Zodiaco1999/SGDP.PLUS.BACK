@@ -14,9 +14,9 @@ public class ConsultarUsuariosSesionLogController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ConsultarUsuariosSesionLog(int pagina = 1, int registrosPorPagina = 20, string textoBusqueda = "", string ordenarPor = "", bool direccionOrdenamientoAsc = true)
+    public async Task<IActionResult> ConsultarUsuariosSesionLog([FromQuery] GetEntityQuery query)
     {
-        DataViewModel<ConsultarUsuariosSesionLogResponse> resultado = await _mediator.Send(new ConsultarUsuariosSesionLogQuery(textoBusqueda, pagina, registrosPorPagina));
+        DataViewModel<ConsultarUsuariosSesionLogResponse> resultado = await _mediator.Send(new ConsultarUsuariosSesionLogQuery(query));
 
         return Ok(resultado);
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -39,23 +40,34 @@ namespace SGDP.PLUS.Comun.Repositorios
 
         public static IOrderedQueryable<T> OrderingHelper<T>(IQueryable<T> source, string propertyName, bool descending, bool anotherLevel)
         {
-            ParameterExpression param = Expression.Parameter(typeof(T), string.Empty);
+            string command = (!anotherLevel ? "OrderBy" : "ThenBy") + (descending ? "Descending" : string.Empty);
+            var properties = propertyName.Split(".");
+            var parameter = Expression.Parameter(typeof(T), "p");
+            PropertyInfo? property = null;
+            MemberExpression? propertyAccess = null;
+            var orderByExpression = source.Expression;
+            var typeArguments = new Type[] { };
 
-            var propertyValid = typeof(T).GetProperties()
-                .Where(item => item.Name.ToLower() == propertyName.ToLower())
-                .FirstOrDefault();
+            foreach (var prop in properties)
+            {
+                propertyName = prop;
+                var type = property == null ? typeof(T) : property.PropertyType;
+                property = type.GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
 
-            if (propertyValid == null)
-                return (IOrderedQueryable<T>)source;
+                if (property == null) return (IOrderedQueryable<T>)source;
+     
+                Expression parameterExpression = propertyAccess == null ? parameter : propertyAccess;
+                propertyAccess = Expression.MakeMemberAccess(parameterExpression, property);
+                orderByExpression = Expression.Lambda(propertyAccess, parameter);
+                typeArguments = new Type[] { typeof(T), propertyAccess.Type };
+            }
 
-            MemberExpression property = Expression.PropertyOrField(param, propertyName);
-            LambdaExpression sort = Expression.Lambda(property, param);
             MethodCallExpression call = Expression.Call(
                 typeof(Queryable),
-                (!anotherLevel ? "OrderBy" : "ThenBy") + (descending ? "Descending" : string.Empty),
-                new[] { typeof(T), property.Type },
+                command,
+                typeArguments,
                 source.Expression,
-                Expression.Quote(sort));
+                Expression.Quote(orderByExpression));
             return (IOrderedQueryable<T>)source.Provider.CreateQuery<T>(call);
         }
 

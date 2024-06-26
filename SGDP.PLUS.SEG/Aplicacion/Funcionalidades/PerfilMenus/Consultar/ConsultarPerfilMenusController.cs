@@ -20,6 +20,4 @@ public class ConsultarPerfilMenusController : ControllerBase
 
         return Ok(resultado);
     }
-
-
 }

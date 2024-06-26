@@ -20,8 +20,6 @@ using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.LogicaNegocio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Repositorio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.LogicaNegocio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.Usuarios.Repositorio;
-using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.LogicaNegocio;
-using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.Repositorio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.LogicaNegocio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.Repositorio;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesionLog.LogicaNegocio;
@@ -132,10 +130,6 @@ public static class ContenedorDependencias
         services.AddScoped<IGestionUsuarioPerfil, GestionUsuarioPerfil>();
         services.AddScoped<IUsuarioPerfilRepositorioLectura, UsuarioPerfilRepositorioLectura>();
         services.AddScoped<IUsuarioPerfilRepositorioEscritura, UsuarioPerfilRepositorioEscritura>();
-        // UsuarioFoto
-        services.AddScoped<IGestionUsuariosFotos, GestionUsuariosFotos>();
-        services.AddScoped<IUsuarioFotoRepositorioLectura, UsuarioFotoRepositorioLectura>();
-        services.AddScoped<IUsuarioFotoRepositorioEscritura, UsuarioFotoRepositorioEscritura>();
         // Usuario
         services.AddScoped<IGestionUsuarios, GestionUsuarios>();
         services.AddScoped<IUsuarioRepositorioLectura, UsuarioRepositorioLectura>();

@@ -1,7 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SGDP.PLUS.Comun.General;
-using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Consultar;
 
 namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.Consultar;
 
@@ -15,9 +14,9 @@ public class ConsultarUsuariosSesionController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> ConsultarUsuariosSesion(int pagina = 1, int registrosPorPagina = 20, string textoBusqueda = "", string ordenarPor = "", bool direccionOrdenamientoAsc = true)
+    public async Task<IActionResult> ConsultarUsuariosSesion([FromQuery] GetEntityQuery query)
     {
-        DataViewModel<ConsultarUsuariosSesionResponse> resultado = await _mediator.Send(new ConsultarUsuariosSesionQuery(textoBusqueda, pagina, registrosPorPagina));
+        DataViewModel<ConsultarUsuariosSesionResponse> resultado = await _mediator.Send(new ConsultarUsuariosSesionQuery(query));
 
         return Ok(resultado);
     }

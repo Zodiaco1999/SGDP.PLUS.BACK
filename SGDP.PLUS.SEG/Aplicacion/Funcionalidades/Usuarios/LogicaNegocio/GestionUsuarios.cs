@@ -91,7 +91,7 @@ public class GestionUsuarios : BaseAppService, IGestionUsuarios
               .Query(p => p.UsuarioId == usuarioId)
               .Include(p => p.UsuarioFoto!)
               .Include(t => t.TipoDocumento)
-              .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), usuarioId); ;
+              .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(Usuario), usuarioId);
 
         string foto = string.Empty;
 

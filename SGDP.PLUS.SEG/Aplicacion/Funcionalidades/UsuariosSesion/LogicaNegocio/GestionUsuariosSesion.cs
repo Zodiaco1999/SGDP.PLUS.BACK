@@ -1,9 +1,6 @@
-using SGDP.PLUS.Comun.Excepcion;
 using SGDP.PLUS.Comun.ContextAccesor;
+using SGDP.PLUS.Comun.Excepcion;
 using SGDP.PLUS.Comun.General;
-using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.ConsultarPorId;
-using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuarioPerfiles.Editar;
-using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosFotos.ConsultarPorId;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.Consultar;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.ConsultarPorId;
 using SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.Crear;
@@ -19,7 +16,7 @@ public class GestionUsuariosSesion : BaseAppService, IGestionUsuariosSesion
 {
     private readonly IUsuarioSesionRepositorioLectura _usuariosesionLectura;
     private readonly IUsuarioSesionRepositorioEscritura _usuariosesionEscritura;
-    private readonly IUnitOfWorkSegEscritura  _unitOfWork;
+    private readonly IUnitOfWorkSegEscritura _unitOfWork;
     private readonly IContextAccessor _contextAccessor;
 
     public GestionUsuariosSesion(
@@ -36,36 +33,30 @@ public class GestionUsuariosSesion : BaseAppService, IGestionUsuariosSesion
         _contextAccessor = contextAccessor;
     }
 
-    public async Task<DataViewModel<ConsultarUsuariosSesionResponse>> ConsultarUsuariosSesion(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
+    public async Task<DataViewModel<ConsultarUsuariosSesionResponse>> ConsultarUsuariosSesion(GetEntityQuery query)
     {
         try
         {
-            var filtroEspecificacion = new UsuarioSesionEspecificacion(filtro);
+            var filtroEspecificacion = new UsuarioSesionEspecificacion(query.TextoBusqueda);
 
             var result = await _usuariosesionLectura
                 .Query(filtroEspecificacion.Criteria)
-                .OrderBy(ordenarPor!, direccionOrdenamientoAsc.GetValueOrDefault())
-                .SelectPageAsync(pagina, registrosPorPagina);
+                .OrderBy(query.OrdenarPor, query.OrdenamientoAsc)
+                .SelectPageAsync(query.Pagina, query.RegistrosPorPagina);
 
-            DataViewModel<ConsultarUsuariosSesionResponse> consulta = new(pagina, registrosPorPagina, result.TotalItems);
+            DataViewModel<ConsultarUsuariosSesionResponse> consulta = new(query.Pagina, query.RegistrosPorPagina, result.TotalItems);
 
-            consulta.Data = new List<ConsultarUsuariosSesionResponse>();
+            consulta.Data = result.Items.Select(item => new ConsultarUsuariosSesionResponse(
+                item.UsuarioId,
+                item.SesionId,
+                item.InicioSesion,
+                item.IpCliente,
+                item.TokenActualizacion,
+                item.CreaUsuario,
+                item.CreaFecha,
+                item.ModificaUsuario,
+                item.ModificaFecha)).ToList();
 
-            foreach (var item in result.Items)
-            {
-                var det = new ConsultarUsuariosSesionResponse(
-                                item.UsuarioId,
-                                item.SesionId,
-                                item.InicioSesion,
-                                item.IpCliente,
-                                item.TokenActualizacion,
-                                item.CreaUsuario,
-                                item.CreaFecha,
-                                item.ModificaUsuario,
-                                item.ModificaFecha
-                                );
-                consulta.Data.Add(det);
-            }
             return consulta;
         }
         catch (Exception ex)
@@ -118,7 +109,7 @@ public class GestionUsuariosSesion : BaseAppService, IGestionUsuariosSesion
         var regActualizar = await _usuariosesionEscritura
             .Query(x => x.UsuarioId == registroDto.UsuarioId)
             .FirstOrDefaultAsync() ?? throw new NotFoundException(nameof(UsuarioSesion), registroDto.UsuarioId);
-        
+
         regActualizar.UsuarioId = registroDto.UsuarioId;
         regActualizar.SesionId = registroDto.SesionId;
         regActualizar.InicioSesion = registroDto.InicioSesion;

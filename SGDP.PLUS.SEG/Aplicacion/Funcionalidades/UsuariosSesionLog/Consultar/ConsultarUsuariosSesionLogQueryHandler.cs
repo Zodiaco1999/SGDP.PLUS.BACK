@@ -10,9 +10,5 @@ public class ConsultarUsuariosSesionLogQueryHandler : IRequestHandler<ConsultarU
     public ConsultarUsuariosSesionLogQueryHandler(IGestionUsuariosSesionLog gestionUsuariosSesionLog) => _gestionUsuariosSesionLog = gestionUsuariosSesionLog;
 
     public async Task<DataViewModel<ConsultarUsuariosSesionLogResponse>> Handle(ConsultarUsuariosSesionLogQuery request, CancellationToken cancellationToken)
-    {
-        DataViewModel<ConsultarUsuariosSesionLogResponse> result = await _gestionUsuariosSesionLog.ConsultarUsuariosSesionLog(request.textoBusqueda, request.pagina, request.registrosPorPagina);
-
-        return result;
-    }
+        => await _gestionUsuariosSesionLog.ConsultarUsuariosSesionLog(request.Query);
 }

@@ -11,7 +11,7 @@ public class ConsultarUsuariosSesionQueryHandler : IRequestHandler<ConsultarUsua
 
     public async Task<DataViewModel<ConsultarUsuariosSesionResponse>> Handle(ConsultarUsuariosSesionQuery request, CancellationToken cancellationToken)
     {
-        DataViewModel<ConsultarUsuariosSesionResponse> result = await _gestionUsuariosSesion.ConsultarUsuariosSesion(request.textoBusqueda, request.pagina, request.registrosPorPagina);
+        DataViewModel<ConsultarUsuariosSesionResponse> result = await _gestionUsuariosSesion.ConsultarUsuariosSesion(request.Query);
 
         return result;
     }

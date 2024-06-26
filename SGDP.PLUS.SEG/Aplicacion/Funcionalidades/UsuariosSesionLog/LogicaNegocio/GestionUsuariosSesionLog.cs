@@ -36,24 +36,20 @@ public class GestionUsuariosSesionLog : BaseAppService, IGestionUsuariosSesionLo
         _contextAccessor = contextAccessor;
     }
 
-    public async Task<DataViewModel<ConsultarUsuariosSesionLogResponse>> ConsultarUsuariosSesionLog(string filtro, int pagina, int registrosPorPagina, string? ordenarPor = null, bool? direccionOrdenamientoAsc = null)
+    public async Task<DataViewModel<ConsultarUsuariosSesionLogResponse>> ConsultarUsuariosSesionLog(GetEntityQuery query)
     {
         try
         {
-            var filtroEspecificacion = new UsuarioSesionLogEspecificacion(filtro);
+            var filtroEspecificacion = new UsuarioSesionLogEspecificacion(query.TextoBusqueda);
 
             var result = await _usuariosesionlogLectura
                 .Query(filtroEspecificacion.Criteria)
-                .OrderBy(ordenarPor!, direccionOrdenamientoAsc.GetValueOrDefault())
-                .SelectPageAsync(pagina, registrosPorPagina);
+                .OrderBy(query.OrdenarPor, query.OrdenamientoAsc)
+                .SelectPageAsync(query.Pagina, query.RegistrosPorPagina);
 
-            DataViewModel<ConsultarUsuariosSesionLogResponse> consulta = new(pagina, registrosPorPagina, result.TotalItems);
+            DataViewModel<ConsultarUsuariosSesionLogResponse> consulta = new(query.Pagina, query.RegistrosPorPagina, result.TotalItems);
 
-            consulta.Data = new List<ConsultarUsuariosSesionLogResponse>();
-
-            foreach (var item in result.Items)
-            {
-                var det = new ConsultarUsuariosSesionLogResponse(
+            consulta.Data = result.Items.Select(item => new ConsultarUsuariosSesionLogResponse(
                                 item.LogId,
                                 item.UsuarioId,
                                 item.SesionId,
@@ -61,9 +57,8 @@ public class GestionUsuariosSesionLog : BaseAppService, IGestionUsuariosSesionLo
                                 item.IpCliente,
                                 item.DataSesion,
                                 item.Accion,
-                                item.MsgValidacion);
-                consulta.Data.Add(det);
-            }
+                                item.MsgValidacion)).ToList();
+
             return consulta;
         }
         catch (Exception ex)

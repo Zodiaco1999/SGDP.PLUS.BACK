@@ -8,7 +8,7 @@ namespace SGDP.PLUS.SEG.Aplicacion.Funcionalidades.UsuariosSesion.LogicaNegocio;
 
 public interface IGestionUsuariosSesion
 {
-    Task<DataViewModel<ConsultarUsuariosSesionResponse>> ConsultarUsuariosSesion(string filtro, int pagina, int registrosPorPagina,string? ordenarPor = null, bool? direccionOrdenamientoAsc = null);
+    Task<DataViewModel<ConsultarUsuariosSesionResponse>> ConsultarUsuariosSesion(GetEntityQuery query);
     Task<ConsultarUsuarioSesionPorIdResponse> ConsultarUsuarioSesionPorId(string usuarioId);
     Task<CrearUsuarioSesionResponse> CrearUsuarioSesion(CrearUsuarioSesionCommand registroDto);
     Task<EditarUsuarioSesionResponse> EditarUsuarioSesion(EditarUsuarioSesionCommand registroDto);

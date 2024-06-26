@@ -16,7 +16,7 @@ public class ConsultarAplicacionesController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Get([FromQuery] GetEntityQuery query)
+    public async Task<IActionResult> ConsultarAplicaciones([FromQuery] GetEntityQuery query)
     {
         DataViewModel<ConsultarAplicacionesResponse> resultado = await _mediator.Send(new ConsultarAplicacionesQuery(query));
 
