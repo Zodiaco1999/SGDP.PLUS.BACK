@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using SGDP.PLUS.Comun.Excepcion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,7 +55,8 @@ namespace SGDP.PLUS.Comun.Repositorios
                 var type = property == null ? typeof(T) : property.PropertyType;
                 property = type.GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
 
-                if (property == null) return (IOrderedQueryable<T>)source;
+                if (property == null) 
+                    throw new ValidationException($"No se pudo ordenar por el campo {propertyName}, por favor contacte a soporte");
      
                 Expression parameterExpression = propertyAccess == null ? parameter : propertyAccess;
                 propertyAccess = Expression.MakeMemberAccess(parameterExpression, property);
